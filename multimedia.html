@@ -157,7 +157,7 @@
                 <div class="space-y-3">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
                         <i class="fa-solid fa-camera"></i>
-                        ARCHIVIO VISIVO // DIRECTORY: <span class="text-white">imgdir/</span>
+                        ARCHIVIO VISIVO // DIRECTORY: <span class="text-white">multimedia/</span>
                     </div>
                     <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
                         GALLERIA <span class="text-uladOrange">MULTIMEDIA</span>
@@ -196,7 +196,7 @@
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
 
         <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Popolato tramite script dalla lista mediaItems (cartella imgdir/) -->
+            <!-- Popolato tramite script dalla lista mediaItems (cartella multimedia/) -->
         </div>
 
     </main>
@@ -236,7 +236,7 @@
         </div>
     </footer>
 
-    <!-- Script Menu Mobile, Galleria imgdir/ e Lightbox -->
+    <!-- Script Menu Mobile, Galleria multimedia/ e Lightbox -->
     <script>
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
@@ -244,34 +244,34 @@
             menu.classList.toggle('hidden');
         });
 
-        // Inserisci qui i file salvati nella cartella "imgdir/"
+        // Inserisci qui i file salvati nella cartella "multimedia/"
         const mediaItems = [
             {
-                file: 'imgdir/screen-01.jpg',
-                title: 'Orizzonte Nebulosa Profonda',
+                file: 'multimedia/esplorazione.jpg',
+                title: 'Orizzonte',
                 category: 'esplorazione',
                 categoryLabel: 'ESPLORAZIONE',
-                cmdr: 'CMDR ULAD',
+                cmdr: 'CMDR ArmandoBug',
                 system: 'Deep Space',
-                description: 'Ricognizione a lungo raggio durante una spedizione esplorativa dello squadrone.'
+                description: 'Tramonto osservato durante una spedizione esplorativa dello squadrone.'
             },
             {
-                file: 'imgdir/screen-02.jpg',
-                title: 'Pattugliamento & Zona di Conflitto',
+                file: 'multimedia/combat.jpg',
+                title: 'Recon e support',
                 category: 'combattimento',
                 categoryLabel: 'COMBATTIMENTO',
-                cmdr: 'CMDR ULAD',
+                cmdr: 'CMDR ArmandoBug',
                 system: 'BGS Sector',
-                description: 'Supporto tattico per le operazioni della Ultra Astra Corp.'
+                description: 'Ricognizione e supporto tattico per le operazioni della Ultra Astra Corp.'
             },
             {
-                file: 'imgdir/screen-03.jpg',
-                title: 'Ulad-01 Nostromo in Orbita',
+                file: 'multimedia/mining.jpg',
+                title: 'Escorting mininf ship',
                 category: 'carrier',
                 categoryLabel: 'CARRIER & MINING',
-                cmdr: 'ULAD Fleet',
-                system: '[ULAD] Carrier',
-                description: 'Punto d’appoggio logistico e base operativa per le attività del gruppo.'
+                cmdr: 'CMDR ArmandoBug',
+                system: 'ULAD system',
+                description: 'Scorta per mining ship su anelli icy pristine.'
             }
         ];
 
@@ -308,7 +308,7 @@
                         <div class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-inaraBg/90">
                             <i class="fa-solid fa-image text-2xl text-uladOrange/70 mb-2"></i>
                             <span class="font-mono text-xs text-inaraText">${item.file}</span>
-                            <span class="text-xs text-inaraMuted mt-1">Inserisci il file in <strong class="text-white">imgdir/</strong></span>
+                            <span class="text-xs text-inaraMuted mt-1">Inserisci il file in <strong class="text-white">multimedia/</strong></span>
                         </div>
                         <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-inaraBg/90 border border-uladOrange/40 font-mono text-[11px] text-uladOrange">
                             ${item.categoryLabel}
