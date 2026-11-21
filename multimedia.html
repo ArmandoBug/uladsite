@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="meta.title">Multimedia — Ultra Astra Dreamers [ULAD]</title>
+    <title>Multimedia — Ultra Astra Dreamers [ULAD]</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -174,28 +174,28 @@
                 <div class="font-hud text-xl sm:text-2xl font-bold text-white tracking-wider">
                     ULTRA ASTRA DREAMERS
                 </div>
-                <p id="nav-status-text" data-i18n="loader.status0" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
+                <p id="nav-status-text" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
                     Calcolo rotta Frameshift...
                 </p>
             </div>
 
             <div class="space-y-2.5 text-left">
                 <div class="flex justify-between items-center text-xs font-mono">
-                    <span class="text-inaraMuted" data-i18n="loader.loadingSector">CARICAMENTO SETTORE</span>
+                    <span class="text-inaraMuted">CARICAMENTO SETTORE</span>
                     <span id="nav-progress-percent" class="text-white font-bold">0%</span>
                 </div>
                 <div class="w-full h-2 bg-inaraBg rounded overflow-hidden border border-inaraBorder p-[1px]">
                     <div id="nav-progress-bar" class="h-full bg-gradient-to-r from-uladOrange to-uladAmber rounded-sm" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between items-center text-[11px] font-mono text-inaraMuted pt-1">
-                    <span><span data-i18n="loader.destination">DESTINAZIONE:</span> <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
+                    <span>DESTINAZIONE: <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
                     <span id="nav-countdown-text">1.0s</span>
                 </div>
             </div>
 
             <div class="pt-2 border-t border-inaraBorder/70">
                 <a id="nav-skip-link" href="#" class="inline-flex items-center gap-2 text-xs font-hud text-inaraMuted hover:text-uladOrange transition tracking-wider uppercase">
-                    <span data-i18n="loader.skip">Salta caricamento &rarr;</span>
+                    Salta caricamento &rarr;
                 </a>
             </div>
         </div>
@@ -222,34 +222,22 @@
 
                 <!-- Menu Navigazione Desktop -->
                 <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
-                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.home">Home</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.roster">Roster</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.tips">Tips & Tricks</a>
-                    <a href="comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.comms">Comunicazioni</a>
-                    <a href="multimedia.html" class="text-uladOrange border-b-2 border-uladOrange py-7" data-i18n="nav.media">Multimedia</a>
-                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.links">Link Utili</a>
+                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
+                    <a href="comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-uladOrange border-b-2 border-uladOrange py-7">Multimedia</a>
+                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
                 </nav>
 
-                <!-- CTA Discord / Inara + Tag [ULAD] + Lingua -->
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
                 <div class="hidden md:flex items-center gap-3">
-                    <!-- Selettore Lingua IT / EN -->
-                    <div class="inline-flex items-center rounded bg-inaraPanel border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
-                        <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
-                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
-                            <span>IT</span>
-                        </button>
-                        <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
-                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
-                            <span>EN</span>
-                        </button>
-                    </div>
-
                     <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
                     <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
                         <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
                     </a>
                     <a href="homepage.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
-                        <i class="fa-brands fa-discord text-sm"></i> <span data-i18n="nav.join">UNISCITI</span>
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
                     </a>
                 </div>
 
@@ -262,25 +250,12 @@
 
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
-            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.home">Home</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.rosterMobile">Roster Comandanti</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.tips">Tips & Tricks</a>
-            <a href="comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.comms">Comunicazioni</a>
-            <a href="multimedia.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold" data-i18n="nav.media">Multimedia</a>
-            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.links">Link Utili</a>
-            <div class="pt-3 mt-2 border-t border-inaraBorder flex items-center justify-between px-3">
-                <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="lang.label">Lingua</span>
-                <div class="inline-flex items-center rounded bg-inaraBg border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
-                    <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
-                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
-                        <span>IT</span>
-                    </button>
-                    <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
-                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
-                        <span>EN</span>
-                    </button>
-                </div>
-            </div>
+            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
+            <a href="comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Multimedia</a>
+            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
         </div>
     </header>
 
@@ -294,33 +269,33 @@
                         <i class="fa-solid fa-camera"></i>
                         ARCHIVIO VISIVO // DIRECTORY: <span class="text-white">multimedia/</span>
                     </div>
-                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight" data-i18n-html="media.heading">
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
                         GALLERIA <span class="text-uladOrange">MULTIMEDIA</span>
                     </h1>
-                    <p class="text-inaraText text-lg max-w-2xl" data-i18n-html="media.subtitle">
+                    <p class="text-inaraText text-lg max-w-2xl">
                         Screenshot, spedizioni e momenti catturati dai comandanti degli <strong class="text-white">Ultra Astra Dreamers</strong> durante le operazioni nello spazio.
                     </p>
                 </div>
 
                 <!-- Contatore rapido -->
                 <div class="tactical-card tactical-corner px-5 py-3.5 rounded shrink-0">
-                    <span class="text-xs font-mono text-inaraMuted uppercase block" data-i18n="media.cataloged">File Catalogati</span>
+                    <span class="text-xs font-mono text-inaraMuted uppercase block">File Catalogati</span>
                     <span class="font-hud text-xl font-bold text-uladOrange" id="gallery-count">0 SCREENSHOT</span>
                 </div>
             </div>
 
             <!-- Filtri Categoria -->
             <div class="mt-8 flex flex-wrap gap-2.5" id="filter-bar">
-                <button data-filter="all" data-i18n="filter.all" class="filter-btn px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud font-bold text-xs tracking-wider transition">
+                <button data-filter="all" class="filter-btn px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud font-bold text-xs tracking-wider transition">
                     TUTTI
                 </button>
-                <button data-filter="esplorazione" data-i18n="filter.exploration" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                <button data-filter="esplorazione" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
                     ESPLORAZIONE
                 </button>
-                <button data-filter="combattimento" data-i18n="filter.combat" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                <button data-filter="combattimento" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
                     COMBATTIMENTO
                 </button>
-                <button data-filter="carrier" data-i18n="filter.carrier" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                <button data-filter="carrier" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
                     CARRIER & MINING
                 </button>
             </div>
@@ -366,7 +341,7 @@
                 <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
             </div>
             <div class="text-center sm:text-right">
-                <p data-i18n="footer.disclaimer">Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
             </div>
         </div>
     </footer>
@@ -433,26 +408,20 @@
         let currentFilter = 'all';
 
         function renderGallery() {
-            const lang = getCurrentUladLang();
             const filtered = currentFilter === 'all'
                 ? mediaItems
                 : mediaItems.filter(item => item.category === currentFilter);
 
-            const shotLabel = filtered.length === 1 ? 'SCREENSHOT' : 'SCREENSHOTS';
-            countEl.textContent = `${filtered.length} ${lang === 'en' ? shotLabel : 'SCREENSHOT'}`;
+            countEl.textContent = `${filtered.length} ${filtered.length === 1 ? 'SCREENSHOT' : 'SCREENSHOT'}`;
 
             if (filtered.length === 0) {
                 gridEl.innerHTML = `
                     <div class="col-span-full tactical-card p-8 rounded text-center text-inaraMuted">
-                        ${lang === 'en' ? 'No screenshots found in this category.' : 'Nessuno screenshot trovato in questa categoria.'}
+                        Nessuno screenshot trovato in questa categoria.
                     </div>
                 `;
                 return;
             }
-
-            const missingHint = lang === 'en'
-                ? 'Place the file inside <strong class="text-white">multimedia/</strong>'
-                : 'Inserisci il file in <strong class="text-white">multimedia/</strong>';
 
             gridEl.innerHTML = filtered.map((item, idx) => `
                 <article class="tactical-card rounded overflow-hidden flex flex-col group cursor-pointer" onclick="openLightboxByIndex(${idx})">
@@ -467,16 +436,16 @@
                         <div class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-inaraBg/90">
                             <i class="fa-solid fa-image text-2xl text-uladOrange/70 mb-2"></i>
                             <span class="font-mono text-xs text-inaraText">${item.file}</span>
-                            <span class="text-xs text-inaraMuted mt-1">${missingHint}</span>
+                            <span class="text-xs text-inaraMuted mt-1">Inserisci il file in <strong class="text-white">multimedia/</strong></span>
                         </div>
-                        <span data-auto-translate data-explicit-en="${item.categoryLabel_en || ''}" class="absolute top-3 left-3 px-2.5 py-1 rounded bg-inaraBg/90 border border-uladOrange/40 font-mono text-[11px] text-uladOrange">
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-inaraBg/90 border border-uladOrange/40 font-mono text-[11px] text-uladOrange">
                             ${item.categoryLabel}
                         </span>
                     </div>
                     <div class="p-4 flex-grow flex flex-col justify-between space-y-2">
                         <div>
-                            <h3 data-auto-translate data-explicit-en="${item.title_en || ''}" class="font-hud text-base font-bold text-white group-hover:text-uladOrange transition">${item.title}</h3>
-                            <p data-auto-translate data-explicit-en="${item.description_en || ''}" class="text-sm text-inaraMuted mt-1 line-clamp-2">${item.description}</p>
+                            <h3 class="font-hud text-base font-bold text-white group-hover:text-uladOrange transition">${item.title}</h3>
+                            <p class="text-sm text-inaraMuted mt-1 line-clamp-2">${item.description}</p>
                         </div>
                         <div class="pt-3 border-t border-inaraBorder/70 flex items-center justify-between text-xs font-mono text-inaraMuted">
                             <span><i class="fa-solid fa-user-astronaut text-uladOrange/80 mr-1"></i>${item.cmdr}</span>
@@ -485,8 +454,6 @@
                     </div>
                 </article>
             `).join('');
-
-            applyAutoTranslations(lang);
         }
 
         function getFilteredItems() {
@@ -495,30 +462,18 @@
                 : mediaItems.filter(item => item.category === currentFilter);
         }
 
-        async function openLightboxByIndex(idx) {
+        function openLightboxByIndex(idx) {
             const list = getFilteredItems();
             const item = list[idx];
             if (!item) return;
 
-            const lang = getCurrentUladLang();
-            const catEl = document.getElementById('lightbox-category');
-            const titleEl = document.getElementById('lightbox-title');
-            const descEl = document.getElementById('lightbox-desc');
-
-            catEl.textContent = item.categoryLabel;
-            titleEl.textContent = item.title;
-            descEl.textContent = item.description;
-
+            document.getElementById('lightbox-category').textContent = item.categoryLabel;
+            document.getElementById('lightbox-title').textContent = item.title;
             document.getElementById('lightbox-img').src = item.file;
             document.getElementById('lightbox-img').alt = item.title;
+            document.getElementById('lightbox-desc').textContent = item.description;
             document.getElementById('lightbox-meta').textContent = `${item.cmdr} // ${item.system} (${item.file})`;
             document.getElementById('lightbox-modal').classList.remove('hidden');
-
-            if (lang === 'en') {
-                catEl.textContent = item.categoryLabel_en || await translateTextItToEn(item.categoryLabel);
-                titleEl.textContent = item.title_en || await translateTextItToEn(item.title);
-                descEl.textContent = item.description_en || await translateTextItToEn(item.description);
-            }
         }
 
         function closeLightbox() {
@@ -534,233 +489,6 @@
                 });
                 btnEl.className = 'filter-btn px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud font-bold text-xs tracking-wider transition';
                 renderGallery();
-
-
-        // ============================================================
-        // SISTEMA MULTILINGUA IT / EN + TRADUZIONE AUTOMATICA POST FUTURI
-        // ============================================================
-        const ULAD_LANG_KEY = 'ulad_lang';
-        const ULAD_TRANS_CACHE_KEY = 'ulad_auto_trans_cache_v1';
-
-        function getCurrentUladLang() {
-            const saved = localStorage.getItem(ULAD_LANG_KEY);
-            return (saved === 'en' || saved === 'it') ? saved : 'it';
-        }
-
-        function getTransCache() {
-            try {
-                return JSON.parse(localStorage.getItem(ULAD_TRANS_CACHE_KEY) || '{}');
-            } catch (_) {
-                return {};
-            }
-        }
-
-        function setTransCache(cache) {
-            try {
-                localStorage.setItem(ULAD_TRANS_CACHE_KEY, JSON.stringify(cache));
-            } catch (_) {}
-        }
-
-        // Dizionario rapido per tag, stati e termini ricorrenti di Elite Dangerous / ULAD
-        const ULAD_TERM_MAP_EN = {
-            'OPERATIVO': 'OPERATIONAL',
-            'ARCHIVIO': 'ARCHIVE',
-            'ROADMAP': 'ROADMAP',
-            'AGGIORNAMENTO': 'UPDATE',
-            'ATTIVO': 'ACTIVE',
-            'STANDBY': 'STANDBY',
-            'Da definire': 'To be defined',
-            'Non specificato': 'Not specified',
-            'Non disponibile': 'Unavailable',
-            'Sincronizzazione...': 'Syncing...',
-            'ESPLORAZIONE': 'EXPLORATION',
-            'COMBATTIMENTO': 'COMBAT',
-            'CARRIER & MINING': 'CARRIER & MINING'
-        };
-
-        // Traduzione automatica per testi dinamici e nuovi post futuri (con cache persistente)
-        const pendingTranslations = new Map();
-
-        async function translateTextItToEn(text) {
-            const raw = String(text ?? '').trim();
-            if (!raw) return raw;
-            if (ULAD_TERM_MAP_EN[raw]) return ULAD_TERM_MAP_EN[raw];
-
-            const cache = getTransCache();
-            if (cache[raw]) return cache[raw];
-
-            if (pendingTranslations.has(raw)) {
-                return pendingTranslations.get(raw);
-            }
-
-            const promise = (async () => {
-                try {
-                    // Endpoint pubblico Google Translate GTX (nessuna API key richiesta, supporto cors/browser)
-                    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=en&dt=t&q=' + encodeURIComponent(raw);
-                    const res = await fetch(url);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (Array.isArray(data) && Array.isArray(data[0])) {
-                            const translated = data[0].map(seg => seg && seg[0] ? seg[0] : '').join('');
-                            if (translated && translated.trim()) {
-                                const updated = getTransCache();
-                                updated[raw] = translated;
-                                setTransCache(updated);
-                                return translated;
-                            }
-                        }
-                    }
-                } catch (_) {}
-
-                try {
-                    // Fallback secondario su MyMemory API
-                    const mmUrl = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(raw.slice(0, 490)) + '&langpair=it|en';
-                    const mmRes = await fetch(mmUrl);
-                    if (mmRes.ok) {
-                        const mmData = await mmRes.json();
-                        const translated = mmData && mmData.responseData && mmData.responseData.translatedText;
-                        if (translated && translated.trim()) {
-                            const updated = getTransCache();
-                            updated[raw] = translated;
-                            setTransCache(updated);
-                            return translated;
-                        }
-                    }
-                } catch (_) {}
-
-                return raw;
-            })();
-
-            pendingTranslations.set(raw, promise);
-            try {
-                return await promise;
-            } finally {
-                pendingTranslations.delete(raw);
-            }
-        }
-
-        // Traduce automaticamente tutti gli elementi marcati con [data-auto-translate]
-        async function applyAutoTranslations(lang) {
-            const nodes = document.querySelectorAll('[data-auto-translate]');
-            for (const el of nodes) {
-                if (!el.dataset.originalIt) {
-                    el.dataset.originalIt = el.textContent;
-                }
-                const original = el.dataset.originalIt;
-                const explicitEn = el.dataset.explicitEn;
-
-                if (lang === 'it') {
-                    el.textContent = original;
-                } else if (explicitEn && explicitEn.trim()) {
-                    el.textContent = explicitEn;
-                } else {
-                    const cached = getTransCache()[original.trim()] || ULAD_TERM_MAP_EN[original.trim()];
-                    if (cached) {
-                        el.textContent = cached;
-                    } else {
-                        translateTextItToEn(original).then(translated => {
-                            if (getCurrentUladLang() === 'en' && translated) {
-                                el.textContent = translated;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        function updateLanguageButtons(lang) {
-            document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-                const isSelected = btn.getAttribute('data-lang-btn') === lang;
-                if (isSelected) {
-                    btn.classList.add('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
-                    btn.classList.remove('text-inaraMuted', 'hover:text-white');
-                } else {
-                    btn.classList.remove('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
-                    btn.classList.add('text-inaraMuted', 'hover:text-white');
-                }
-            });
-        }
-
-        const MM_I18N = {
-            it: {
-
-            'loader.status0': 'Calcolo rotta Frameshift...',
-            'loader.status35': 'Sincronizzazione dati settore [ULAD]...',
-            'loader.status75': 'Allineamento vettore — Ingaggio...',
-            'loader.loadingSector': 'CARICAMENTO SETTORE',
-            'loader.destination': 'DESTINAZIONE:',
-            'loader.skip': 'Salta caricamento →',
-            'nav.home': 'Home',
-            'nav.roster': 'Roster',
-            'nav.rosterMobile': 'Roster Comandanti',
-            'nav.tips': 'Tips & Tricks',
-            'nav.comms': 'Comunicazioni',
-            'nav.media': 'Multimedia',
-            'nav.links': 'Link Utili',
-            'nav.join': 'UNISCITI',
-            'lang.label': 'Lingua',
-            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Sito non ufficiale creato dalla community.'
-,
-                'meta.title': 'Multimedia — Ultra Astra Dreamers [ULAD]',
-                'media.heading': 'GALLERIA <span class="text-uladOrange">MULTIMEDIA</span>',
-                'media.subtitle': 'Screenshot, spedizioni e momenti catturati dai comandanti degli <strong class="text-white">Ultra Astra Dreamers</strong> durante le operazioni nello spazio.',
-                'media.cataloged': 'File Catalogati',
-                'filter.all': 'TUTTI',
-                'filter.exploration': 'ESPLORAZIONE',
-                'filter.combat': 'COMBATTIMENTO',
-                'filter.carrier': 'CARRIER & MINING'
-            },
-            en: {
-
-            'loader.status0': 'Plotting Frameshift route...',
-            'loader.status35': 'Synchronizing sector data [ULAD]...',
-            'loader.status75': 'Vector alignment — Engaging...',
-            'loader.loadingSector': 'LOADING SECTOR',
-            'loader.destination': 'DESTINATION:',
-            'loader.skip': 'Skip loading →',
-            'nav.home': 'Home',
-            'nav.roster': 'Roster',
-            'nav.rosterMobile': 'Commanders Roster',
-            'nav.tips': 'Tips & Tricks',
-            'nav.comms': 'Communications',
-            'nav.media': 'Multimedia',
-            'nav.links': 'Useful Links',
-            'nav.join': 'JOIN US',
-            'lang.label': 'Language',
-            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Unofficial community-created website.'
-,
-                'meta.title': 'Multimedia — Ultra Astra Dreamers [ULAD]',
-                'media.heading': 'MULTIMEDIA <span class="text-uladOrange">GALLERY</span>',
-                'media.subtitle': 'Screenshots, expeditions, and moments captured by the commanders of <strong class="text-white">Ultra Astra Dreamers</strong> during deep space operations.',
-                'media.cataloged': 'Cataloged Files',
-                'filter.all': 'ALL',
-                'filter.exploration': 'EXPLORATION',
-                'filter.combat': 'COMBAT',
-                'filter.carrier': 'CARRIER & MINING'
-            }
-        };
-
-        function setUladLanguage(lang) {
-            const normalized = (lang === 'en') ? 'en' : 'it';
-            localStorage.setItem(ULAD_LANG_KEY, normalized);
-            document.documentElement.lang = normalized;
-
-            const dict = MM_I18N[normalized] || MM_I18N.it;
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (dict[key] !== undefined) el.textContent = dict[key];
-            });
-            document.querySelectorAll('[data-i18n-html]').forEach(el => {
-                const key = el.getAttribute('data-i18n-html');
-                if (dict[key] !== undefined) el.innerHTML = dict[key];
-            });
-
-            updateLanguageButtons(normalized);
-            renderGallery();
-        }
-
-        setUladLanguage(getCurrentUladLang());
-
             });
         });
 
@@ -783,18 +511,11 @@
 
         if (!loader) return;
 
-        function getLoaderStatusMessages() {
-            const isEn = localStorage.getItem('ulad_lang') === 'en';
-            return isEn ? [
-                { at: 0, text: 'Plotting Frameshift route...' },
-                { at: 35, text: 'Synchronizing sector data [ULAD]...' },
-                { at: 75, text: 'Vector alignment — Engaging...' }
-            ] : [
-                { at: 0, text: 'Calcolo rotta Frameshift...' },
-                { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
-                { at: 75, text: 'Allineamento vettore — Ingaggio...' }
-            ];
-        }
+        const statusMessages = [
+            { at: 0, text: 'Calcolo rotta Frameshift...' },
+            { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
+            { at: 75, text: 'Allineamento vettore — Ingaggio...' }
+        ];
 
         let navigating = false;
         let pendingHref = '';
@@ -831,7 +552,6 @@
                 progressPercent.textContent = Math.floor(progress) + '%';
                 countdownText.textContent = remaining.toFixed(1) + 's';
 
-                const statusMessages = getLoaderStatusMessages();
                 for (let i = statusMessages.length - 1; i >= 0; i--) {
                     if (progress >= statusMessages[i].at) {
                         statusText.textContent = statusMessages[i].text;

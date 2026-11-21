@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="meta.title">Comunicazioni — Ultra Astra Dreamers [ULAD]</title>
+    <title>Comunicazioni — Ultra Astra Dreamers [ULAD]</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -174,28 +174,28 @@
                 <div class="font-hud text-xl sm:text-2xl font-bold text-white tracking-wider">
                     ULTRA ASTRA DREAMERS
                 </div>
-                <p id="nav-status-text" data-i18n="loader.status0" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
+                <p id="nav-status-text" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
                     Calcolo rotta Frameshift...
                 </p>
             </div>
 
             <div class="space-y-2.5 text-left">
                 <div class="flex justify-between items-center text-xs font-mono">
-                    <span class="text-inaraMuted" data-i18n="loader.loadingSector">CARICAMENTO SETTORE</span>
+                    <span class="text-inaraMuted">CARICAMENTO SETTORE</span>
                     <span id="nav-progress-percent" class="text-white font-bold">0%</span>
                 </div>
                 <div class="w-full h-2 bg-inaraBg rounded overflow-hidden border border-inaraBorder p-[1px]">
                     <div id="nav-progress-bar" class="h-full bg-gradient-to-r from-uladOrange to-uladAmber rounded-sm" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between items-center text-[11px] font-mono text-inaraMuted pt-1">
-                    <span><span data-i18n="loader.destination">DESTINAZIONE:</span> <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
+                    <span>DESTINAZIONE: <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
                     <span id="nav-countdown-text">1.0s</span>
                 </div>
             </div>
 
             <div class="pt-2 border-t border-inaraBorder/70">
                 <a id="nav-skip-link" href="#" class="inline-flex items-center gap-2 text-xs font-hud text-inaraMuted hover:text-uladOrange transition tracking-wider uppercase">
-                    <span data-i18n="loader.skip">Salta caricamento &rarr;</span>
+                    Salta caricamento &rarr;
                 </a>
             </div>
         </div>
@@ -222,34 +222,22 @@
 
                 <!-- Menu Navigazione Desktop -->
                 <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
-                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.home">Home</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.roster">Roster</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.tips">Tips & Tricks</a>
-                    <a href="comunicazioni.html" class="text-uladOrange border-b-2 border-uladOrange py-7" data-i18n="nav.comms">Comunicazioni</a>
-                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.media">Multimedia</a>
-                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.links">Link Utili</a>
+                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
+                    <a href="comunicazioni.html" class="text-uladOrange border-b-2 border-uladOrange py-7">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7">Multimedia</a>
+                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
                 </nav>
 
-                <!-- CTA Discord / Inara + Tag [ULAD] + Lingua -->
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
                 <div class="hidden md:flex items-center gap-3">
-                    <!-- Selettore Lingua IT / EN -->
-                    <div class="inline-flex items-center rounded bg-inaraPanel border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
-                        <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
-                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
-                            <span>IT</span>
-                        </button>
-                        <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
-                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
-                            <span>EN</span>
-                        </button>
-                    </div>
-
                     <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
                     <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
                         <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
                     </a>
                     <a href="homepage.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
-                        <i class="fa-brands fa-discord text-sm"></i> <span data-i18n="nav.join">UNISCITI</span>
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
                     </a>
                 </div>
 
@@ -262,25 +250,12 @@
 
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
-            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.home">Home</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.rosterMobile">Roster Comandanti</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.tips">Tips & Tricks</a>
-            <a href="comunicazioni.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold" data-i18n="nav.comms">Comunicazioni</a>
-            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.media">Multimedia</a>
-            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.links">Link Utili</a>
-            <div class="pt-3 mt-2 border-t border-inaraBorder flex items-center justify-between px-3">
-                <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="lang.label">Lingua</span>
-                <div class="inline-flex items-center rounded bg-inaraBg border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
-                    <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
-                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
-                        <span>IT</span>
-                    </button>
-                    <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
-                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
-                        <span>EN</span>
-                    </button>
-                </div>
-            </div>
+            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
+            <a href="comunicazioni.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Multimedia</a>
+            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
         </div>
     </header>
 
@@ -294,19 +269,19 @@
                         <i class="fa-solid fa-satellite-dish"></i>
                         SUBSPACE DISPATCH // SQUADRON ID: <span class="text-white">12623</span>
                     </div>
-                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight" data-i18n-html="comms.heading">
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
                         CENTRO <span class="text-uladOrange">COMUNICAZIONI</span>
                     </h1>
-                    <p class="text-inaraText text-lg max-w-2xl" data-i18n-html="comms.subtitle">
+                    <p class="text-inaraText text-lg max-w-2xl">
                         Dispacci operativi degli <strong class="text-white">Ultra Astra Dreamers</strong>, monitoraggio Community Goal e bollettini ufficiali Frontier Developments.
                     </p>
                 </div>
 
                 <!-- Riepilogo rapido -->
                 <div class="tactical-card tactical-corner px-5 py-3.5 rounded shrink-0">
-                    <span class="text-xs font-mono text-inaraMuted uppercase block" data-i18n="comms.relayLabel">Stato Relè</span>
+                    <span class="text-xs font-mono text-inaraMuted uppercase block">Stato Relè</span>
                     <span class="font-hud text-base sm:text-lg font-bold text-emerald-400 flex items-center gap-2 mt-0.5">
-                        <i class="fa-solid fa-circle-check text-sm"></i> <span data-i18n="comms.relayActive">ATTIVO</span>
+                        <i class="fa-solid fa-circle-check text-sm"></i> ATTIVO
                     </span>
                 </div>
             </div>
@@ -322,9 +297,9 @@
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="sec1.kicker">01 // Dispacci Interni</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">01 // Dispacci Interni</span>
                     </div>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="sec1.title">COMUNICAZIONI DELLO SQUADRONE</h2>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMUNICAZIONI DELLO SQUADRONE</h2>
                 </div>
                 <span id="squadron-count" class="text-xs font-mono text-inaraMuted">0 DISPACCI</span>
             </div>
@@ -338,9 +313,9 @@
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="sec2.kicker">02 // Iniziative Galattiche</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Iniziative Galattiche</span>
                     </div>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="sec2.title">COMMUNITY GOAL</h2>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMMUNITY GOAL</h2>
                 </div>
                 <span id="cg-status-badge" class="text-xs font-mono text-inaraMuted">SINCRONIZZAZIONE CG</span>
             </div>
@@ -354,9 +329,9 @@
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="sec3.kicker">03 // Roadmap & Aggiornamenti</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Roadmap & Aggiornamenti</span>
                     </div>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="sec3.title">COMUNICAZIONI FRONTIER</h2>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMUNICAZIONI FRONTIER</h2>
                 </div>
                 <span id="frontier-count" class="text-xs font-mono text-inaraMuted">0 COMUNICAZIONI</span>
             </div>
@@ -374,7 +349,7 @@
                 <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
             </div>
             <div class="text-center sm:text-right">
-                <p data-i18n="footer.disclaimer">Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
             </div>
         </div>
     </footer>
@@ -443,22 +418,15 @@
             return /^https?:\/\//i.test(String(url || '').trim());
         }
 
-        let loadedFrontierItems = frontierComms;
-        let loadedCommunityGoals = communityGoals;
-
-        function renderStandardComms(containerId, countId, items, labelType) {
-            const lang = getCurrentUladLang();
+        function renderStandardComms(containerId, countId, items, labelUnit) {
             const container = document.getElementById(containerId);
             const countEl = document.getElementById(countId);
-            const unitLabel = labelType === 'DISPACCI'
-                ? (lang === 'en' ? 'DISPATCHES' : 'DISPACCI')
-                : (lang === 'en' ? 'COMMUNICATIONS' : 'COMUNICAZIONI');
-            countEl.textContent = `${items.length} ${unitLabel}`;
+            countEl.textContent = `${items.length} ${labelUnit}`;
 
             if (!items.length) {
                 container.innerHTML = `
                     <div class="tactical-card rounded p-6 text-inaraMuted font-mono text-sm col-span-full">
-                        ${lang === 'en' ? 'No communications available in this section.' : 'Nessuna comunicazione presente in questa sezione.'}
+                        Nessuna comunicazione presente in questa sezione.
                     </div>
                 `;
                 return;
@@ -483,7 +451,6 @@
                     ? item.links.filter(l => l && isSafeUrl(l.url))
                     : [];
 
-                const defaultLinkLabel = lang === 'en' ? 'Open link' : 'Apri link';
                 const linksBlock = links.length
                     ? `
                         <div class="pt-2 flex flex-wrap gap-2">
@@ -495,7 +462,7 @@
                                 return `
                                     <a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-inaraBg hover:bg-inaraPanelHover border border-uladOrange/40 hover:border-uladOrange text-xs font-mono text-uladOrange transition">
                                         <i class="${iconClass}"></i>
-                                        <span data-auto-translate data-explicit-en="${escapeHtml(l.label_en || '')}">${escapeHtml(l.label || defaultLinkLabel)}</span>
+                                        <span>${escapeHtml(l.label || 'Apri link')}</span>
                                     </a>
                                 `;
                             }).join('')}
@@ -509,15 +476,15 @@
                             ${imageBlock}
                             <div class="p-6 space-y-3">
                                 <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                                    <span data-auto-translate data-explicit-en="${escapeHtml(item.tag_en || '')}" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
                                         ${escapeHtml(item.tag || 'AGGIORNAMENTO')}
                                     </span>
                                     <span class="text-inaraMuted">${escapeHtml(item.date || '')}</span>
                                 </div>
-                                <h3 data-auto-translate data-explicit-en="${escapeHtml(item.title_en || '')}" class="font-hud text-lg sm:text-xl font-bold text-white leading-snug">
+                                <h3 class="font-hud text-lg sm:text-xl font-bold text-white leading-snug">
                                     ${escapeHtml(item.title)}
                                 </h3>
-                                <p data-auto-translate data-explicit-en="${escapeHtml(item.summary_en || '')}" class="text-inaraText text-base leading-relaxed whitespace-pre-line">
+                                <p class="text-inaraText text-base leading-relaxed whitespace-pre-line">
                                     ${escapeHtml(item.summary)}
                                 </p>
                                 ${linksBlock}
@@ -530,21 +497,12 @@
                     </article>
                 `;
             }).join('');
-
-            applyAutoTranslations(lang);
         }
 
         function renderCommunityGoals(goals) {
-            loadedCommunityGoals = goals;
-            const lang = getCurrentUladLang();
             const container = document.getElementById('cg-container');
             const badge = document.getElementById('cg-status-badge');
-            const unit = goals.length === 1
-                ? (lang === 'en' ? 'INITIATIVE' : 'INIZIATIVA')
-                : (lang === 'en' ? 'INITIATIVES' : 'INIZIATIVE');
-            badge.textContent = `${goals.length} ${unit}`;
-
-            const rewardsHeading = lang === 'en' ? 'Prizes & Rewards' : 'Premi & Ricompense';
+            badge.textContent = `${goals.length} ${goals.length === 1 ? 'INIZIATIVA' : 'INIZIATIVE'}`;
 
             container.innerHTML = goals.map(cg => {
                 const systemsList = Array.isArray(cg.systems)
@@ -555,30 +513,28 @@
                     <article class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-4">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between gap-2 text-xs font-mono">
-                                <span data-auto-translate data-explicit-en="${escapeHtml(cg.status_en || '')}" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
                                     ${escapeHtml(cg.status || 'ATTIVO')}
                                 </span>
-                                <span class="text-inaraMuted"><i class="fa-solid fa-location-dot text-uladOrange/80 mr-1"></i><span data-auto-translate>${escapeHtml(systemsList)}</span></span>
+                                <span class="text-inaraMuted"><i class="fa-solid fa-location-dot text-uladOrange/80 mr-1"></i>${escapeHtml(systemsList)}</span>
                             </div>
 
-                            <h3 data-auto-translate data-explicit-en="${escapeHtml(cg.title_en || '')}" class="font-hud text-lg sm:text-xl font-bold text-white">
+                            <h3 class="font-hud text-lg sm:text-xl font-bold text-white">
                                 ${escapeHtml(cg.title)}
                             </h3>
 
-                            <p data-auto-translate data-explicit-en="${escapeHtml(cg.description_en || '')}" class="text-inaraText text-base leading-relaxed">
+                            <p class="text-inaraText text-base leading-relaxed">
                                 ${escapeHtml(cg.description)}
                             </p>
                         </div>
 
                         <div class="pt-3.5 border-t border-inaraBorder/80 text-xs font-mono text-inaraMuted space-y-1">
-                            <div class="text-uladAmber uppercase tracking-wider">${rewardsHeading}</div>
-                            <div data-auto-translate data-explicit-en="${escapeHtml(cg.rewards_en || '')}" class="text-inaraText">${escapeHtml(cg.rewards || 'Da definire')}</div>
+                            <div class="text-uladAmber uppercase tracking-wider">Premi & Ricompense</div>
+                            <div class="text-inaraText">${escapeHtml(cg.rewards || 'Da definire')}</div>
                         </div>
                     </article>
                 `;
             }).join('');
-
-            applyAutoTranslations(lang);
         }
 
         async function initCommunityGoalsSection() {
@@ -603,11 +559,11 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
-                        loadedFrontierItems = data; renderStandardComms('frontier-comms-container', 'frontier-count', data, 'COMUNICAZIONI');
+                        renderStandardComms('frontier-comms-container', 'frontier-count', data, 'COMUNICAZIONI');
                         return;
                     }
                     if (data && Array.isArray(data.items) && data.items.length > 0) {
-                        loadedFrontierItems = data.items; renderStandardComms('frontier-comms-container', 'frontier-count', data.items, 'COMUNICAZIONI');
+                        renderStandardComms('frontier-comms-container', 'frontier-count', data.items, 'COMUNICAZIONI');
                         return;
                     }
                 }
@@ -620,241 +576,6 @@
         renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
         initFrontierCommsSection();
         initCommunityGoalsSection();
-
-
-        // ============================================================
-        // SISTEMA MULTILINGUA IT / EN + TRADUZIONE AUTOMATICA POST FUTURI
-        // ============================================================
-        const ULAD_LANG_KEY = 'ulad_lang';
-        const ULAD_TRANS_CACHE_KEY = 'ulad_auto_trans_cache_v1';
-
-        function getCurrentUladLang() {
-            const saved = localStorage.getItem(ULAD_LANG_KEY);
-            return (saved === 'en' || saved === 'it') ? saved : 'it';
-        }
-
-        function getTransCache() {
-            try {
-                return JSON.parse(localStorage.getItem(ULAD_TRANS_CACHE_KEY) || '{}');
-            } catch (_) {
-                return {};
-            }
-        }
-
-        function setTransCache(cache) {
-            try {
-                localStorage.setItem(ULAD_TRANS_CACHE_KEY, JSON.stringify(cache));
-            } catch (_) {}
-        }
-
-        // Dizionario rapido per tag, stati e termini ricorrenti di Elite Dangerous / ULAD
-        const ULAD_TERM_MAP_EN = {
-            'OPERATIVO': 'OPERATIONAL',
-            'ARCHIVIO': 'ARCHIVE',
-            'ROADMAP': 'ROADMAP',
-            'AGGIORNAMENTO': 'UPDATE',
-            'ATTIVO': 'ACTIVE',
-            'STANDBY': 'STANDBY',
-            'Da definire': 'To be defined',
-            'Non specificato': 'Not specified',
-            'Non disponibile': 'Unavailable',
-            'Sincronizzazione...': 'Syncing...',
-            'ESPLORAZIONE': 'EXPLORATION',
-            'COMBATTIMENTO': 'COMBAT',
-            'CARRIER & MINING': 'CARRIER & MINING'
-        };
-
-        // Traduzione automatica per testi dinamici e nuovi post futuri (con cache persistente)
-        const pendingTranslations = new Map();
-
-        async function translateTextItToEn(text) {
-            const raw = String(text ?? '').trim();
-            if (!raw) return raw;
-            if (ULAD_TERM_MAP_EN[raw]) return ULAD_TERM_MAP_EN[raw];
-
-            const cache = getTransCache();
-            if (cache[raw]) return cache[raw];
-
-            if (pendingTranslations.has(raw)) {
-                return pendingTranslations.get(raw);
-            }
-
-            const promise = (async () => {
-                try {
-                    // Endpoint pubblico Google Translate GTX (nessuna API key richiesta, supporto cors/browser)
-                    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=en&dt=t&q=' + encodeURIComponent(raw);
-                    const res = await fetch(url);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (Array.isArray(data) && Array.isArray(data[0])) {
-                            const translated = data[0].map(seg => seg && seg[0] ? seg[0] : '').join('');
-                            if (translated && translated.trim()) {
-                                const updated = getTransCache();
-                                updated[raw] = translated;
-                                setTransCache(updated);
-                                return translated;
-                            }
-                        }
-                    }
-                } catch (_) {}
-
-                try {
-                    // Fallback secondario su MyMemory API
-                    const mmUrl = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(raw.slice(0, 490)) + '&langpair=it|en';
-                    const mmRes = await fetch(mmUrl);
-                    if (mmRes.ok) {
-                        const mmData = await mmRes.json();
-                        const translated = mmData && mmData.responseData && mmData.responseData.translatedText;
-                        if (translated && translated.trim()) {
-                            const updated = getTransCache();
-                            updated[raw] = translated;
-                            setTransCache(updated);
-                            return translated;
-                        }
-                    }
-                } catch (_) {}
-
-                return raw;
-            })();
-
-            pendingTranslations.set(raw, promise);
-            try {
-                return await promise;
-            } finally {
-                pendingTranslations.delete(raw);
-            }
-        }
-
-        // Traduce automaticamente tutti gli elementi marcati con [data-auto-translate]
-        async function applyAutoTranslations(lang) {
-            const nodes = document.querySelectorAll('[data-auto-translate]');
-            for (const el of nodes) {
-                if (!el.dataset.originalIt) {
-                    el.dataset.originalIt = el.textContent;
-                }
-                const original = el.dataset.originalIt;
-                const explicitEn = el.dataset.explicitEn;
-
-                if (lang === 'it') {
-                    el.textContent = original;
-                } else if (explicitEn && explicitEn.trim()) {
-                    el.textContent = explicitEn;
-                } else {
-                    const cached = getTransCache()[original.trim()] || ULAD_TERM_MAP_EN[original.trim()];
-                    if (cached) {
-                        el.textContent = cached;
-                    } else {
-                        translateTextItToEn(original).then(translated => {
-                            if (getCurrentUladLang() === 'en' && translated) {
-                                el.textContent = translated;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        function updateLanguageButtons(lang) {
-            document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-                const isSelected = btn.getAttribute('data-lang-btn') === lang;
-                if (isSelected) {
-                    btn.classList.add('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
-                    btn.classList.remove('text-inaraMuted', 'hover:text-white');
-                } else {
-                    btn.classList.remove('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
-                    btn.classList.add('text-inaraMuted', 'hover:text-white');
-                }
-            });
-        }
-
-        const CM_I18N = {
-            it: {
-
-            'loader.status0': 'Calcolo rotta Frameshift...',
-            'loader.status35': 'Sincronizzazione dati settore [ULAD]...',
-            'loader.status75': 'Allineamento vettore — Ingaggio...',
-            'loader.loadingSector': 'CARICAMENTO SETTORE',
-            'loader.destination': 'DESTINAZIONE:',
-            'loader.skip': 'Salta caricamento →',
-            'nav.home': 'Home',
-            'nav.roster': 'Roster',
-            'nav.rosterMobile': 'Roster Comandanti',
-            'nav.tips': 'Tips & Tricks',
-            'nav.comms': 'Comunicazioni',
-            'nav.media': 'Multimedia',
-            'nav.links': 'Link Utili',
-            'nav.join': 'UNISCITI',
-            'lang.label': 'Lingua',
-            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Sito non ufficiale creato dalla community.'
-,
-                'meta.title': 'Comunicazioni — Ultra Astra Dreamers [ULAD]',
-                'comms.heading': 'CENTRO <span class="text-uladOrange">COMUNICAZIONI</span>',
-                'comms.subtitle': 'Dispacci operativi degli <strong class="text-white">Ultra Astra Dreamers</strong>, monitoraggio Community Goal e bollettini ufficiali Frontier Developments.',
-                'comms.relayLabel': 'Stato Relè',
-                'comms.relayActive': 'ATTIVO',
-                'sec1.kicker': '01 // Dispacci Interni',
-                'sec1.title': 'COMUNICAZIONI DELLO SQUADRONE',
-                'sec2.kicker': '02 // Iniziative Galattiche',
-                'sec2.title': 'COMMUNITY GOAL',
-                'sec3.kicker': '03 // Roadmap & Aggiornamenti',
-                'sec3.title': 'COMUNICAZIONI FRONTIER'
-            },
-            en: {
-
-            'loader.status0': 'Plotting Frameshift route...',
-            'loader.status35': 'Synchronizing sector data [ULAD]...',
-            'loader.status75': 'Vector alignment — Engaging...',
-            'loader.loadingSector': 'LOADING SECTOR',
-            'loader.destination': 'DESTINATION:',
-            'loader.skip': 'Skip loading →',
-            'nav.home': 'Home',
-            'nav.roster': 'Roster',
-            'nav.rosterMobile': 'Commanders Roster',
-            'nav.tips': 'Tips & Tricks',
-            'nav.comms': 'Communications',
-            'nav.media': 'Multimedia',
-            'nav.links': 'Useful Links',
-            'nav.join': 'JOIN US',
-            'lang.label': 'Language',
-            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Unofficial community-created website.'
-,
-                'meta.title': 'Communications — Ultra Astra Dreamers [ULAD]',
-                'comms.heading': 'COMMUNICATIONS <span class="text-uladOrange">CENTER</span>',
-                'comms.subtitle': 'Operational dispatches of the <strong class="text-white">Ultra Astra Dreamers</strong>, Community Goal tracking, and official Frontier Developments bulletins.',
-                'comms.relayLabel': 'Relay Status',
-                'comms.relayActive': 'ACTIVE',
-                'sec1.kicker': '01 // Internal Dispatches',
-                'sec1.title': 'SQUADRON COMMUNICATIONS',
-                'sec2.kicker': '02 // Galactic Initiatives',
-                'sec2.title': 'COMMUNITY GOALS',
-                'sec3.kicker': '03 // Roadmap & Updates',
-                'sec3.title': 'FRONTIER COMMUNICATIONS'
-            }
-        };
-
-        function setUladLanguage(lang) {
-            const normalized = (lang === 'en') ? 'en' : 'it';
-            localStorage.setItem(ULAD_LANG_KEY, normalized);
-            document.documentElement.lang = normalized;
-
-            const dict = CM_I18N[normalized] || CM_I18N.it;
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (dict[key] !== undefined) el.textContent = dict[key];
-            });
-            document.querySelectorAll('[data-i18n-html]').forEach(el => {
-                const key = el.getAttribute('data-i18n-html');
-                if (dict[key] !== undefined) el.innerHTML = dict[key];
-            });
-
-            updateLanguageButtons(normalized);
-            renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
-            renderStandardComms('frontier-comms-container', 'frontier-count', loadedFrontierItems, 'COMUNICAZIONI');
-            renderCommunityGoals(loadedCommunityGoals);
-        }
-
-        setUladLanguage(getCurrentUladLang());
-
     </script>
     <script>
     (function () {
@@ -869,18 +590,11 @@
 
         if (!loader) return;
 
-        function getLoaderStatusMessages() {
-            const isEn = localStorage.getItem('ulad_lang') === 'en';
-            return isEn ? [
-                { at: 0, text: 'Plotting Frameshift route...' },
-                { at: 35, text: 'Synchronizing sector data [ULAD]...' },
-                { at: 75, text: 'Vector alignment — Engaging...' }
-            ] : [
-                { at: 0, text: 'Calcolo rotta Frameshift...' },
-                { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
-                { at: 75, text: 'Allineamento vettore — Ingaggio...' }
-            ];
-        }
+        const statusMessages = [
+            { at: 0, text: 'Calcolo rotta Frameshift...' },
+            { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
+            { at: 75, text: 'Allineamento vettore — Ingaggio...' }
+        ];
 
         let navigating = false;
         let pendingHref = '';
@@ -917,7 +631,6 @@
                 progressPercent.textContent = Math.floor(progress) + '%';
                 countdownText.textContent = remaining.toFixed(1) + 's';
 
-                const statusMessages = getLoaderStatusMessages();
                 for (let i = statusMessages.length - 1; i >= 0; i--) {
                     if (progress >= statusMessages[i].at) {
                         statusText.textContent = statusMessages[i].text;
