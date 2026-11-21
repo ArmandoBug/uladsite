@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultra Astra Dreamers [ULAD] — Elite Dangerous Squadron</title>
+    <title data-i18n="meta.title">Ultra Astra Dreamers [ULAD] — Elite Dangerous Squadron</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -175,28 +175,28 @@
                 <div class="font-hud text-xl sm:text-2xl font-bold text-white tracking-wider">
                     ULTRA ASTRA DREAMERS
                 </div>
-                <p id="nav-status-text" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
+                <p id="nav-status-text" data-i18n="loader.status0" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
                     Calcolo rotta Frameshift...
                 </p>
             </div>
 
             <div class="space-y-2.5 text-left">
                 <div class="flex justify-between items-center text-xs font-mono">
-                    <span class="text-inaraMuted">CARICAMENTO SETTORE</span>
+                    <span class="text-inaraMuted" data-i18n="loader.loadingSector">CARICAMENTO SETTORE</span>
                     <span id="nav-progress-percent" class="text-white font-bold">0%</span>
                 </div>
                 <div class="w-full h-2 bg-inaraBg rounded overflow-hidden border border-inaraBorder p-[1px]">
                     <div id="nav-progress-bar" class="h-full bg-gradient-to-r from-uladOrange to-uladAmber rounded-sm" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between items-center text-[11px] font-mono text-inaraMuted pt-1">
-                    <span>DESTINAZIONE: <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
+                    <span><span data-i18n="loader.destination">DESTINAZIONE:</span> <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
                     <span id="nav-countdown-text">1.0s</span>
                 </div>
             </div>
 
             <div class="pt-2 border-t border-inaraBorder/70">
                 <a id="nav-skip-link" href="#" class="inline-flex items-center gap-2 text-xs font-hud text-inaraMuted hover:text-uladOrange transition tracking-wider uppercase">
-                    Salta caricamento &rarr;
+                    <span data-i18n="loader.skip">Salta caricamento &rarr;</span>
                 </a>
             </div>
         </div>
@@ -223,22 +223,34 @@
 
                 <!-- Menu Navigazione Desktop -->
                 <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
-                    <a href="#" class="text-uladOrange border-b-2 border-uladOrange py-7">Home</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
-                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
-                    <a href="comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7">Comunicazioni</a>
-                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7">Multimedia</a>
-                    <a href="#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
+                    <a href="#" class="text-uladOrange border-b-2 border-uladOrange py-7" data-i18n="nav.home">Home</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.roster">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.tips">Tips & Tricks</a>
+                    <a href="comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.comms">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.media">Multimedia</a>
+                    <a href="#link-utili" class="text-inaraMuted hover:text-white transition py-7" data-i18n="nav.links">Link Utili</a>
                 </nav>
 
-                <!-- CTA Discord / Inara + Tag [ULAD] -->
+                <!-- CTA Discord / Inara + Tag [ULAD] + Lingua -->
                 <div class="hidden md:flex items-center gap-3">
+                    <!-- Selettore Lingua IT / EN -->
+                    <div class="inline-flex items-center rounded bg-inaraPanel border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
+                        <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
+                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
+                            <span>IT</span>
+                        </button>
+                        <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-mono font-semibold transition">
+                            <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
+                            <span>EN</span>
+                        </button>
+                    </div>
+
                     <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
                     <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
                         <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
                     </a>
                     <a href="#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
-                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
+                        <i class="fa-brands fa-discord text-sm"></i> <span data-i18n="nav.join">UNISCITI</span>
                     </a>
                 </div>
 
@@ -251,12 +263,25 @@
 
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
-            <a href="#" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Home</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Roster Comandanti</a>
-            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
-            <a href="comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Comunicazioni</a>
-            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Multimedia</a>
-            <a href="#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
+            <a href="#" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold" data-i18n="nav.home">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.rosterMobile">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.tips">Tips & Tricks</a>
+            <a href="comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.comms">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.media">Multimedia</a>
+            <a href="#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover" data-i18n="nav.links">Link Utili</a>
+            <div class="pt-3 mt-2 border-t border-inaraBorder flex items-center justify-between px-3">
+                <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="lang.label">Lingua</span>
+                <div class="inline-flex items-center rounded bg-inaraBg border border-inaraBorder p-0.5" role="group" aria-label="Language switcher">
+                    <button type="button" data-lang-btn="it" onclick="setUladLanguage('it')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
+                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" x="0" fill="#009246"/><rect width="1" height="2" x="1" fill="#ffffff"/><rect width="1" height="2" x="2" fill="#ce2b37"/></svg>
+                        <span>IT</span>
+                    </button>
+                    <button type="button" data-lang-btn="en" onclick="setUladLanguage('en')" class="lang-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-semibold transition">
+                        <svg class="w-4 h-3 rounded-[2px] shrink-0 border border-white/20" viewBox="0 0 60 30" aria-hidden="true"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
+                        <span>EN</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -273,24 +298,24 @@
                 <div class="lg:col-span-8 space-y-6">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
                         <span class="w-2 h-2 rounded-full bg-uladOrange animate-pulse"></span>
-                        SQUADRON ID: 12623 // SISTEMI OPERATIVI ATTIVI
+                        <span data-i18n="hero.badge">SQUADRON ID: 12623 // SISTEMI OPERATIVI ATTIVI</span>
                     </div>
                     
-                    <h1 class="font-hud text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+                    <h1 class="font-hud text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight" data-i18n-html="hero.heading">
                         SOGNATORI TRA LE STELLE,<br>
                         <span class="text-uladOrange">COSTRUTTORI DI FRONTIERE.</span>
                     </h1>
                     
-                    <p class="text-lg sm:text-xl text-inaraText max-w-2xl leading-relaxed font-medium">
+                    <p class="text-lg sm:text-xl text-inaraText max-w-2xl leading-relaxed font-medium" data-i18n-html="hero.subtitle">
                         Siamo gli <strong class="text-white">Ultra Astra Dreamers</strong>: piloti indipendenti uniti dalla passione per lo spazio profondo e dalla volontà di far prosperare la <span class="text-uladOrange font-semibold">Ultra Astra Corp</span> in tutta la Bolla e oltre.
                     </p>
 
                     <div class="pt-2 flex flex-wrap gap-4">
                         <a href="#reclutamento" class="px-6 py-3.5 bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-sm tracking-wider rounded transition flex items-center gap-2 shadow-lg shadow-uladOrange/20">
-                            <i class="fa-solid fa-user-plus"></i> ENTRA NELLO SQUADRONE
+                            <i class="fa-solid fa-user-plus"></i> <span data-i18n="hero.ctaJoin">ENTRA NELLO SQUADRONE</span>
                         </a>
                         <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-6 py-3.5 bg-inaraPanel hover:bg-inaraPanelHover text-white border border-inaraBorder hover:border-uladOrange font-hud text-sm tracking-wider rounded transition flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-up-right-from-square text-uladOrange"></i> PROFILO INARA
+                            <i class="fa-solid fa-arrow-up-right-from-square text-uladOrange"></i> <span data-i18n="hero.ctaInara">PROFILO INARA</span>
                         </a>
                     </div>
                 </div>
@@ -310,22 +335,22 @@
             <!-- Barra Telemetria Rapida (Stile Inara) -->
             <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="tactical-card tactical-corner p-4 rounded">
-                    <span class="text-xs font-mono text-inaraMuted uppercase">Fazione Supportata</span>
+                    <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="stat.faction">Fazione Supportata</span>
                     <div class="font-hud text-base sm:text-lg font-bold text-white mt-1">Ultra Astra Corp</div>
                 </div>
                 <div class="tactical-card tactical-corner p-4 rounded">
-                    <span class="text-xs font-mono text-inaraMuted uppercase">Stato Reclutamento</span>
+                    <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="stat.recruitment">Stato Reclutamento</span>
                     <div class="font-hud text-base sm:text-lg font-bold text-emerald-400 mt-1 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check text-sm"></i> APERTO
+                        <i class="fa-solid fa-circle-check text-sm"></i> <span data-i18n="stat.open">APERTO</span>
                     </div>
                 </div>
                 <div class="tactical-card tactical-corner p-4 rounded">
-                    <span class="text-xs font-mono text-inaraMuted uppercase">Focus Operativo</span>
-                    <div class="font-hud text-base sm:text-lg font-bold text-uladOrange mt-1">Multi-Ruolo & BGS</div>
+                    <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="stat.focus">Focus Operativo</span>
+                    <div class="font-hud text-base sm:text-lg font-bold text-uladOrange mt-1" data-i18n="stat.focusVal">Multi-Ruolo & BGS</div>
                 </div>
                 <div class="tactical-card tactical-corner p-4 rounded">
-                    <span class="text-xs font-mono text-inaraMuted uppercase">Stile di Gioco</span>
-                    <div class="font-hud text-base sm:text-lg font-bold text-white mt-1">PvE / Cooperativo</div>
+                    <span class="text-xs font-mono text-inaraMuted uppercase" data-i18n="stat.playstyle">Stile di Gioco</span>
+                    <div class="font-hud text-base sm:text-lg font-bold text-white mt-1" data-i18n="stat.playstyleVal">PvE / Cooperativo</div>
                 </div>
             </div>
         </div>
@@ -342,13 +367,13 @@
                         <span class="h-px w-8 bg-uladOrange"></span>
                         <span class="font-mono text-xs text-uladOrange uppercase tracking-widest flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-uladOrange animate-ping"></span>
-                            Relè Subspaziale // Centro Comunicazioni
+                            <span data-i18n="dispatch.kicker">Relè Subspaziale // Centro Comunicazioni</span>
                         </span>
                     </div>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white uppercase">Ultimo dispaccio dal centro di comando</h2>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white uppercase" data-i18n="dispatch.title">Ultimo dispaccio dal centro di comando</h2>
                 </div>
                 <a href="comunicazioni.html" class="inline-flex items-center gap-2 px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition tracking-wider uppercase shrink-0">
-                    <i class="fa-solid fa-satellite-dish text-uladOrange"></i> Tutte le comunicazioni &rarr;
+                    <i class="fa-solid fa-satellite-dish text-uladOrange"></i> <span data-i18n="dispatch.allBtn">Tutte le comunicazioni &rarr;</span>
                 </a>
             </div>
 
@@ -362,13 +387,13 @@
             <div class="lg:col-span-7 space-y-5">
                 <div class="flex items-center gap-3">
                     <span class="h-px w-8 bg-uladOrange"></span>
-                    <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">01 // Identità dello Squadrone</span>
+                    <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="about.kicker">01 // Identità dello Squadrone</span>
                 </div>
-                <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">CHI SONO GLI ULTRA ASTRA DREAMERS</h2>
-                <p class="text-inaraText text-lg leading-relaxed">
+                <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="about.title">CHI SONO GLI ULTRA ASTRA DREAMERS</h2>
+                <p class="text-inaraText text-lg leading-relaxed" data-i18n-html="about.p1">
                     Nati dall'incontro di comandanti con la stessa visione della galassia, gli <strong class="text-white">Ultra Astra Dreamers</strong> rappresentano una comunità affiatata dove ogni stile di volo trova il proprio spazio. Non imponiamo ritmi forzati: crediamo nella collaborazione, nel supporto reciproco e nel divertimento condiviso.
                 </p>
-                <p class="text-inaraText text-lg leading-relaxed">
+                <p class="text-inaraText text-lg leading-relaxed" data-i18n-html="about.p2">
                     Sul piano politico ed economico, il nostro braccio operativo sostiene l'ascesa della <strong class="text-uladOrange">Ultra Astra Corp</strong>, coordinando missioni, rotte commerciali e operazioni tattiche per consolidare la nostra presenza tra i sistemi stellari.
                 </p>
             </div>
@@ -376,21 +401,21 @@
             <!-- Box Riepilogo Operativo -->
             <div class="lg:col-span-5 tactical-card tactical-corner p-6 rounded space-y-4">
                 <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
-                    <h3 class="font-hud text-sm font-bold text-white uppercase tracking-wider">Direttive di Comando</h3>
+                    <h3 class="font-hud text-sm font-bold text-white uppercase tracking-wider" data-i18n="directives.title">Direttive di Comando</h3>
                     <i class="fa-solid fa-shield-halved text-uladOrange"></i>
                 </div>
                 <ul class="space-y-3 text-base">
                     <li class="flex items-start gap-3">
                         <i class="fa-solid fa-angle-right text-uladOrange mt-1"></i>
-                        <span><strong class="text-white">Nessun obbligo di presenza:</strong> la vita reale viene sempre prima della cabina di pilotaggio.</span>
+                        <span data-i18n-html="directives.d1"><strong class="text-white">Nessun obbligo di presenza:</strong> la vita reale viene sempre prima della cabina di pilotaggio.</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <i class="fa-solid fa-angle-right text-uladOrange mt-1"></i>
-                        <span><strong class="text-white">Accoglienza per tutti:</strong> dai cadetti al primo Sidewinder ai veterani con flotta di Fleet Carrier.</span>
+                        <span data-i18n-html="directives.d2"><strong class="text-white">Accoglienza per tutti:</strong> dai cadetti al primo Sidewinder ai veterani con flotta di Fleet Carrier.</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <i class="fa-solid fa-angle-right text-uladOrange mt-1"></i>
-                        <span><strong class="text-white">Coordinamento strategico:</strong> obiettivi BGS, Powerplay e Community Goals condivisi su Discord.</span>
+                        <span data-i18n-html="directives.d3"><strong class="text-white">Coordinamento strategico:</strong> obiettivi BGS, Powerplay e Community Goals condivisi su Discord.</span>
                     </li>
                 </ul>
             </div>
@@ -402,11 +427,11 @@
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Settori Operativi</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="activities.kicker">02 // Settori Operativi</span>
                     </div>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">LE NOSTRE ATTIVITÀ NELLA GALASSIA</h2>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="activities.title">LE NOSTRE ATTIVITÀ NELLA GALASSIA</h2>
                 </div>
-                <span class="text-xs font-mono text-inaraMuted mt-2 sm:mt-0">6 DIVISIONI ATTIVE</span>
+                <span class="text-xs font-mono text-inaraMuted mt-2 sm:mt-0" data-i18n="activities.count">6 DIVISIONI ATTIVE</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -415,8 +440,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-chess-knight text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">BGS & Espansione Fazione</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div1.title">BGS & Espansione Fazione</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n-html="div1.desc">
                         Gestiamo l'influenza politica della <span class="text-inaraText">Ultra Astra Corp</span>: missioni mirate, controllo delle stazioni, elezioni e conflitti per espandere i nostri confini.
                     </p>
                 </div>
@@ -426,8 +451,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-globe text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">Operazioni Powerplay</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div2.title">Operazioni Powerplay</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n="div2.desc">
                         Pianifichiamo azioni coordinate di fortificazione, acquisizione e supporto strategico nello scenario geopolitico delle grandi potenze galattiche.
                     </p>
                 </div>
@@ -437,8 +462,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-compass text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">Esplorazione & Exobiologia</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div3.title">Esplorazione & Exobiologia</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n="div3.desc">
                         Spedizioni verso nebulose remote, mappatura di sistemi inesplorati, catalogazione biologica e condivisione delle scoperte più spettacolari.
                     </p>
                 </div>
@@ -448,8 +473,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-crosshairs text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">Combattimento & Caccia Taglie</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div4.title">Combattimento & Caccia Taglie</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n="div4.desc">
                         Wing di combattimento in Conflict Zones, pattugliamento nei Resource Extraction Sites, missioni massacro condivise e difesa dei settori alleati.
                     </p>
                 </div>
@@ -459,8 +484,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-gem text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">Estrazione Mineraria</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div5.title">Estrazione Mineraria</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n="div5.desc">
                         Sessioni di Laser Mining e Deep Core Mining in compagnia, supporto logistico con le Carrier dello squadrone e ottimizzazione delle rese.
                     </p>
                 </div>
@@ -470,8 +495,8 @@
                     <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange">
                         <i class="fa-solid fa-truck-ramp-box text-lg"></i>
                     </div>
-                    <h3 class="font-hud text-lg font-bold text-white">Commercio & Logistica</h3>
-                    <p class="text-inaraMuted text-base leading-relaxed">
+                    <h3 class="font-hud text-lg font-bold text-white" data-i18n="div6.title">Commercio & Logistica</h3>
+                    <p class="text-inaraMuted text-base leading-relaxed" data-i18n="div6.desc">
                         Rotte commerciali ad alto profitto, missioni cargo in ala per massimizzare i crediti del gruppo e rifornimento delle stazioni controllate.
                     </p>
                 </div>
@@ -484,23 +509,23 @@
             <!-- Box Reclutamento + Squadron Carrier -->
             <div class="lg:col-span-8 tactical-card tactical-corner p-8 rounded flex flex-col justify-between space-y-6">
                 <div class="space-y-4">
-                    <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Arruolamento Piloti</span>
-                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">PRONTO A DECOLLARE CON NOI?</h2>
-                    <p class="text-inaraText text-lg">
+                    <span class="font-mono text-xs text-uladOrange uppercase tracking-widest" data-i18n="recruit.kicker">03 // Arruolamento Piloti</span>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white" data-i18n="recruit.title">PRONTO A DECOLLARE CON NOI?</h2>
+                    <p class="text-inaraText text-lg" data-i18n-html="recruit.subtitle">
                         Che tu voglia imparare le basi del volo o contribuire alle operazioni strategiche della <strong class="text-white">Ultra Astra Corp</strong>, troverai una squadra pronta a volare al tuo fianco.
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                         <div class="bg-inaraBg p-3.5 rounded border border-inaraBorder">
                             <span class="font-hud text-uladOrange text-sm font-bold block">1. DISCORD</span>
-                            <span class="text-sm text-inaraMuted">Entra nel nostro server vocal/chat e presentati.</span>
+                            <span class="text-sm text-inaraMuted" data-i18n="recruit.step1">Entra nel nostro server vocal/chat e presentati.</span>
                         </div>
                         <div class="bg-inaraBg p-3.5 rounded border border-inaraBorder">
                             <span class="font-hud text-uladOrange text-sm font-bold block">2. IN-GAME</span>
-                            <span class="text-sm text-inaraMuted">Cerca il tag <strong class="text-white">ULAD</strong> nel pannello Squadroni.</span>
+                            <span class="text-sm text-inaraMuted" data-i18n-html="recruit.step2">Cerca il tag <strong class="text-white">ULAD</strong> nel pannello Squadroni.</span>
                         </div>
                         <div class="bg-inaraBg p-3.5 rounded border border-inaraBorder">
                             <span class="font-hud text-uladOrange text-sm font-bold block">3. INARA</span>
-                            <span class="text-sm text-inaraMuted">Richiedi l'adesione sulla nostra pagina ufficiale.</span>
+                            <span class="text-sm text-inaraMuted" data-i18n="recruit.step3">Richiedi l'adesione sulla nostra pagina ufficiale.</span>
                         </div>
                     </div>
 
@@ -519,7 +544,7 @@
                             </div>
                         </div>
                         <div class="sm:text-right border-t sm:border-t-0 border-inaraBorder pt-2 sm:pt-0">
-                            <span class="text-xs font-mono text-inaraMuted block">SISTEMA ATTUALE</span>
+                            <span class="text-xs font-mono text-inaraMuted block" data-i18n="carrier.currentSystem">SISTEMA ATTUALE</span>
                             <span class="font-hud text-sm font-bold text-emerald-400" id="carrier-system">Sincronizzazione...</span>
                         </div>
                     </div>
@@ -527,10 +552,10 @@
 
                 <div class="flex flex-wrap gap-4 pt-2">
                     <a href="https://discord.gg/9syMhauvX6" class="px-6 py-3 bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider rounded transition flex items-center gap-2">
-                        <i class="fa-brands fa-discord text-base"></i> ENTRA SU DISCORD
+                        <i class="fa-brands fa-discord text-base"></i> <span data-i18n="recruit.btnDiscord">ENTRA SU DISCORD</span>
                     </a>
                     <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-6 py-3 bg-inaraBg hover:bg-inaraPanelHover text-white border border-inaraBorder hover:border-uladOrange font-hud text-xs tracking-wider rounded transition flex items-center gap-2">
-                        <i class="fa-solid fa-id-card text-uladOrange"></i> ARRUOLATI SU INARA
+                        <i class="fa-solid fa-id-card text-uladOrange"></i> <span data-i18n="recruit.btnInara">ARRUOLATI SU INARA</span>
                     </a>
                 </div>
             </div>
@@ -538,35 +563,35 @@
             <!-- Box Link Utili & Strumenti -->
             <div id="link-utili" class="lg:col-span-4 tactical-card p-6 rounded space-y-4">
                 <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
-                    <h3 class="font-hud text-base font-bold text-white">LINK UTILI & RISORSE</h3>
+                    <h3 class="font-hud text-base font-bold text-white" data-i18n="links.title">LINK UTILI & RISORSE</h3>
                     <i class="fa-solid fa-link text-uladOrange"></i>
                 </div>
                 <div class="space-y-2.5">
                     <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="flex items-center justify-between p-3 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange/50 transition group">
                         <div>
                             <div class="font-bold text-white text-sm group-hover:text-uladOrange transition">Inara — Squadron Page</div>
-                            <div class="text-xs text-inaraMuted">Roster, statistiche e fazione</div>
+                            <div class="text-xs text-inaraMuted" data-i18n="links.l1">Roster, statistiche e fazione</div>
                         </div>
                         <i class="fa-solid fa-arrow-up-right-from-square text-xs text-inaraMuted group-hover:text-uladOrange"></i>
                     </a>
                     <a href="https://inara.cz/elite/minorfaction/78882/" target="_blank" class="flex items-center justify-between p-3 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange/50 transition group">
                         <div>
                             <div class="font-bold text-white text-sm group-hover:text-uladOrange transition">Ultra Astra Corp (BGS)</div>
-                            <div class="text-xs text-inaraMuted">Influenza e sistemi controllati</div>
+                            <div class="text-xs text-inaraMuted" data-i18n="links.l2">Influenza e sistemi controllati</div>
                         </div>
                         <i class="fa-solid fa-arrow-up-right-from-square text-xs text-inaraMuted group-hover:text-uladOrange"></i>
                     </a>
                     <a href="https://edsy.org/" target="_blank" class="flex items-center justify-between p-3 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange/50 transition group">
                         <div>
                             <div class="font-bold text-white text-sm group-hover:text-uladOrange transition">EDSY / Coriolis</div>
-                            <div class="text-xs text-inaraMuted">Simulatore build e outfitting navi</div>
+                            <div class="text-xs text-inaraMuted" data-i18n="links.l3">Simulatore build e outfitting navi</div>
                         </div>
                         <i class="fa-solid fa-arrow-up-right-from-square text-xs text-inaraMuted group-hover:text-uladOrange"></i>
                     </a>
                     <a href="https://spansh.co.uk/" target="_blank" class="flex items-center justify-between p-3 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange/50 transition group">
                         <div>
                             <div class="font-bold text-white text-sm group-hover:text-uladOrange transition">Spansh Route Planner</div>
-                            <div class="text-xs text-inaraMuted">Neutron Highway & Exobiologia</div>
+                            <div class="text-xs text-inaraMuted" data-i18n="links.l4">Neutron Highway & Exobiologia</div>
                         </div>
                         <i class="fa-solid fa-arrow-up-right-from-square text-xs text-inaraMuted group-hover:text-uladOrange"></i>
                     </a>
@@ -585,7 +610,7 @@
                 <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
             </div>
             <div class="text-center sm:text-right">
-                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+                <p data-i18n="footer.disclaimer">Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
             </div>
         </div>
     </footer>
@@ -615,17 +640,17 @@
                 nameEl.textContent = `${carrierName} // [${callsign}]`;
 
                 if (systemName) {
-                    systemEl.textContent = systemName;
+                    systemEl.textContent = systemName; delete systemEl.dataset.isUnavailable;
                     systemEl.classList.remove('text-inaraMuted');
                     systemEl.classList.add('text-emerald-400');
                 } else {
-                    systemEl.textContent = 'Non disponibile';
+                    systemEl.textContent = getCurrentUladLang() === 'en' ? 'Unavailable' : 'Non disponibile'; systemEl.dataset.isUnavailable = '1';
                     systemEl.classList.remove('text-emerald-400');
                     systemEl.classList.add('text-inaraMuted');
                 }
             } catch (err) {
                 nameEl.textContent = `${fallbackName} // [${callsign}]`;
-                systemEl.textContent = 'Non disponibile';
+                systemEl.textContent = getCurrentUladLang() === 'en' ? 'Unavailable' : 'Non disponibile'; systemEl.dataset.isUnavailable = '1';
                 systemEl.classList.remove('text-emerald-400');
                 systemEl.classList.add('text-inaraMuted');
             }
@@ -668,11 +693,16 @@
             return /^https?:\/\//i.test(String(url || '').trim());
         }
 
+        let currentLatestDispatchItem = null;
+
         function renderLatestDispatch(item) {
+            currentLatestDispatchItem = item;
             const container = document.getElementById('latest-dispatch-container');
             if (!container || !item) return;
 
+            const lang = getCurrentUladLang();
             const hasImage = item.image && String(item.image).trim().length > 0 && isSafeDispatchUrl(item.image);
+            const openCenterLabel = lang === 'en' ? 'Open Communications Center' : 'Apri Centro Comunicazioni';
 
             container.innerHTML = `
                 <article class="tactical-card tactical-corner rounded overflow-hidden">
@@ -690,17 +720,17 @@
                         <div class="${hasImage ? 'lg:col-span-7' : ''} flex flex-col justify-between">
                             <div class="p-6 sm:p-8 space-y-4">
                                 <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                    <span data-auto-translate data-explicit-en="${escapeDispatchHtml(item.tag_en || '')}" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
                                         ${escapeDispatchHtml(item.tag || 'OPERATIVO')}
                                     </span>
                                     <span class="text-inaraMuted">
                                         <i class="fa-regular fa-clock text-uladOrange/80 mr-1"></i>${escapeDispatchHtml(item.date || '')}
                                     </span>
                                 </div>
-                                <h3 class="font-hud text-xl sm:text-2xl font-bold text-white leading-snug">
+                                <h3 data-auto-translate data-explicit-en="${escapeDispatchHtml(item.title_en || '')}" class="font-hud text-xl sm:text-2xl font-bold text-white leading-snug">
                                     ${escapeDispatchHtml(item.title)}
                                 </h3>
-                                <p class="text-inaraText text-base sm:text-lg leading-relaxed whitespace-pre-line">
+                                <p data-auto-translate data-explicit-en="${escapeDispatchHtml(item.summary_en || '')}" class="text-inaraText text-base sm:text-lg leading-relaxed whitespace-pre-line">
                                     ${escapeDispatchHtml(item.summary)}
                                 </p>
                             </div>
@@ -710,13 +740,14 @@
                                     ${item.id ? `<span class="hidden sm:inline text-inaraBorder">|</span><span class="hidden sm:inline">${escapeDispatchHtml(item.id)}</span>` : ''}
                                 </div>
                                 <a href="comunicazioni.html" class="inline-flex items-center gap-2 text-uladOrange hover:text-uladAmber font-hud font-bold tracking-wider uppercase transition">
-                                    Apri Centro Comunicazioni <i class="fa-solid fa-arrow-right"></i>
+                                    <span>${openCenterLabel}</span> <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </article>
             `;
+            applyAutoTranslations(lang);
         }
 
         async function loadLatestSquadronDispatch() {
@@ -744,6 +775,332 @@
 
         loadLatestSquadronDispatch();
 
+
+        // ============================================================
+        // SISTEMA MULTILINGUA IT / EN + TRADUZIONE AUTOMATICA POST FUTURI
+        // ============================================================
+        const ULAD_LANG_KEY = 'ulad_lang';
+        const ULAD_TRANS_CACHE_KEY = 'ulad_auto_trans_cache_v1';
+
+        function getCurrentUladLang() {
+            const saved = localStorage.getItem(ULAD_LANG_KEY);
+            return (saved === 'en' || saved === 'it') ? saved : 'it';
+        }
+
+        function getTransCache() {
+            try {
+                return JSON.parse(localStorage.getItem(ULAD_TRANS_CACHE_KEY) || '{}');
+            } catch (_) {
+                return {};
+            }
+        }
+
+        function setTransCache(cache) {
+            try {
+                localStorage.setItem(ULAD_TRANS_CACHE_KEY, JSON.stringify(cache));
+            } catch (_) {}
+        }
+
+        // Dizionario rapido per tag, stati e termini ricorrenti di Elite Dangerous / ULAD
+        const ULAD_TERM_MAP_EN = {
+            'OPERATIVO': 'OPERATIONAL',
+            'ARCHIVIO': 'ARCHIVE',
+            'ROADMAP': 'ROADMAP',
+            'AGGIORNAMENTO': 'UPDATE',
+            'ATTIVO': 'ACTIVE',
+            'STANDBY': 'STANDBY',
+            'Da definire': 'To be defined',
+            'Non specificato': 'Not specified',
+            'Non disponibile': 'Unavailable',
+            'Sincronizzazione...': 'Syncing...',
+            'ESPLORAZIONE': 'EXPLORATION',
+            'COMBATTIMENTO': 'COMBAT',
+            'CARRIER & MINING': 'CARRIER & MINING'
+        };
+
+        // Traduzione automatica per testi dinamici e nuovi post futuri (con cache persistente)
+        const pendingTranslations = new Map();
+
+        async function translateTextItToEn(text) {
+            const raw = String(text ?? '').trim();
+            if (!raw) return raw;
+            if (ULAD_TERM_MAP_EN[raw]) return ULAD_TERM_MAP_EN[raw];
+
+            const cache = getTransCache();
+            if (cache[raw]) return cache[raw];
+
+            if (pendingTranslations.has(raw)) {
+                return pendingTranslations.get(raw);
+            }
+
+            const promise = (async () => {
+                try {
+                    // Endpoint pubblico Google Translate GTX (nessuna API key richiesta, supporto cors/browser)
+                    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=en&dt=t&q=' + encodeURIComponent(raw);
+                    const res = await fetch(url);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data) && Array.isArray(data[0])) {
+                            const translated = data[0].map(seg => seg && seg[0] ? seg[0] : '').join('');
+                            if (translated && translated.trim()) {
+                                const updated = getTransCache();
+                                updated[raw] = translated;
+                                setTransCache(updated);
+                                return translated;
+                            }
+                        }
+                    }
+                } catch (_) {}
+
+                try {
+                    // Fallback secondario su MyMemory API
+                    const mmUrl = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(raw.slice(0, 490)) + '&langpair=it|en';
+                    const mmRes = await fetch(mmUrl);
+                    if (mmRes.ok) {
+                        const mmData = await mmRes.json();
+                        const translated = mmData && mmData.responseData && mmData.responseData.translatedText;
+                        if (translated && translated.trim()) {
+                            const updated = getTransCache();
+                            updated[raw] = translated;
+                            setTransCache(updated);
+                            return translated;
+                        }
+                    }
+                } catch (_) {}
+
+                return raw;
+            })();
+
+            pendingTranslations.set(raw, promise);
+            try {
+                return await promise;
+            } finally {
+                pendingTranslations.delete(raw);
+            }
+        }
+
+        // Traduce automaticamente tutti gli elementi marcati con [data-auto-translate]
+        async function applyAutoTranslations(lang) {
+            const nodes = document.querySelectorAll('[data-auto-translate]');
+            for (const el of nodes) {
+                if (!el.dataset.originalIt) {
+                    el.dataset.originalIt = el.textContent;
+                }
+                const original = el.dataset.originalIt;
+                const explicitEn = el.dataset.explicitEn;
+
+                if (lang === 'it') {
+                    el.textContent = original;
+                } else if (explicitEn && explicitEn.trim()) {
+                    el.textContent = explicitEn;
+                } else {
+                    const cached = getTransCache()[original.trim()] || ULAD_TERM_MAP_EN[original.trim()];
+                    if (cached) {
+                        el.textContent = cached;
+                    } else {
+                        translateTextItToEn(original).then(translated => {
+                            if (getCurrentUladLang() === 'en' && translated) {
+                                el.textContent = translated;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        function updateLanguageButtons(lang) {
+            document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+                const isSelected = btn.getAttribute('data-lang-btn') === lang;
+                if (isSelected) {
+                    btn.classList.add('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
+                    btn.classList.remove('text-inaraMuted', 'hover:text-white');
+                } else {
+                    btn.classList.remove('bg-uladOrange', 'text-inaraBg', 'shadow-sm');
+                    btn.classList.add('text-inaraMuted', 'hover:text-white');
+                }
+            });
+        }
+
+        const HP_I18N = {
+            it: {
+
+            'loader.status0': 'Calcolo rotta Frameshift...',
+            'loader.status35': 'Sincronizzazione dati settore [ULAD]...',
+            'loader.status75': 'Allineamento vettore — Ingaggio...',
+            'loader.loadingSector': 'CARICAMENTO SETTORE',
+            'loader.destination': 'DESTINAZIONE:',
+            'loader.skip': 'Salta caricamento →',
+            'nav.home': 'Home',
+            'nav.roster': 'Roster',
+            'nav.rosterMobile': 'Roster Comandanti',
+            'nav.tips': 'Tips & Tricks',
+            'nav.comms': 'Comunicazioni',
+            'nav.media': 'Multimedia',
+            'nav.links': 'Link Utili',
+            'nav.join': 'UNISCITI',
+            'lang.label': 'Lingua',
+            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Sito non ufficiale creato dalla community.'
+,
+                'meta.title': 'Ultra Astra Dreamers [ULAD] — Elite Dangerous Squadron',
+                'hero.badge': 'SQUADRON ID: 12623 // SISTEMI OPERATIVI ATTIVI',
+                'hero.heading': 'SOGNATORI TRA LE STELLE,<br><span class="text-uladOrange">COSTRUTTORI DI FRONTIERE.</span>',
+                'hero.subtitle': 'Siamo gli <strong class="text-white">Ultra Astra Dreamers</strong>: piloti indipendenti uniti dalla passione per lo spazio profondo e dalla volontà di far prosperare la <span class="text-uladOrange font-semibold">Ultra Astra Corp</span> in tutta la Bolla e oltre.',
+                'hero.ctaJoin': 'ENTRA NELLO SQUADRONE',
+                'hero.ctaInara': 'PROFILO INARA',
+                'stat.faction': 'Fazione Supportata',
+                'stat.recruitment': 'Stato Reclutamento',
+                'stat.open': 'APERTO',
+                'stat.focus': 'Focus Operativo',
+                'stat.focusVal': 'Multi-Ruolo & BGS',
+                'stat.playstyle': 'Stile di Gioco',
+                'stat.playstyleVal': 'PvE / Cooperativo',
+                'dispatch.kicker': 'Relè Subspaziale // Centro Comunicazioni',
+                'dispatch.title': 'Ultimo dispaccio dal centro di comando',
+                'dispatch.allBtn': 'Tutte le comunicazioni →',
+                'about.kicker': '01 // Identità dello Squadrone',
+                'about.title': 'CHI SONO GLI ULTRA ASTRA DREAMERS',
+                'about.p1': 'Nati dall\'incontro di comandanti con la stessa visione della galassia, gli <strong class="text-white">Ultra Astra Dreamers</strong> rappresentano una comunità affiatata dove ogni stile di volo trova il proprio spazio. Non imponiamo ritmi forzati: crediamo nella collaborazione, nel supporto reciproco e nel divertimento condiviso.',
+                'about.p2': 'Sul piano politico ed economico, il nostro braccio operativo sostiene l\'ascesa della <strong class="text-uladOrange">Ultra Astra Corp</strong>, coordinando missioni, rotte commerciali e operazioni tattiche per consolidare la nostra presenza tra i sistemi stellari.',
+                'directives.title': 'Direttive di Comando',
+                'directives.d1': '<strong class="text-white">Nessun obbligo di presenza:</strong> la vita reale viene sempre prima della cabina di pilotaggio.',
+                'directives.d2': '<strong class="text-white">Accoglienza per tutti:</strong> dai cadetti al primo Sidewinder ai veterani con flotta di Fleet Carrier.',
+                'directives.d3': '<strong class="text-white">Coordinamento strategico:</strong> obiettivi BGS, Powerplay e Community Goals condivisi su Discord.',
+                'activities.kicker': '02 // Settori Operativi',
+                'activities.title': 'LE NOSTRE ATTIVITÀ NELLA GALASSIA',
+                'activities.count': '6 DIVISIONI ATTIVE',
+                'div1.title': 'BGS & Espansione Fazione',
+                'div1.desc': 'Gestiamo l\'influenza politica della <span class="text-inaraText">Ultra Astra Corp</span>: missioni mirate, controllo delle stazioni, elezioni e conflitti per espandere i nostri confini.',
+                'div2.title': 'Operazioni Powerplay',
+                'div2.desc': 'Pianifichiamo azioni coordinate di fortificazione, acquisizione e supporto strategico nello scenario geopolitico delle grandi potenze galattiche.',
+                'div3.title': 'Esplorazione & Exobiologia',
+                'div3.desc': 'Spedizioni verso nebulose remote, mappatura di sistemi inesplorati, catalogazione biologica e condivisione delle scoperte più spettacolari.',
+                'div4.title': 'Combattimento & Caccia Taglie',
+                'div4.desc': 'Wing di combattimento in Conflict Zones, pattugliamento nei Resource Extraction Sites, missioni massacro condivise e difesa dei settori alleati.',
+                'div5.title': 'Estrazione Mineraria',
+                'div5.desc': 'Sessioni di Laser Mining e Deep Core Mining in compagnia, supporto logistico con le Carrier dello squadrone e ottimizzazione delle rese.',
+                'div6.title': 'Commercio & Logistica',
+                'div6.desc': 'Rotte commerciali ad alto profitto, missioni cargo in ala per massimizzare i crediti del gruppo e rifornimento delle stazioni controllate.',
+                'recruit.kicker': '03 // Arruolamento Piloti',
+                'recruit.title': 'PRONTO A DECOLLARE CON NOI?',
+                'recruit.subtitle': 'Che tu voglia imparare le basi del volo o contribuire alle operazioni strategiche della <strong class="text-white">Ultra Astra Corp</strong>, troverai una squadra pronta a volare al tuo fianco.',
+                'recruit.step1': 'Entra nel nostro server vocal/chat e presentati.',
+                'recruit.step2': 'Cerca il tag <strong class="text-white">ULAD</strong> nel pannello Squadroni.',
+                'recruit.step3': 'Richiedi l\'adesione sulla nostra pagina ufficiale.',
+                'carrier.currentSystem': 'SISTEMA ATTUALE',
+                'recruit.btnDiscord': 'ENTRA SU DISCORD',
+                'recruit.btnInara': 'ARRUOLATI SU INARA',
+                'links.title': 'LINK UTILI & RISORSE',
+                'links.l1': 'Roster, statistiche e fazione',
+                'links.l2': 'Influenza e sistemi controllati',
+                'links.l3': 'Simulatore build e outfitting navi',
+                'links.l4': 'Neutron Highway & Exobiologia'
+            },
+            en: {
+
+            'loader.status0': 'Plotting Frameshift route...',
+            'loader.status35': 'Synchronizing sector data [ULAD]...',
+            'loader.status75': 'Vector alignment — Engaging...',
+            'loader.loadingSector': 'LOADING SECTOR',
+            'loader.destination': 'DESTINATION:',
+            'loader.skip': 'Skip loading →',
+            'nav.home': 'Home',
+            'nav.roster': 'Roster',
+            'nav.rosterMobile': 'Commanders Roster',
+            'nav.tips': 'Tips & Tricks',
+            'nav.comms': 'Communications',
+            'nav.media': 'Multimedia',
+            'nav.links': 'Useful Links',
+            'nav.join': 'JOIN US',
+            'lang.label': 'Language',
+            'footer.disclaimer': 'Elite Dangerous © Frontier Developments plc. Unofficial community-created website.'
+,
+                'meta.title': 'Ultra Astra Dreamers [ULAD] — Elite Dangerous Squadron',
+                'hero.badge': 'SQUADRON ID: 12623 // OPERATING SYSTEMS ACTIVE',
+                'hero.heading': 'DREAMERS AMONG THE STARS,<br><span class="text-uladOrange">BUILDERS OF FRONTIERS.</span>',
+                'hero.subtitle': 'We are the <strong class="text-white">Ultra Astra Dreamers</strong>: independent pilots united by a passion for deep space and the drive to make <span class="text-uladOrange font-semibold">Ultra Astra Corp</span> thrive across the Bubble and beyond.',
+                'hero.ctaJoin': 'JOIN THE SQUADRON',
+                'hero.ctaInara': 'INARA PROFILE',
+                'stat.faction': 'Supported Faction',
+                'stat.recruitment': 'Recruitment Status',
+                'stat.open': 'OPEN',
+                'stat.focus': 'Operational Focus',
+                'stat.focusVal': 'Multi-Role & BGS',
+                'stat.playstyle': 'Playstyle',
+                'stat.playstyleVal': 'PvE / Cooperative',
+                'dispatch.kicker': 'Subspace Relay // Communications Center',
+                'dispatch.title': 'Latest dispatch from command center',
+                'dispatch.allBtn': 'All communications →',
+                'about.kicker': '01 // Squadron Identity',
+                'about.title': 'WHO ARE THE ULTRA ASTRA DREAMERS',
+                'about.p1': 'Born from the meeting of commanders sharing the same vision of the galaxy, the <strong class="text-white">Ultra Astra Dreamers</strong> represent a close-knit community where every flight style finds its place. We impose no mandatory schedules: we believe in teamwork, mutual support, and shared fun.',
+                'about.p2': 'On the political and economic front, our operational wing supports the rise of <strong class="text-uladOrange">Ultra Astra Corp</strong>, coordinating missions, trade routes, and tactical operations to consolidate our presence across star systems.',
+                'directives.title': 'Command Directives',
+                'directives.d1': '<strong class="text-white">No attendance requirements:</strong> real life always comes before the cockpit.',
+                'directives.d2': '<strong class="text-white">Everyone welcome:</strong> from cadets in their first Sidewinder to veterans commanding a Fleet Carrier.',
+                'directives.d3': '<strong class="text-white">Strategic coordination:</strong> BGS objectives, Powerplay, and Community Goals shared on Discord.',
+                'activities.kicker': '02 // Operational Sectors',
+                'activities.title': 'OUR ACTIVITIES IN THE GALAXY',
+                'activities.count': '6 ACTIVE DIVISIONS',
+                'div1.title': 'BGS & Faction Expansion',
+                'div1.desc': 'We manage the political influence of <span class="text-inaraText">Ultra Astra Corp</span>: targeted missions, station control, elections, and conflicts to expand our borders.',
+                'div2.title': 'Powerplay Operations',
+                'div2.desc': 'We plan coordinated fortification, acquisition, and strategic support actions across the geopolitical landscape of galactic superpowers.',
+                'div3.title': 'Exploration & Exobiology',
+                'div3.desc': 'Expeditions to distant nebulae, mapping uncharted systems, biological cataloging, and sharing the most breathtaking discoveries.',
+                'div4.title': 'Combat & Bounty Hunting',
+                'div4.desc': 'Combat wings in Conflict Zones, patrolling Resource Extraction Sites, shared massacre missions, and defending allied sectors.',
+                'div5.title': 'Asteroid Mining',
+                'div5.desc': 'Group Laser Mining and Deep Core Mining sessions, logistical support with squadron Fleet Carriers, and yield optimization.',
+                'div6.title': 'Trade & Logistics',
+                'div6.desc': 'High-profit trade routes, wing cargo missions to maximize group credits, and resupplying controlled stations.',
+                'recruit.kicker': '03 // Pilot Enlistment',
+                'recruit.title': 'READY TO LAUNCH WITH US?',
+                'recruit.subtitle': 'Whether you want to learn the basics of flight or contribute to the strategic operations of <strong class="text-white">Ultra Astra Corp</strong>, you will find a wing ready to fly alongside you.',
+                'recruit.step1': 'Join our voice/text server and introduce yourself.',
+                'recruit.step2': 'Search for the <strong class="text-white">ULAD</strong> tag in the in-game Squadrons panel.',
+                'recruit.step3': 'Apply for membership on our official squadron page.',
+                'carrier.currentSystem': 'CURRENT SYSTEM',
+                'recruit.btnDiscord': 'JOIN ON DISCORD',
+                'recruit.btnInara': 'ENLIST ON INARA',
+                'links.title': 'USEFUL LINKS & RESOURCES',
+                'links.l1': 'Roster, statistics and faction',
+                'links.l2': 'Influence and controlled systems',
+                'links.l3': 'Ship build & outfitting simulator',
+                'links.l4': 'Neutron Highway & Exobiology'
+            }
+        };
+
+        function setUladLanguage(lang) {
+            const normalized = (lang === 'en') ? 'en' : 'it';
+            localStorage.setItem(ULAD_LANG_KEY, normalized);
+            document.documentElement.lang = normalized;
+
+            const dict = HP_I18N[normalized] || HP_I18N.it;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) el.textContent = dict[key];
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const key = el.getAttribute('data-i18n-html');
+                if (dict[key] !== undefined) el.innerHTML = dict[key];
+            });
+
+            const sysEl = document.getElementById('carrier-system');
+            if (sysEl && sysEl.dataset.isUnavailable === '1') {
+                sysEl.textContent = normalized === 'en' ? 'Unavailable' : 'Non disponibile';
+            }
+
+            updateLanguageButtons(normalized);
+            if (currentLatestDispatchItem) {
+                renderLatestDispatch(currentLatestDispatchItem);
+            } else {
+                applyAutoTranslations(normalized);
+            }
+        }
+
+        setUladLanguage(getCurrentUladLang());
+
+
     </script>
     <script>
     (function () {
@@ -758,11 +1115,18 @@
 
         if (!loader) return;
 
-        const statusMessages = [
-            { at: 0, text: 'Calcolo rotta Frameshift...' },
-            { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
-            { at: 75, text: 'Allineamento vettore — Ingaggio...' }
-        ];
+        function getLoaderStatusMessages() {
+            const isEn = localStorage.getItem('ulad_lang') === 'en';
+            return isEn ? [
+                { at: 0, text: 'Plotting Frameshift route...' },
+                { at: 35, text: 'Synchronizing sector data [ULAD]...' },
+                { at: 75, text: 'Vector alignment — Engaging...' }
+            ] : [
+                { at: 0, text: 'Calcolo rotta Frameshift...' },
+                { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
+                { at: 75, text: 'Allineamento vettore — Ingaggio...' }
+            ];
+        }
 
         let navigating = false;
         let pendingHref = '';
@@ -799,6 +1163,7 @@
                 progressPercent.textContent = Math.floor(progress) + '%';
                 countdownText.textContent = remaining.toFixed(1) + 's';
 
+                const statusMessages = getLoaderStatusMessages();
                 for (let i = statusMessages.length - 1; i >= 0; i--) {
                     if (progress >= statusMessages[i].at) {
                         statusText.textContent = statusMessages[i].text;
