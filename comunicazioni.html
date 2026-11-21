@@ -88,9 +88,119 @@
                 linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
         }
+    
+        /* Overlay di transizione stile ULAD (1.5s) */
+        #ulad-nav-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: #111317;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(255, 102, 0, 0.06) 0%, transparent 55%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+        #ulad-nav-loader.is-active {
+            display: flex;
+        }
+        #ulad-nav-loader .tactical-panel {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+        }
+        #ulad-nav-loader .tactical-panel::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        #ulad-nav-loader .tactical-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+        @keyframes ulad-spin-cw {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes ulad-spin-ccw {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        #ulad-nav-loader .ring-outer {
+            animation: ulad-spin-cw 2.2s linear infinite;
+        }
+        #ulad-nav-loader .ring-inner {
+            animation: ulad-spin-ccw 1.3s linear infinite;
+        }
+        #ulad-nav-loader .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.25);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between">
+    <!-- Finestra di caricamento transizione pagina (1.5s) -->
+    <div id="ulad-nav-loader" aria-hidden="true">
+        <div class="tactical-panel max-w-lg w-full p-8 sm:p-10 rounded text-center space-y-7 shadow-2xl">
+            <div class="flex items-center justify-between text-[11px] font-mono text-inaraMuted border-b border-inaraBorder pb-3">
+                <span class="flex items-center gap-2 text-uladOrange">
+                    <span class="w-2 h-2 rounded-full bg-uladOrange animate-ping"></span>
+                    ULAD // FSD TRANSIT
+                </span>
+                <span>ID: 12623</span>
+            </div>
+
+            <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
+                <div class="ring-outer absolute inset-0 rounded-full border-2 border-dashed border-uladOrange/50"></div>
+                <div class="ring-inner absolute inset-3 rounded-full border-2 border-transparent border-t-uladOrange border-b-uladAmber"></div>
+                <div class="relative w-16 h-16 rounded-full bg-inaraBg border border-uladOrange/70 flex items-center justify-center orange-glow">
+                    <span class="font-hud font-black text-sm text-white tracking-wider">ULAD</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div class="font-hud text-xl sm:text-2xl font-bold text-white tracking-wider">
+                    ULTRA ASTRA DREAMERS
+                </div>
+                <p id="nav-status-text" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
+                    Calcolo rotta Frameshift...
+                </p>
+            </div>
+
+            <div class="space-y-2.5 text-left">
+                <div class="flex justify-between items-center text-xs font-mono">
+                    <span class="text-inaraMuted">CARICAMENTO SETTORE</span>
+                    <span id="nav-progress-percent" class="text-white font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 bg-inaraBg rounded overflow-hidden border border-inaraBorder p-[1px]">
+                    <div id="nav-progress-bar" class="h-full bg-gradient-to-r from-uladOrange to-uladAmber rounded-sm" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between items-center text-[11px] font-mono text-inaraMuted pt-1">
+                    <span>DESTINAZIONE: <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
+                    <span id="nav-countdown-text">1.0s</span>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-inaraBorder/70">
+                <a id="nav-skip-link" href="#" class="inline-flex items-center gap-2 text-xs font-hud text-inaraMuted hover:text-uladOrange transition tracking-wider uppercase">
+                    Salta caricamento &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
 
     <!-- NAVBAR -->
     <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
@@ -466,6 +576,117 @@
         renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
         initFrontierCommsSection();
         initCommunityGoalsSection();
+    </script>
+    <script>
+    (function () {
+        const DURATION = 1000;
+        const loader = document.getElementById('ulad-nav-loader');
+        const progressBar = document.getElementById('nav-progress-bar');
+        const progressPercent = document.getElementById('nav-progress-percent');
+        const countdownText = document.getElementById('nav-countdown-text');
+        const statusText = document.getElementById('nav-status-text');
+        const destLabel = document.getElementById('nav-dest-label');
+        const skipLink = document.getElementById('nav-skip-link');
+
+        if (!loader) return;
+
+        const statusMessages = [
+            { at: 0, text: 'Calcolo rotta Frameshift...' },
+            { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
+            { at: 75, text: 'Allineamento vettore — Ingaggio...' }
+        ];
+
+        let navigating = false;
+        let pendingHref = '';
+
+        function formatDestinationName(href) {
+            try {
+                const url = new URL(href, window.location.href);
+                const parts = url.pathname.split('/').filter(Boolean);
+                const fileName = parts.length ? parts[parts.length - 1] : 'homepage.html';
+                return url.hash ? `${fileName}${url.hash}` : fileName;
+            } catch (_) {
+                return href;
+            }
+        }
+
+        function startPageTransition(targetHref) {
+            if (navigating) return;
+            navigating = true;
+            pendingHref = targetHref;
+
+            destLabel.textContent = formatDestinationName(targetHref);
+            skipLink.href = targetHref;
+            loader.classList.add('is-active');
+            loader.setAttribute('aria-hidden', 'false');
+
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min((elapsed / DURATION) * 100, 100);
+                const remaining = Math.max((DURATION - elapsed) / 1000, 0);
+
+                progressBar.style.width = progress.toFixed(1) + '%';
+                progressPercent.textContent = Math.floor(progress) + '%';
+                countdownText.textContent = remaining.toFixed(1) + 's';
+
+                for (let i = statusMessages.length - 1; i >= 0; i--) {
+                    if (progress >= statusMessages[i].at) {
+                        statusText.textContent = statusMessages[i].text;
+                        break;
+                    }
+                }
+
+                if (elapsed < DURATION) {
+                    requestAnimationFrame(step);
+                } else {
+                    window.location.href = pendingHref;
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        skipLink.addEventListener('click', function (e) {
+            if (pendingHref) {
+                e.preventDefault();
+                window.location.href = pendingHref;
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+            if (link.id === 'nav-skip-link') return;
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (link.target === '_blank' || link.hasAttribute('download')) return;
+
+            const rawHref = (link.getAttribute('href') || '').trim();
+            if (!rawHref || rawHref === '#' || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || rawHref.startsWith('javascript:')) {
+                return;
+            }
+
+            const targetUrl = new URL(rawHref, window.location.href);
+            if (targetUrl.origin !== window.location.origin) return;
+
+            const samePage = targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search;
+            if (samePage && targetUrl.hash) return;
+
+            e.preventDefault();
+            startPageTransition(targetUrl.href);
+        });
+
+        window.addEventListener('pageshow', function () {
+            navigating = false;
+            pendingHref = '';
+            loader.classList.remove('is-active');
+            loader.setAttribute('aria-hidden', 'true');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+            countdownText.textContent = '1.0s';
+        });
+    })();
     </script>
 </body>
 </html>
