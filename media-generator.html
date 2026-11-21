@@ -164,8 +164,8 @@
                         <input
                             type="text"
                             id="filename-input"
-                            value="esplorazione.jpg"
-                            placeholder="esplorazione.jpg"
+                            value="_IMMAGINE.jpg"
+                            placeholder="_IMMAGINE.jpg"
                             required
                             class="hud-input w-full px-3.5 py-2.5 rounded-r font-mono text-sm"
                         >
@@ -180,8 +180,8 @@
                     <input
                         type="text"
                         id="title-input"
-                        value="Orizzonte"
-                        placeholder="Es. Orizzonte"
+                        value="_TITLE"
+                        placeholder="Es. _TITLE"
                         required
                         class="hud-input w-full px-3.5 py-2.5 rounded text-base"
                     >
@@ -238,8 +238,8 @@
                         <input
                             type="text"
                             id="cmdr-input"
-                            value="CMDR ArmandoBug"
-                            placeholder="CMDR ArmandoBug"
+                            value="CMDR _NAME"
+                            placeholder="CMDR _NAME"
                             required
                             class="hud-input w-full px-3.5 py-2.5 rounded text-base"
                         >
@@ -271,7 +271,7 @@
                         placeholder="Descrivi brevemente la scena o la spedizione..."
                         required
                         class="hud-input w-full px-3.5 py-2.5 rounded text-base resize-y"
-                    >Tramonto osservato durante una spedizione esplorativa dello squadrone.</textarea>
+                    >Descrizione</textarea>
                 </div>
 
                 <!-- Opzione virgola finale per array JS -->
@@ -332,6 +332,65 @@
                     </button>
 
                     <div id="publish-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+
+                <!-- Eliminazione Scheda & Immagine su GitHub Repository -->
+                <div class="pt-5 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-red-400 uppercase tracking-wider">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Rimuovi Scheda & Immagine
+                        </h3>
+                        <button
+                            type="button"
+                            id="refresh-entries-btn"
+                            class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-rotate" id="refresh-entries-icon"></i> Carica lista da GitHub
+                        </button>
+                    </div>
+
+                    <p class="text-xs text-inaraMuted leading-relaxed">
+                        Usa lo stesso token GitHub qui sopra per caricare le schede presenti in <code class="font-mono text-inaraText">multimedia.html</code>, rimuovere la voce da <code class="font-mono text-inaraText">mediaItems</code> ed eliminare (opzionalmente) il file immagine dalla cartella <code class="font-mono text-inaraText">multimedia/</code>.
+                    </p>
+
+                    <div class="space-y-1.5">
+                        <label for="delete-entry-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Seleziona Scheda da Rimuovere
+                        </label>
+                        <select id="delete-entry-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs">
+                            <option value="">-- Clicca "Carica lista da GitHub" oppure inserisci il file --</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="delete-file-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Percorso Immagine da Eliminare (<code class="text-inaraText">multimedia/...</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="delete-file-input"
+                            placeholder="multimedia/esplorazione.jpg"
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="inline-flex items-center gap-2.5 text-xs sm:text-sm text-inaraText cursor-pointer select-none">
+                            <input type="checkbox" id="delete-image-checkbox" checked class="w-4 h-4 accent-red-500 rounded">
+                            <span>Elimina anche il file immagine dal repository (<code class="font-mono text-xs text-red-300">DELETE /contents/...</code>)</span>
+                        </label>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="delete-media-btn"
+                        class="w-full py-3 px-4 rounded bg-red-600/90 hover:bg-red-500 text-white font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-trash" id="delete-icon"></i>
+                        <span id="delete-label">ELIMINA SCHEDA DA MULTIMEDIA.HTML E IMMAGINE</span>
+                    </button>
+
+                    <div id="delete-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
                 </div>
             </form>
 
@@ -798,6 +857,380 @@
             trailingCommaCheckbox.checked = true;
             publishStatus.classList.add('hidden');
             updateOutput();
+        });
+
+        const refreshEntriesBtn = document.getElementById('refresh-entries-btn');
+        const refreshEntriesIcon = document.getElementById('refresh-entries-icon');
+        const deleteEntrySelect = document.getElementById('delete-entry-select');
+        const deleteFileInput = document.getElementById('delete-file-input');
+        const deleteImageCheckbox = document.getElementById('delete-image-checkbox');
+        const deleteMediaBtn = document.getElementById('delete-media-btn');
+        const deleteIcon = document.getElementById('delete-icon');
+        const deleteLabel = document.getElementById('delete-label');
+        const deleteStatus = document.getElementById('delete-status');
+
+        let loadedMediaHtmlCache = null;
+
+        function setDeleteStatus(type, message) {
+            deleteStatus.classList.remove('hidden', 'border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300', 'border-red-500/50', 'bg-red-950/40', 'text-red-300', 'border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            if (type === 'success') {
+                deleteStatus.classList.add('border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300');
+            } else if (type === 'error') {
+                deleteStatus.classList.add('border-red-500/50', 'bg-red-950/40', 'text-red-300');
+            } else {
+                deleteStatus.classList.add('border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            }
+            deleteStatus.textContent = message;
+        }
+
+        function findMediaItemsArraySpan(htmlContent) {
+            const declMatch = htmlContent.match(/const\s+mediaItems\s*=\s*\[/);
+            if (!declMatch) {
+                throw new Error('Impossibile trovare "const mediaItems = [" in multimedia.html.');
+            }
+
+            const startBracketIdx = declMatch.index + declMatch[0].length - 1;
+            let depth = 0;
+            let inSingle = false;
+            let inDouble = false;
+            let inTemplate = false;
+            let escaped = false;
+
+            for (let i = startBracketIdx; i < htmlContent.length; i++) {
+                const ch = htmlContent[i];
+
+                if (escaped) {
+                    escaped = false;
+                    continue;
+                }
+                if (ch === '\\') {
+                    escaped = true;
+                    continue;
+                }
+
+                if (!inDouble && !inTemplate && ch === "'") {
+                    inSingle = !inSingle;
+                    continue;
+                }
+                if (!inSingle && !inTemplate && ch === '"') {
+                    inDouble = !inDouble;
+                    continue;
+                }
+                if (!inSingle && !inDouble && ch === '`') {
+                    inTemplate = !inTemplate;
+                    continue;
+                }
+
+                if (inSingle || inDouble || inTemplate) {
+                    continue;
+                }
+
+                if (ch === '[') {
+                    depth++;
+                } else if (ch === ']') {
+                    depth--;
+                    if (depth === 0) {
+                        return {
+                            openBracketEnd: startBracketIdx + 1,
+                            closeBracketStart: i
+                        };
+                    }
+                }
+            }
+
+            throw new Error('Impossibile trovare la chiusura "]" dell\'array mediaItems in multimedia.html.');
+        }
+
+        function extractObjectLiteralsFromArrayBody(arrayBody) {
+            const items = [];
+            let i = 0;
+
+            while (i < arrayBody.length) {
+                if (arrayBody[i] === '{') {
+                    const startIdx = i;
+                    let braceDepth = 0;
+                    let inSingle = false;
+                    let inDouble = false;
+                    let inTemplate = false;
+                    let escaped = false;
+
+                    for (; i < arrayBody.length; i++) {
+                        const ch = arrayBody[i];
+                        if (escaped) {
+                            escaped = false;
+                            continue;
+                        }
+                        if (ch === '\\') {
+                            escaped = true;
+                            continue;
+                        }
+                        if (!inDouble && !inTemplate && ch === "'") {
+                            inSingle = !inSingle;
+                            continue;
+                        }
+                        if (!inSingle && !inTemplate && ch === '"') {
+                            inDouble = !inDouble;
+                            continue;
+                        }
+                        if (!inSingle && !inDouble && ch === '`') {
+                            inTemplate = !inTemplate;
+                            continue;
+                        }
+                        if (inSingle || inDouble || inTemplate) {
+                            continue;
+                        }
+                        if (ch === '{') {
+                            braceDepth++;
+                        } else if (ch === '}') {
+                            braceDepth--;
+                            if (braceDepth === 0) {
+                                const rawLiteral = arrayBody.slice(startIdx, i + 1);
+                                const fileMatch = rawLiteral.match(/file\s*:\s*(['"`])(.*?)\1/);
+                                const titleMatch = rawLiteral.match(/title\s*:\s*(['"`])(.*?)\1/);
+                                const cmdrMatch = rawLiteral.match(/cmdr\s*:\s*(['"`])(.*?)\1/);
+                                items.push({
+                                    index: items.length,
+                                    start: startIdx,
+                                    end: i + 1,
+                                    rawLiteral,
+                                    file: fileMatch ? fileMatch[2] : '',
+                                    title: titleMatch ? titleMatch[2] : `Scheda #${items.length + 1}`,
+                                    cmdr: cmdrMatch ? cmdrMatch[2] : ''
+                                });
+                                i++;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    i++;
+                }
+            }
+
+            return items;
+        }
+
+        function removeEntryFromMediaItems(htmlContent, targetIndex, targetFileNormalized) {
+            const span = findMediaItemsArraySpan(htmlContent);
+            const body = htmlContent.slice(span.openBracketEnd, span.closeBracketStart);
+            const items = extractObjectLiteralsFromArrayBody(body);
+
+            if (items.length === 0) {
+                throw new Error('Nessuna scheda trovata dentro mediaItems in multimedia.html.');
+            }
+
+            let chosen = null;
+            if (Number.isInteger(targetIndex) && targetIndex >= 0 && targetIndex < items.length) {
+                chosen = items[targetIndex];
+            } else if (targetFileNormalized) {
+                chosen = items.find(it => normalizeFilePath(it.file) === targetFileNormalized) || null;
+            }
+
+            if (!chosen) {
+                throw new Error('Scheda corrispondente non trovata in mediaItems.');
+            }
+
+            let removeStart = chosen.start;
+            let removeEnd = chosen.end;
+
+            let afterIdx = removeEnd;
+            while (afterIdx < body.length && /\s/.test(body[afterIdx])) {
+                afterIdx++;
+            }
+
+            if (afterIdx < body.length && body[afterIdx] === ',') {
+                removeEnd = afterIdx + 1;
+                if (body[removeEnd] === '\r') removeEnd++;
+                if (body[removeEnd] === '\n') removeEnd++;
+            } else {
+                let beforeIdx = removeStart - 1;
+                while (beforeIdx >= 0 && /\s/.test(body[beforeIdx])) {
+                    beforeIdx--;
+                }
+                if (beforeIdx >= 0 && body[beforeIdx] === ',') {
+                    removeStart = beforeIdx;
+                }
+            }
+
+            const newBody = body.slice(0, removeStart) + body.slice(removeEnd);
+            return {
+                updatedHtml: htmlContent.slice(0, span.openBracketEnd) + newBody + htmlContent.slice(span.closeBracketStart),
+                removedItem: chosen
+            };
+        }
+
+        async function loadMediaEntriesFromGitHub() {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+
+            if (!token) {
+                setDeleteStatus('error', 'Inserisci prima il GitHub Personal Access Token qui sopra per leggere multimedia.html.');
+                return;
+            }
+
+            refreshEntriesBtn.disabled = true;
+            refreshEntriesIcon.className = 'fa-solid fa-spinner fa-spin';
+            setDeleteStatus('info', `Lettura schede da ${owner}/${repo} (${branch})...`);
+
+            try {
+                const existingHtml = await getExistingFileSha(owner, repo, 'multimedia.html', branch, token);
+                if (!existingHtml || !existingHtml.content || !existingHtml.sha) {
+                    throw new Error('Impossibile leggere multimedia.html dal repository.');
+                }
+
+                const htmlText = base64ToUtf8(existingHtml.content);
+                const span = findMediaItemsArraySpan(htmlText);
+                const body = htmlText.slice(span.openBracketEnd, span.closeBracketStart);
+                const items = extractObjectLiteralsFromArrayBody(body);
+
+                loadedMediaHtmlCache = {
+                    html: htmlText,
+                    sha: existingHtml.sha,
+                    items
+                };
+
+                deleteEntrySelect.innerHTML = '';
+                if (items.length === 0) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = '-- Nessuna scheda trovata in mediaItems --';
+                    deleteEntrySelect.appendChild(opt);
+                    deleteFileInput.value = '';
+                    setDeleteStatus('info', 'Array mediaItems vuoto in multimedia.html.');
+                    return;
+                }
+
+                items.forEach((item, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = String(idx);
+                    opt.textContent = `${item.title} (${item.file || 'senza file'})`;
+                    opt.dataset.file = item.file || '';
+                    deleteEntrySelect.appendChild(opt);
+                });
+
+                deleteEntrySelect.value = '0';
+                deleteFileInput.value = items[0].file || '';
+                setDeleteStatus('success', `Caricate ${items.length} schede da multimedia.html. Seleziona quella da rimuovere.`);
+            } catch (err) {
+                setDeleteStatus('error', `Errore lettura schede:\n${err.message}`);
+            } finally {
+                refreshEntriesBtn.disabled = false;
+                refreshEntriesIcon.className = 'fa-solid fa-rotate';
+            }
+        }
+
+        async function deleteFileFromGitHub(owner, repo, path, branch, token) {
+            const normalizedPath = normalizeFilePath(path);
+            const existingFile = await getExistingFileSha(owner, repo, normalizedPath, branch, token);
+            if (!existingFile || !existingFile.sha) {
+                return { deleted: false, reason: 'File non trovato nel repository (già assente).' };
+            }
+
+            const encodedPath = normalizedPath.split('/').map(encodeURIComponent).join('/');
+            await githubRequest(
+                `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodedPath}`,
+                token,
+                {
+                    method: 'DELETE',
+                    body: JSON.stringify({
+                        message: `chore(media): remove ${normalizedPath}`,
+                        sha: existingFile.sha,
+                        branch
+                    })
+                }
+            );
+
+            return { deleted: true, path: normalizedPath };
+        }
+
+        refreshEntriesBtn.addEventListener('click', loadMediaEntriesFromGitHub);
+
+        deleteEntrySelect.addEventListener('change', () => {
+            const selectedOpt = deleteEntrySelect.options[deleteEntrySelect.selectedIndex];
+            if (selectedOpt && selectedOpt.dataset && selectedOpt.dataset.file) {
+                deleteFileInput.value = selectedOpt.dataset.file;
+            }
+        });
+
+        deleteMediaBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const shouldDeleteImage = deleteImageCheckbox.checked;
+            const manualFileRaw = deleteFileInput.value.trim();
+
+            if (!token) {
+                setDeleteStatus('error', 'Inserisci un GitHub Personal Access Token con permesso Contents: Read and write.');
+                return;
+            }
+
+            const selectedIndexStr = deleteEntrySelect.value;
+            const hasSelectedIndex = selectedIndexStr !== '' && !Number.isNaN(Number(selectedIndexStr));
+            const targetIndex = hasSelectedIndex ? Number(selectedIndexStr) : -1;
+            const targetFileNormalized = manualFileRaw ? normalizeFilePath(manualFileRaw) : '';
+
+            if (!hasSelectedIndex && !targetFileNormalized) {
+                setDeleteStatus('error', 'Carica la lista da GitHub e seleziona una scheda, oppure indica il percorso immagine (es. multimedia/foto.jpg).');
+                return;
+            }
+
+            deleteMediaBtn.disabled = true;
+            deleteIcon.className = 'fa-solid fa-spinner fa-spin';
+            deleteLabel.textContent = 'ELIMINAZIONE IN CORSO...';
+            setDeleteStatus('info', `1/2 Lettura multimedia.html su ${owner}/${repo} (${branch})...`);
+
+            try {
+                const existingHtml = await getExistingFileSha(owner, repo, 'multimedia.html', branch, token);
+                if (!existingHtml || !existingHtml.content || !existingHtml.sha) {
+                    throw new Error('Impossibile leggere multimedia.html dal repository.');
+                }
+
+                const currentHtml = base64ToUtf8(existingHtml.content);
+                const { updatedHtml, removedItem } = removeEntryFromMediaItems(currentHtml, targetIndex, targetFileNormalized);
+
+                await githubRequest(
+                    `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/multimedia.html`,
+                    token,
+                    {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            message: `chore(media): remove "${removedItem.title}" from multimedia.html`,
+                            content: utf8ToBase64(updatedHtml),
+                            sha: existingHtml.sha,
+                            branch
+                        })
+                    }
+                );
+
+                let imageResultMsg = '- Immagine non eliminata (opzione disattivata).';
+                if (shouldDeleteImage) {
+                    const imgPathToDelete = targetFileNormalized || (removedItem.file ? normalizeFilePath(removedItem.file) : '');
+                    if (imgPathToDelete) {
+                        setDeleteStatus('info', `2/2 Eliminazione file immagine ${imgPathToDelete}...`);
+                        const delRes = await deleteFileFromGitHub(owner, repo, imgPathToDelete, branch, token);
+                        imageResultMsg = delRes.deleted
+                            ? `- Immagine eliminata: ${delRes.path}`
+                            : `- Immagine (${imgPathToDelete}): ${delRes.reason}`;
+                    } else {
+                        imageResultMsg = '- Nessun percorso immagine associato alla scheda.';
+                    }
+                }
+
+                loadedMediaHtmlCache = null;
+                setDeleteStatus(
+                    'success',
+                    `Operazione completata!\n- Scheda rimossa da mediaItems: "${removedItem.title}"\n${imageResultMsg}\nAttendere il deploy di GitHub Pages per vedere l'aggiornamento online.`
+                );
+            } catch (err) {
+                setDeleteStatus('error', `Errore durante l'eliminazione:\n${err.message}`);
+            } finally {
+                deleteMediaBtn.disabled = false;
+                deleteIcon.className = 'fa-solid fa-trash';
+                deleteLabel.textContent = 'ELIMINA SCHEDA DA MULTIMEDIA.HTML E IMMAGINE';
+            }
         });
 
         updateOutput();
