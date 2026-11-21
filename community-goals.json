@@ -5,7 +5,8 @@
     "systems": [
       "Galassia"
     ],
-    "description": "Il feed automatico è collegato a Inara. Quando verrà avviato un nuovo Community Goal attivo comparirà automaticamente in questa sezione.",
-    "rewards": "Crediti e ricompense in base al tier raggiunto."
+    "description": "Al momento non risultano Community Goal attivi su Inara. Il controllo automatico riparte al prossimo ciclo.",
+    "rewards": "In attesa della prossima iniziativa galattica.",
+    "updatedAt": "2026-11-21T11:02:31Z"
   }
 ]
