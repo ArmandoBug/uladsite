@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimedia — Ultra Astra Dreamers [ULAD]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        /* Palette ispirata a Inara + Elite Dangerous HUD */
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        /* Dettagli angolari stile interfaccia nave */
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.5);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.2);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand & Logo -->
+                <a href="2.html" class="flex items-center gap-3.5 group">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition orange-glow">
+                        <img src="multimedia/logoULADpng.png" alt="Ultra Astra Dreamers Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-hud font-bold text-white tracking-wider text-base sm:text-lg">ULTRA ASTRA DREAMERS</span>
+                        </div>
+                        <p class="text-xs text-inaraMuted font-mono tracking-wide">FACTION: <span class="text-inaraText">ULTRA ASTRA CORP</span></p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigazione Desktop -->
+                <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-uladOrange border-b-2 border-uladOrange py-7">Multimedia</a>
+                    <a href="2.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
+                </nav>
+
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
+                <div class="hidden md:flex items-center gap-3">
+                    <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
+                    <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
+                    </a>
+                    <a href="2.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-inaraText hover:text-uladOrange p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
+            <a href="2.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Multimedia</a>
+            <a href="2.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
+        </div>
+    </header>
+
+    <!-- HEADER PAGINA MULTIMEDIA -->
+    <section class="relative overflow-hidden border-b border-inaraBorder grid-overlay">
+        <div class="absolute inset-0 bg-gradient-to-t from-inaraBg via-inaraBg/60 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                        <i class="fa-solid fa-camera"></i>
+                        ARCHIVIO VISIVO // DIRECTORY: <span class="text-white">imgdir/</span>
+                    </div>
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
+                        GALLERIA <span class="text-uladOrange">MULTIMEDIA</span>
+                    </h1>
+                    <p class="text-inaraText text-lg max-w-2xl">
+                        Screenshot, spedizioni e momenti catturati dai comandanti degli <strong class="text-white">Ultra Astra Dreamers</strong> durante le operazioni nello spazio.
+                    </p>
+                </div>
+
+                <!-- Contatore rapido -->
+                <div class="tactical-card tactical-corner px-5 py-3.5 rounded shrink-0">
+                    <span class="text-xs font-mono text-inaraMuted uppercase block">File Catalogati</span>
+                    <span class="font-hud text-xl font-bold text-uladOrange" id="gallery-count">0 SCREENSHOT</span>
+                </div>
+            </div>
+
+            <!-- Filtri Categoria -->
+            <div class="mt-8 flex flex-wrap gap-2.5" id="filter-bar">
+                <button data-filter="all" class="filter-btn px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud font-bold text-xs tracking-wider transition">
+                    TUTTI
+                </button>
+                <button data-filter="esplorazione" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                    ESPLORAZIONE
+                </button>
+                <button data-filter="combattimento" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                    COMBATTIMENTO
+                </button>
+                <button data-filter="carrier" class="filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition">
+                    CARRIER & MINING
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENUTO PRINCIPALE: GRIGLIA SCREENSHOT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Popolato tramite script dalla lista mediaItems (cartella imgdir/) -->
+        </div>
+
+    </main>
+
+    <!-- LIGHTBOX MODAL (INGRANDIMENTO IMMAGINE) -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeLightbox(event)">
+        <div class="tactical-card tactical-corner max-w-5xl w-full rounded overflow-hidden bg-inaraPanel" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-inaraBorder bg-inaraBg/70">
+                <div>
+                    <span class="font-mono text-xs text-uladOrange uppercase" id="lightbox-category">CATEGORIA</span>
+                    <h3 class="font-hud text-base sm:text-lg font-bold text-white" id="lightbox-title">Titolo Screenshot</h3>
+                </div>
+                <button onclick="closeLightbox()" class="w-9 h-9 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-inaraText hover:text-uladOrange flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="bg-black flex items-center justify-center max-h-[75vh] overflow-hidden">
+                <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain">
+            </div>
+            <div class="px-5 py-3.5 border-t border-inaraBorder flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+                <p class="text-inaraText" id="lightbox-desc"></p>
+                <span class="font-mono text-xs text-inaraMuted shrink-0" id="lightbox-meta"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <div class="flex items-center gap-3">
+                <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Menu Mobile, Galleria imgdir/ e Lightbox -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Inserisci qui i file salvati nella cartella "imgdir/"
+        const mediaItems = [
+            {
+                file: 'imgdir/screen-01.jpg',
+                title: 'Orizzonte Nebulosa Profonda',
+                category: 'esplorazione',
+                categoryLabel: 'ESPLORAZIONE',
+                cmdr: 'CMDR ULAD',
+                system: 'Deep Space',
+                description: 'Ricognizione a lungo raggio durante una spedizione esplorativa dello squadrone.'
+            },
+            {
+                file: 'imgdir/screen-02.jpg',
+                title: 'Pattugliamento & Zona di Conflitto',
+                category: 'combattimento',
+                categoryLabel: 'COMBATTIMENTO',
+                cmdr: 'CMDR ULAD',
+                system: 'BGS Sector',
+                description: 'Supporto tattico per le operazioni della Ultra Astra Corp.'
+            },
+            {
+                file: 'imgdir/screen-03.jpg',
+                title: 'Ulad-01 Nostromo in Orbita',
+                category: 'carrier',
+                categoryLabel: 'CARRIER & MINING',
+                cmdr: 'ULAD Fleet',
+                system: '[ULAD] Carrier',
+                description: 'Punto d’appoggio logistico e base operativa per le attività del gruppo.'
+            }
+        ];
+
+        const gridEl = document.getElementById('gallery-grid');
+        const countEl = document.getElementById('gallery-count');
+        let currentFilter = 'all';
+
+        function renderGallery() {
+            const filtered = currentFilter === 'all'
+                ? mediaItems
+                : mediaItems.filter(item => item.category === currentFilter);
+
+            countEl.textContent = `${filtered.length} ${filtered.length === 1 ? 'SCREENSHOT' : 'SCREENSHOT'}`;
+
+            if (filtered.length === 0) {
+                gridEl.innerHTML = `
+                    <div class="col-span-full tactical-card p-8 rounded text-center text-inaraMuted">
+                        Nessuno screenshot trovato in questa categoria.
+                    </div>
+                `;
+                return;
+            }
+
+            gridEl.innerHTML = filtered.map((item, idx) => `
+                <article class="tactical-card rounded overflow-hidden flex flex-col group cursor-pointer" onclick="openLightboxByIndex(${idx})">
+                    <div class="relative aspect-video bg-inaraBg overflow-hidden border-b border-inaraBorder">
+                        <img
+                            src="${item.file}"
+                            alt="${item.title}"
+                            loading="lazy"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                            onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
+                        >
+                        <div class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-inaraBg/90">
+                            <i class="fa-solid fa-image text-2xl text-uladOrange/70 mb-2"></i>
+                            <span class="font-mono text-xs text-inaraText">${item.file}</span>
+                            <span class="text-xs text-inaraMuted mt-1">Inserisci il file in <strong class="text-white">imgdir/</strong></span>
+                        </div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-inaraBg/90 border border-uladOrange/40 font-mono text-[11px] text-uladOrange">
+                            ${item.categoryLabel}
+                        </span>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between space-y-2">
+                        <div>
+                            <h3 class="font-hud text-base font-bold text-white group-hover:text-uladOrange transition">${item.title}</h3>
+                            <p class="text-sm text-inaraMuted mt-1 line-clamp-2">${item.description}</p>
+                        </div>
+                        <div class="pt-3 border-t border-inaraBorder/70 flex items-center justify-between text-xs font-mono text-inaraMuted">
+                            <span><i class="fa-solid fa-user-astronaut text-uladOrange/80 mr-1"></i>${item.cmdr}</span>
+                            <span>${item.system}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function getFilteredItems() {
+            return currentFilter === 'all'
+                ? mediaItems
+                : mediaItems.filter(item => item.category === currentFilter);
+        }
+
+        function openLightboxByIndex(idx) {
+            const list = getFilteredItems();
+            const item = list[idx];
+            if (!item) return;
+
+            document.getElementById('lightbox-category').textContent = item.categoryLabel;
+            document.getElementById('lightbox-title').textContent = item.title;
+            document.getElementById('lightbox-img').src = item.file;
+            document.getElementById('lightbox-img').alt = item.title;
+            document.getElementById('lightbox-desc').textContent = item.description;
+            document.getElementById('lightbox-meta').textContent = `${item.cmdr} // ${item.system} (${item.file})`;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.getElementById('lightbox-img').src = '';
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btnEl => {
+            btnEl.addEventListener('click', () => {
+                currentFilter = btnEl.getAttribute('data-filter');
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.className = 'filter-btn px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover text-inaraText hover:text-white border border-inaraBorder font-hud text-xs tracking-wider transition';
+                });
+                btnEl.className = 'filter-btn px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud font-bold text-xs tracking-wider transition';
+                renderGallery();
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        renderGallery();
+    </script>
+</body>
+</html>
