@@ -1,12 +1,12 @@
 import json
-import os
 import re
 from datetime import datetime, timezone
+from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
 INARA_CG_URL = "https://inara.cz/elite/communitygoals/"
-OUTPUT_FILE = "community-goals.json"
+OUTPUT_FILE = Path("community-goals.json")
 
 HEADERS = {
     "User-Agent": (
@@ -16,6 +16,7 @@ HEADERS = {
     ),
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9,it;q=0.8",
+    "Referer": "https://inara.cz/elite/",
 }
 
 
@@ -125,28 +126,68 @@ def parse_inara_community_goals(html: str) -> list[dict]:
     return goals
 
 
+def load_existing_goals() -> list[dict] | None:
+    if not OUTPUT_FILE.exists():
+        return None
+    try:
+        data = json.loads(OUTPUT_FILE.read_text(encoding="utf-8"))
+        if isinstance(data, list) and len(data) > 0:
+            return data
+    except Exception:
+        return None
+    return None
+
+
 def main():
-    resp = requests.get(INARA_CG_URL, headers=HEADERS, timeout=25)
-    resp.raise_for_status()
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    html = ""
+    last_error = None
 
-    active_goals = parse_inara_community_goals(resp.text)
+    for attempt in range(1, 4):
+        try:
+            resp = requests.get(INARA_CG_URL, headers=HEADERS, timeout=25)
+            resp.raise_for_status()
+            html = resp.text
+            break
+        except Exception as exc:
+            last_error = exc
+            print(f"Tentativo {attempt}/3 fallito su Inara: {exc}")
 
+    if not html:
+        existing = load_existing_goals()
+        if existing:
+            print(f"Inara non raggiungibile ({last_error}). Mantengo i dati esistenti in {OUTPUT_FILE}.")
+            return
+
+        fallback = [
+            {
+                "title": "Sincronizzazione Inara in attesa",
+                "status": "STANDBY",
+                "systems": ["Galassia"],
+                "description": "Inara ha risposto con un errore temporaneo (es. 503 Service Unavailable). Il workflow riprovera automaticamente al prossimo ciclo.",
+                "rewards": "Crediti e ricompense in base al tier raggiunto.",
+                "updatedAt": now_iso,
+            }
+        ]
+        OUTPUT_FILE.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"Salvato stato di attesa in {OUTPUT_FILE} dopo errore: {last_error}")
+        return
+
+    active_goals = parse_inara_community_goals(html)
     if not active_goals:
         active_goals = [
             {
                 "title": "Nessun Community Goal attivo al momento",
                 "status": "STANDBY",
                 "systems": ["Galassia"],
-                "description": "Al momento non risultano Community Goal attivi su Inara. Il sistema ricontrolla automaticamente ogni 3 ore.",
+                "description": "Al momento non risultano Community Goal attivi su Inara. Il controllo automatico riparte al prossimo ciclo.",
                 "rewards": "In attesa della prossima iniziativa galattica.",
-                "updatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "updatedAt": now_iso,
             }
         ]
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(active_goals, f, ensure_ascii=False, indent=2)
-
-    print(f"Salvati {len(active_goals)} record in {OUTPUT_FILE}")
+    OUTPUT_FILE.write_text(json.dumps(active_goals, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Aggiornato {OUTPUT_FILE} con {len(active_goals)} record.")
 
 
 if __name__ == "__main__":
