@@ -251,9 +251,6 @@
             menu.classList.toggle('hidden');
         });
 
-        // =========================================================================
-        // SEZIONE 1: COMUNICAZIONI DELLO SQUADRONE (aggiornabile da comms-generator.html)
-        // =========================================================================
         const squadronComms = [
             {
                 id: 'ulad-001',
@@ -266,9 +263,6 @@
             }
         ];
 
-        // =========================================================================
-        // SEZIONE 2: COMMUNITY GOAL (caricamento automatico da community-goals.json + fallback)
-        // =========================================================================
         const communityGoals = [
             {
                 title: 'In attesa di sincronizzazione Community Goal',
@@ -279,9 +273,6 @@
             }
         ];
 
-        // =========================================================================
-        // SEZIONE 3: COMUNICAZIONI FRONTIER (aggiornabile da comms-generator.html)
-        // =========================================================================
         const frontierComms = [
             {
                 id: 'fdev-001',
@@ -290,6 +281,7 @@
                 author: 'Frontier Developments',
                 tag: 'ROADMAP',
                 image: '',
+                links: [],
                 summary: 'Spazio dedicato alle comunicazioni ufficiali di Frontier Developments su patch, bilanciamenti, eventi narrativi e roadmap di Elite Dangerous.'
             }
         ];
@@ -301,6 +293,10 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
+        }
+
+        function isSafeUrl(url) {
+            return /^https?:\/\//i.test(String(url || '').trim());
         }
 
         function renderStandardComms(containerId, countId, items, labelUnit) {
@@ -318,7 +314,7 @@
             }
 
             container.innerHTML = items.map(item => {
-                const hasImage = item.image && String(item.image).trim().length > 0;
+                const hasImage = item.image && String(item.image).trim().length > 0 && isSafeUrl(item.image);
                 const imageBlock = hasImage
                     ? `
                         <div class="aspect-video w-full bg-inaraBg border-b border-inaraBorder overflow-hidden">
@@ -328,6 +324,29 @@
                                 class="w-full h-full object-cover"
                                 loading="lazy"
                             >
+                        </div>
+                    `
+                    : '';
+
+                const links = Array.isArray(item.links)
+                    ? item.links.filter(l => l && isSafeUrl(l.url))
+                    : [];
+
+                const linksBlock = links.length
+                    ? `
+                        <div class="pt-2 flex flex-wrap gap-2">
+                            ${links.map(l => {
+                                const u = String(l.url).trim();
+                                let iconClass = 'fa-solid fa-arrow-up-right-from-square';
+                                if (/x\.com|twitter\.com/i.test(u)) iconClass = 'fa-brands fa-x-twitter';
+                                else if (/youtube\.com|youtu\.be/i.test(u)) iconClass = 'fa-brands fa-youtube';
+                                return `
+                                    <a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-inaraBg hover:bg-inaraPanelHover border border-uladOrange/40 hover:border-uladOrange text-xs font-mono text-uladOrange transition">
+                                        <i class="${iconClass}"></i>
+                                        <span>${escapeHtml(l.label || 'Apri link')}</span>
+                                    </a>
+                                `;
+                            }).join('')}
                         </div>
                     `
                     : '';
@@ -349,6 +368,7 @@
                                 <p class="text-inaraText text-base leading-relaxed whitespace-pre-line">
                                     ${escapeHtml(item.summary)}
                                 </p>
+                                ${linksBlock}
                             </div>
                         </div>
                         <div class="px-6 py-3.5 bg-inaraBg/70 border-t border-inaraBorder/80 flex items-center justify-between text-xs font-mono text-inaraMuted">
@@ -414,8 +434,28 @@
             renderCommunityGoals(communityGoals);
         }
 
+        async function initFrontierCommsSection() {
+            try {
+                const res = await fetch('frontier-comms.json', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        renderStandardComms('frontier-comms-container', 'frontier-count', data, 'COMUNICAZIONI');
+                        return;
+                    }
+                    if (data && Array.isArray(data.items) && data.items.length > 0) {
+                        renderStandardComms('frontier-comms-container', 'frontier-count', data.items, 'COMUNICAZIONI');
+                        return;
+                    }
+                }
+            } catch (_) {
+                // Fallback su array locale frontierComms se frontier-comms.json non è presente
+            }
+            renderStandardComms('frontier-comms-container', 'frontier-count', frontierComms, 'COMUNICAZIONI');
+        }
+
         renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
-        renderStandardComms('frontier-comms-container', 'frontier-count', frontierComms, 'COMUNICAZIONI');
+        initFrontierCommsSection();
         initCommunityGoalsSection();
     </script>
 </body>
