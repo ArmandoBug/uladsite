@@ -15,60 +15,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch Spansh station data and update carrier.json
+      - name: Find system reference in Spansh station record
         run: |
           python3 - <<'EOF'
           import json
           import urllib.request
-          from datetime import datetime, timezone
 
           url = "https://spansh.co.uk/api/station/3715273472"
           req = urllib.request.Request(url, headers={"User-Agent": "ULAD-Site-Updater/1.0"})
           with urllib.request.urlopen(req, timeout=20) as resp:
               payload = json.loads(resp.read().decode("utf-8"))
 
-          station = payload.get("station", payload)
-          print("Chiavi disponibili in station:", list(station.keys()) if isinstance(station, dict) else type(station))
-          print("Estratto payload:", json.dumps(payload)[:1000])
-
-          system_name = (
-              station.get("system_name")
-              or station.get("systemName")
-              or (station.get("system", {}).get("name") if isinstance(station.get("system"), dict) else station.get("system"))
-              or station.get("starSystem")
-              or ""
-          )
-          carrier_name = station.get("name") or "Ulad-01 Nostromo"
-          print("Sistema estratto:", repr(system_name), "| Nome:", repr(carrier_name))
-
-          out_path = "carrier.json"
-          try:
-              with open(out_path, "r", encoding="utf-8") as f:
-                  current = json.load(f)
-          except Exception:
-              current = {}
-
-          if system_name and current.get("system") != system_name:
-              updated = {
-                  "name": carrier_name,
-                  "callsign": "ULAD",
-                  "system": system_name,
-                  "updated_at": datetime.now(timezone.utc).isoformat()
-              }
-              with open(out_path, "w", encoding="utf-8") as f:
-                  json.dump(updated, f, indent=2, ensure_ascii=False)
-                  f.write("\n")
-              print("carrier.json aggiornato!")
-          else:
-              print("Nessun aggiornamento necessario o system_name vuoto.")
+          record = payload.get("record", {})
+          if isinstance(record, dict):
+              for k, v in record.items():
+                  if str(v) == "5070074946961" or "system" in k.lower() or "id64" in k.lower() or "address" in k.lower():
+                      print(f"{k}: {repr(v)}")
           EOF
-
-      - name: Commit changes if carrier.json changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add carrier.json
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: update Squadron Carrier system"
-            git push
-          fi
