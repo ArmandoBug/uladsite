@@ -22,7 +22,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: |
+          pip install playwright beautifulsoup4
+          python -m playwright install --with-deps chromium
 
       - name: Fetch and parse Inara Community Goals
         run: python scripts/update_cg.py
