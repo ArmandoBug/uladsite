@@ -334,6 +334,29 @@
     <!-- MAIN CONTENT -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
 
+        <!-- SEZIONE: ULTIMO DISPACCO DAL CENTRO DI COMANDO -->
+        <section id="ultimo-dispaccio" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-uladOrange animate-ping"></span>
+                            Relè Subspaziale // Centro Comunicazioni
+                        </span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white uppercase">Ultimo dispaccio dal centro di comando</h2>
+                </div>
+                <a href="comunicazioni.html" class="inline-flex items-center gap-2 px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition tracking-wider uppercase shrink-0">
+                    <i class="fa-solid fa-satellite-dish text-uladOrange"></i> Tutte le comunicazioni &rarr;
+                </a>
+            </div>
+
+            <div id="latest-dispatch-container">
+                <!-- Popolato dinamicamente con l'ultimo dispaccio da comunicazioni.html -->
+            </div>
+        </section>
+
         <!-- SEZIONE: CHI SIAMO & LORE -->
         <section id="chi-siamo" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-7 space-y-5">
@@ -609,6 +632,118 @@
         }
 
         syncSquadronCarrier();
+
+        // Carica e mostra l'ultimo dispaccio da comunicazioni.html (fallback sui dispacci attuali dello squadrone)
+        const fallbackSquadronComms = [
+            {
+                id: 'ulad-001',
+                title: 'Attivazione Relè Comunicazioni ULAD',
+                date: '2026-11-21',
+                author: 'CMDR ArmandoBug',
+                tag: 'OPERATIVO',
+                image: '',
+                summary: 'Benvenuti nel centro comunicazioni dello squadrone Ultra Astra Dreamers [ULAD]. Qui verranno pubblicati ordini di missione, raduni e aggiornamenti sulla Ulad-01 Nostromo.'
+            },
+            {
+                id: 'ulad-002',
+                title: 'Nuovo logo in-game',
+                date: '2026-11-21',
+                author: 'CMDR ArmandoBug',
+                tag: 'ARCHIVIO',
+                image: 'https://armandobug.github.io/uladsite/multimedia/nuovoingamelogo.png',
+                summary: 'Il nostro "grande capo" Luft ha modificato il logo dello squadrone in-game brandizzando di fatto all\'interno del gioco la nostra identità! Vi invito a fare un giro nella Squadron Carrier (è ovunque quel logo!) e ad applicarlo sulle vostre navi (se volete... ma fatelo!!)'
+            }
+        ];
+
+        function escapeDispatchHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function isSafeDispatchUrl(url) {
+            return /^https?:\/\//i.test(String(url || '').trim());
+        }
+
+        function renderLatestDispatch(item) {
+            const container = document.getElementById('latest-dispatch-container');
+            if (!container || !item) return;
+
+            const hasImage = item.image && String(item.image).trim().length > 0 && isSafeDispatchUrl(item.image);
+
+            container.innerHTML = `
+                <article class="tactical-card tactical-corner rounded overflow-hidden">
+                    <div class="grid grid-cols-1 ${hasImage ? 'lg:grid-cols-12' : ''}">
+                        ${hasImage ? `
+                        <div class="lg:col-span-5 bg-inaraBg border-b lg:border-b-0 lg:border-r border-inaraBorder overflow-hidden flex items-center justify-center max-h-80 lg:max-h-none">
+                            <img
+                                src="${escapeDispatchHtml(item.image.trim())}"
+                                alt="${escapeDispatchHtml(item.title)}"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            >
+                        </div>
+                        ` : ''}
+                        <div class="${hasImage ? 'lg:col-span-7' : ''} flex flex-col justify-between">
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                        ${escapeDispatchHtml(item.tag || 'OPERATIVO')}
+                                    </span>
+                                    <span class="text-inaraMuted">
+                                        <i class="fa-regular fa-clock text-uladOrange/80 mr-1"></i>${escapeDispatchHtml(item.date || '')}
+                                    </span>
+                                </div>
+                                <h3 class="font-hud text-xl sm:text-2xl font-bold text-white leading-snug">
+                                    ${escapeDispatchHtml(item.title)}
+                                </h3>
+                                <p class="text-inaraText text-base sm:text-lg leading-relaxed whitespace-pre-line">
+                                    ${escapeDispatchHtml(item.summary)}
+                                </p>
+                            </div>
+                            <div class="px-6 sm:px-8 py-4 bg-inaraBg/70 border-t border-inaraBorder/80 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+                                <div class="flex items-center gap-4 text-inaraMuted">
+                                    <span><i class="fa-solid fa-broadcast-tower text-uladOrange/80 mr-1.5"></i>${escapeDispatchHtml(item.author || 'ULAD')}</span>
+                                    ${item.id ? `<span class="hidden sm:inline text-inaraBorder">|</span><span class="hidden sm:inline">${escapeDispatchHtml(item.id)}</span>` : ''}
+                                </div>
+                                <a href="comunicazioni.html" class="inline-flex items-center gap-2 text-uladOrange hover:text-uladAmber font-hud font-bold tracking-wider uppercase transition">
+                                    Apri Centro Comunicazioni <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        async function loadLatestSquadronDispatch() {
+            let commsList = fallbackSquadronComms;
+            try {
+                const res = await fetch('comunicazioni.html', { cache: 'no-store' });
+                if (res.ok) {
+                    const pageText = await res.text();
+                    const match = pageText.match(/const\s+squadronComms\s*=\s*(\[[\s\S]*?\]);/);
+                    if (match && match[1]) {
+                        const parsed = Function('"use strict"; return (' + match[1] + ');')();
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            commsList = parsed;
+                        }
+                    }
+                }
+            } catch (_) {
+                // Usa fallbackSquadronComms se eseguito in locale (file://) o se comunicazioni.html non è raggiungibile
+            }
+
+            // Prende l'ultimo dispaccio emesso (ultimo elemento dell'array)
+            const latestDispatch = commsList[commsList.length - 1];
+            renderLatestDispatch(latestDispatch);
+        }
+
+        loadLatestSquadronDispatch();
+
     </script>
     <script>
     (function () {
