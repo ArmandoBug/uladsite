@@ -371,7 +371,7 @@
                         </div>
                     </div>
 
-                    <!-- Telemetria Squadron Carrier (API Spansh) -->
+                    <!-- Telemetria Squadron Carrier (carrier.json) -->
                     <div class="mt-4 p-4 rounded bg-inaraBg border border-inaraBorder flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="flex items-center gap-3.5">
                             <div class="w-10 h-10 rounded bg-uladOrangeDim border border-uladOrange/40 flex items-center justify-center text-uladOrange shrink-0">
@@ -380,7 +380,7 @@
                             <div>
                                 <div class="flex items-center gap-2">
                                     <span class="font-mono text-xs text-uladOrange uppercase">Squadron Carrier</span>
-                                    <span class="text-[11px] font-mono bg-inaraPanel border border-inaraBorder px-1.5 py-0.5 rounded text-inaraMuted">SPANSH API</span>
+                                    <span class="text-[11px] font-mono bg-inaraPanel border border-inaraBorder px-1.5 py-0.5 rounded text-inaraMuted">JSON FEED</span>
                                 </div>
                                 <div class="font-hud text-sm sm:text-base font-bold text-white" id="carrier-name">Ulad-01 Nostromo // [ULAD]</div>
                             </div>
@@ -468,29 +468,23 @@
         async function syncSquadronCarrier() {
             const nameEl = document.getElementById('carrier-name');
             const systemEl = document.getElementById('carrier-system');
-            const stationId = '3715273472';
-            const callsign = 'ULAD';
             const fallbackName = 'Ulad-01 Nostromo';
+            const callsign = 'ULAD';
 
             try {
-                const res = await fetch(`https://spansh.co.uk/api/station/${stationId}`);
-                if (!res.ok) throw new Error('Risposta API non valida');
+                const res = await fetch('carrier.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('Impossibile leggere carrier.json');
 
-                const payload = await res.json();
-                const station = payload.station || payload;
-
-                const carrierName = station.name || fallbackName;
-                const systemName =
-                    station.system_name ||
-                    station.systemName ||
-                    (station.system && (station.system.name || station.system)) ||
-                    station.starSystem ||
-                    '';
+                const data = await res.json();
+                const carrierName = data.name || fallbackName;
+                const systemName = data.system || '';
 
                 nameEl.textContent = `${carrierName} // [${callsign}]`;
 
                 if (systemName) {
                     systemEl.textContent = systemName;
+                    systemEl.classList.remove('text-inaraMuted');
+                    systemEl.classList.add('text-emerald-400');
                 } else {
                     systemEl.textContent = 'Non disponibile';
                     systemEl.classList.remove('text-emerald-400');
