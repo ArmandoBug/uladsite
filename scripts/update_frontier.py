@@ -9,7 +9,7 @@ import requests
 DISCORD_API_BASE = "https://discord.com/api/v10"
 OUTPUT_FILE = Path("frontier-comms.json")
 
-URL_REGEX = re.compile(r"https?://[^\s<>()"]+")
+URL_REGEX = re.compile(r"https?://[^\s<>()\"]+")
 
 
 def clean_text(text: str) -> str:
@@ -99,7 +99,6 @@ def parse_messages(messages: list[dict]) -> list[dict]:
     items = []
     for msg in messages:
         if msg.get("type") in {7, 18, 19}:
-            # Salta messaggi di sistema tipo "X ha aggiunto ... a questo canale"
             continue
 
         links, tag = extract_links_and_source(msg)
