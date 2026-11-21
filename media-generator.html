@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>ULAD // Generatore Scheda Multimedia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+        }
+
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .hud-input {
+            background-color: #111317;
+            border: 1px solid #2c313d;
+            color: #ffffff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hud-input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.15);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen grid-overlay">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+        <!-- Intestazione -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-inaraBorder pb-6">
+            <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>ULAD // INTERNAL MEDIA TOOL // [ULAD]</span>
+                </div>
+                <h1 class="font-hud text-2xl sm:text-4xl font-black text-white tracking-tight">
+                    GENERATORE SCHEDA <span class="text-uladOrange">MULTIMEDIA</span>
+                </h1>
+                <p class="text-inaraMuted text-base">
+                    Compila i campi, carica l'immagine e pubblica automaticamente in <code class="text-inaraText font-mono">multimedia/</code> e <code class="text-inaraText font-mono">multimedia.html</code> via GitHub API.
+                </p>
+            </div>
+
+            <div class="flex items-center gap-3 self-start md:self-auto">
+                <a href="multimedia.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-images text-uladOrange"></i> VAI A MULTIMEDIA
+                </a>
+                <a href="homepage.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-house text-uladOrange"></i> HOME
+                </a>
+            </div>
+        </header>
+
+        <!-- Griglia Form + Output/Anteprima -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Colonna Sinistra: Form di Compilazione + Pubblicazione GitHub -->
+            <form id="media-generator-form" class="lg:col-span-6 tactical-card tactical-corner p-6 sm:p-7 rounded space-y-5">
+                <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                    <h2 class="font-hud text-base font-bold text-white uppercase tracking-wider">Parametri Screenshot</h2>
+                    <button type="button" id="reset-btn" class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+
+                <!-- File Immagine Locale -->
+                <div class="space-y-1.5">
+                    <label for="image-file-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Seleziona Immagine dal PC (per upload automatico)
+                    </label>
+                    <input
+                        type="file"
+                        id="image-file-input"
+                        accept="image/*"
+                        class="hud-input w-full px-3.5 py-2 rounded font-mono text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-uladOrange file:text-inaraBg file:font-hud file:font-bold file:text-[11px] hover:file:bg-uladAmber file:cursor-pointer"
+                    >
+                    <p id="selected-file-info" class="text-xs font-mono text-inaraMuted">
+                        Nessun file selezionato: verrà usato il percorso indicato qui sotto.
+                    </p>
+                </div>
+
+                <!-- Nome File nella cartella multimedia/ -->
+                <div class="space-y-1.5">
+                    <label for="filename-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Nome File (dentro <span class="text-uladOrange">multimedia/</span>)
+                    </label>
+                    <div class="flex items-center">
+                        <span class="px-3 py-2.5 rounded-l bg-inaraPanel border border-r-0 border-inaraBorder font-mono text-xs text-inaraMuted select-none">
+                            multimedia/
+                        </span>
+                        <input
+                            type="text"
+                            id="filename-input"
+                            value="esplorazione.jpg"
+                            placeholder="esplorazione.jpg"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded-r font-mono text-sm"
+                        >
+                    </div>
+                </div>
+
+                <!-- Titolo -->
+                <div class="space-y-1.5">
+                    <label for="title-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Titolo (<code class="text-inaraText">title</code>)
+                    </label>
+                    <input
+                        type="text"
+                        id="title-input"
+                        value="Orizzonte"
+                        placeholder="Es. Orizzonte"
+                        required
+                        class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                    >
+                </div>
+
+                <!-- Categoria -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="category-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Categoria (<code class="text-inaraText">category</code>)
+                        </label>
+                        <select id="category-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-sm">
+                            <option value="esplorazione" selected>esplorazione</option>
+                            <option value="combattimento">combattimento</option>
+                            <option value="carrier">carrier</option>
+                            <option value="custom">Altra categoria...</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="category-label-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Etichetta (<code class="text-inaraText">categoryLabel</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="category-label-input"
+                            value="ESPLORAZIONE"
+                            placeholder="ESPLORAZIONE"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-sm uppercase"
+                        >
+                    </div>
+                </div>
+
+                <!-- Campo categoria personalizzata se selezionato "custom" -->
+                <div id="custom-category-wrapper" class="hidden space-y-1.5">
+                    <label for="custom-category-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Slug Categoria Personalizzata
+                    </label>
+                    <input
+                        type="text"
+                        id="custom-category-input"
+                        placeholder="es. exobiologia"
+                        class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-sm"
+                    >
+                </div>
+
+                <!-- Comandante & Sistema -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="cmdr-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Comandante (<code class="text-inaraText">cmdr</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="cmdr-input"
+                            value="CMDR ArmandoBug"
+                            placeholder="CMDR ArmandoBug"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="system-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Sistema / Settore (<code class="text-inaraText">system</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="system-input"
+                            value="Deep Space"
+                            placeholder="Es. Balitcha o Deep Space"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+                </div>
+
+                <!-- Descrizione -->
+                <div class="space-y-1.5">
+                    <label for="description-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Descrizione (<code class="text-inaraText">description</code>)
+                    </label>
+                    <textarea
+                        id="description-input"
+                        rows="3"
+                        placeholder="Descrivi brevemente la scena o la spedizione..."
+                        required
+                        class="hud-input w-full px-3.5 py-2.5 rounded text-base resize-y"
+                    >Tramonto osservato durante una spedizione esplorativa dello squadrone.</textarea>
+                </div>
+
+                <!-- Opzione virgola finale per array JS -->
+                <div class="flex items-center justify-between pt-1">
+                    <label class="inline-flex items-center gap-2.5 text-sm text-inaraText cursor-pointer select-none">
+                        <input type="checkbox" id="trailing-comma-checkbox" checked class="w-4 h-4 accent-[#ff6600] rounded">
+                        <span>Includi virgola finale <code class="font-mono text-xs text-uladOrange">,</code> per inserirlo in <code class="font-mono text-xs">mediaItems</code></span>
+                    </label>
+                </div>
+
+                <!-- Pubblicazione Automatica su GitHub Repository -->
+                <div class="pt-4 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-uladOrange uppercase tracking-wider">
+                            <i class="fa-brands fa-github mr-1.5"></i> Pubblica su ArmandoBug/uladsite
+                        </h3>
+                        <span class="text-[11px] font-mono text-inaraMuted">BRANCH: main</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="space-y-1">
+                            <label for="gh-owner" class="block text-[11px] font-mono text-inaraMuted uppercase">Owner</label>
+                            <input type="text" id="gh-owner" value="ArmandoBug" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-repo" class="block text-[11px] font-mono text-inaraMuted uppercase">Repository</label>
+                            <input type="text" id="gh-repo" value="uladsite" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-branch" class="block text-[11px] font-mono text-inaraMuted uppercase">Branch</label>
+                            <input type="text" id="gh-branch" value="main" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="gh-token" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            GitHub Personal Access Token (solo in memoria, non salvato)
+                        </label>
+                        <input
+                            type="password"
+                            id="gh-token"
+                            placeholder="github_pat_... (permesso Contents: Read and write)"
+                            autocomplete="off"
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                        <p class="text-[11px] text-inaraMuted">
+                            Il token non viene salvato nel codice né nel localStorage: viene usato solo al clic per caricare l'immagine in <code class="font-mono text-inaraText">multimedia/</code> e aggiornare <code class="font-mono text-inaraText">multimedia.html</code>.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="publish-github-btn"
+                        class="w-full py-3 px-4 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-cloud-arrow-up" id="publish-icon"></i>
+                        <span id="publish-label">CARICA IMMAGINE E AGGIORNA MULTIMEDIA.HTML</span>
+                    </button>
+
+                    <div id="publish-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+            </form>
+
+            <!-- Colonna Destra: Codice Generato + Anteprima Card -->
+            <div class="lg:col-span-6 space-y-6">
+
+                <!-- Blocco Codice Generato -->
+                <div class="tactical-card tactical-corner p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-code text-uladOrange"></i>
+                            <h2 class="font-hud text-sm sm:text-base font-bold text-white uppercase tracking-wider">Codice Pronto da Incollare</h2>
+                        </div>
+                        <button
+                            type="button"
+                            id="copy-btn"
+                            class="px-3.5 py-1.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2"
+                        >
+                            <i class="fa-regular fa-copy" id="copy-icon"></i>
+                            <span id="copy-label">COPIA CODICE</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-inaraBg border border-inaraBorder rounded p-4 overflow-x-auto">
+                        <pre id="generated-code" class="font-mono text-xs sm:text-sm text-inaraText leading-relaxed"></pre>
+                    </div>
+
+                    <p class="text-xs text-inaraMuted leading-relaxed">
+                        Puoi anche copiare manualmente il blocco e incollarlo dentro <code class="font-mono text-uladOrange">const mediaItems = [ ... ]</code> in <code class="font-mono text-inaraText">multimedia.html</code>, oppure usare il pulsante di pubblicazione diretta qui a sinistra.
+                    </p>
+                </div>
+
+                <!-- Anteprima Visiva Card Galleria -->
+                <div class="tactical-card p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">Anteprima Card in Galleria</span>
+                        <span class="font-mono text-xs text-inaraMuted" id="preview-file-path">multimedia/esplorazione.jpg</span>
+                    </div>
+
+                    <article class="tactical-card rounded overflow-hidden flex flex-col max-w-md mx-auto w-full bg-inaraBg">
+                        <div class="relative aspect-video bg-inaraBg overflow-hidden border-b border-inaraBorder">
+                            <img
+                                id="preview-img"
+                                src="multimedia/esplorazione.jpg"
+                                alt="Anteprima screenshot"
+                                class="w-full h-full object-cover"
+                                onerror="this.classList.add('hidden'); document.getElementById('preview-fallback').classList.remove('hidden');"
+                                onload="this.classList.remove('hidden'); document.getElementById('preview-fallback').classList.add('hidden');"
+                            >
+                            <div id="preview-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-inaraBg/95">
+                                <i class="fa-solid fa-image text-2xl text-uladOrange/70 mb-2"></i>
+                                <span id="preview-fallback-file" class="font-mono text-xs text-inaraText">multimedia/esplorazione.jpg</span>
+                                <span class="text-xs text-inaraMuted mt-1">Seleziona un file immagine per l'anteprima locale o verifica il percorso su GitHub.</span>
+                            </div>
+                            <span id="preview-category-badge" class="absolute top-3 left-3 px-2.5 py-1 rounded bg-inaraBg/90 border border-uladOrange/40 font-mono text-[11px] text-uladOrange">
+                                ESPLORAZIONE
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between space-y-2 bg-inaraPanel">
+                            <div>
+                                <h3 id="preview-title" class="font-hud text-base font-bold text-white">Orizzonte</h3>
+                                <p id="preview-description" class="text-sm text-inaraMuted mt-1">
+                                    Tramonto osservato durante una spedizione esplorativa dello squadrone.
+                                </p>
+                            </div>
+                            <div class="pt-3 border-t border-inaraBorder/70 flex items-center justify-between text-xs font-mono text-inaraMuted">
+                                <span><i class="fa-solid fa-user-astronaut text-uladOrange/80 mr-1"></i><span id="preview-cmdr">CMDR ArmandoBug</span></span>
+                                <span id="preview-system">Deep Space</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categoryLabelsMap = {
+            esplorazione: 'ESPLORAZIONE',
+            combattimento: 'COMBATTIMENTO',
+            carrier: 'CARRIER & MINING'
+        };
+
+        const imageFileInput = document.getElementById('image-file-input');
+        const selectedFileInfo = document.getElementById('selected-file-info');
+        const filenameInput = document.getElementById('filename-input');
+        const titleInput = document.getElementById('title-input');
+        const categorySelect = document.getElementById('category-select');
+        const categoryLabelInput = document.getElementById('category-label-input');
+        const customCategoryWrapper = document.getElementById('custom-category-wrapper');
+        const customCategoryInput = document.getElementById('custom-category-input');
+        const cmdrInput = document.getElementById('cmdr-input');
+        const systemInput = document.getElementById('system-input');
+        const descriptionInput = document.getElementById('description-input');
+        const trailingCommaCheckbox = document.getElementById('trailing-comma-checkbox');
+
+        const ghOwnerInput = document.getElementById('gh-owner');
+        const ghRepoInput = document.getElementById('gh-repo');
+        const ghBranchInput = document.getElementById('gh-branch');
+        const ghTokenInput = document.getElementById('gh-token');
+        const publishBtn = document.getElementById('publish-github-btn');
+        const publishIcon = document.getElementById('publish-icon');
+        const publishLabel = document.getElementById('publish-label');
+        const publishStatus = document.getElementById('publish-status');
+
+        const generatedCodeEl = document.getElementById('generated-code');
+        const copyBtn = document.getElementById('copy-btn');
+        const copyIcon = document.getElementById('copy-icon');
+        const copyLabel = document.getElementById('copy-label');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Anteprima
+        const previewFilePath = document.getElementById('preview-file-path');
+        const previewImg = document.getElementById('preview-img');
+        const previewFallbackFile = document.getElementById('preview-fallback-file');
+        const previewCategoryBadge = document.getElementById('preview-category-badge');
+        const previewTitle = document.getElementById('preview-title');
+        const previewDescription = document.getElementById('preview-description');
+        const previewCmdr = document.getElementById('preview-cmdr');
+        const previewSystem = document.getElementById('preview-system');
+
+        let localObjectUrl = null;
+
+        function escapeJsString(str) {
+            return String(str)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r?\n/g, ' ');
+        }
+
+        function normalizeFilePath(rawName) {
+            const cleaned = rawName.trim().replace(/^\/+/, '').replace(/^multimedia\//i, '');
+            return `multimedia/${cleaned || 'esplorazione.jpg'}`;
+        }
+
+        function getActiveCategory() {
+            if (categorySelect.value === 'custom') {
+                return (customCategoryInput.value.trim() || 'esplorazione').toLowerCase().replace(/\s+/g, '-');
+            }
+            return categorySelect.value;
+        }
+
+        function buildMediaObjectCode(includeComma = trailingCommaCheckbox.checked) {
+            const filePath = normalizeFilePath(filenameInput.value);
+            const title = titleInput.value.trim() || 'Orizzonte';
+            const category = getActiveCategory();
+            const categoryLabel = (categoryLabelInput.value.trim() || category).toUpperCase();
+            const cmdr = cmdrInput.value.trim() || 'CMDR ArmandoBug';
+            const system = systemInput.value.trim() || 'Deep Space';
+            const description = descriptionInput.value.trim() || 'Tramonto osservato durante una spedizione esplorativa dello squadrone.';
+            const comma = includeComma ? ',' : '';
+
+            return `{
+                file: '${escapeJsString(filePath)}',
+                title: '${escapeJsString(title)}',
+                category: '${escapeJsString(category)}',
+                categoryLabel: '${escapeJsString(categoryLabel)}',
+                cmdr: '${escapeJsString(cmdr)}',
+                system: '${escapeJsString(system)}',
+                description: '${escapeJsString(description)}'
+            }${comma}`;
+        }
+
+        function updateOutput() {
+            const filePath = normalizeFilePath(filenameInput.value);
+            const title = titleInput.value.trim() || 'Orizzonte';
+            const category = getActiveCategory();
+            const categoryLabel = (categoryLabelInput.value.trim() || category).toUpperCase();
+            const cmdr = cmdrInput.value.trim() || 'CMDR ArmandoBug';
+            const system = systemInput.value.trim() || 'Deep Space';
+            const description = descriptionInput.value.trim() || 'Tramonto osservato durante una spedizione esplorativa dello squadrone.';
+
+            generatedCodeEl.textContent = buildMediaObjectCode(trailingCommaCheckbox.checked);
+
+            // Aggiorna anteprima card
+            previewFilePath.textContent = filePath;
+            previewFallbackFile.textContent = filePath;
+            previewCategoryBadge.textContent = categoryLabel;
+            previewTitle.textContent = title;
+            previewDescription.textContent = description;
+            previewCmdr.textContent = cmdr;
+            previewSystem.textContent = system;
+
+            document.getElementById('preview-fallback').classList.add('hidden');
+            previewImg.classList.remove('hidden');
+            previewImg.src = localObjectUrl || filePath;
+            previewImg.alt = title;
+        }
+
+        function setStatus(type, message) {
+            publishStatus.classList.remove('hidden', 'border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300', 'border-red-500/50', 'bg-red-950/40', 'text-red-300', 'border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            if (type === 'success') {
+                publishStatus.classList.add('border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300');
+            } else if (type === 'error') {
+                publishStatus.classList.add('border-red-500/50', 'bg-red-950/40', 'text-red-300');
+            } else {
+                publishStatus.classList.add('border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            }
+            publishStatus.textContent = message;
+        }
+
+        function arrayBufferToBase64(buffer) {
+            const bytes = new Uint8Array(buffer);
+            const chunkSize = 0x8000;
+            let binary = '';
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+            }
+            return btoa(binary);
+        }
+
+        function utf8ToBase64(str) {
+            const utf8Bytes = new TextEncoder().encode(str);
+            return arrayBufferToBase64(utf8Bytes.buffer);
+        }
+
+        function base64ToUtf8(base64) {
+            const clean = base64.replace(/\s+/g, '');
+            const binary = atob(clean);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return new TextDecoder().decode(bytes);
+        }
+
+        function insertIntoMediaItemsArray(htmlContent, entryCode) {
+            const arrayMatch = htmlContent.match(/(const\s+mediaItems\s*=\s*\[)([\s\S]*?)(\n\s*\];)/);
+            if (!arrayMatch) {
+                throw new Error('Impossibile trovare "const mediaItems = [ ... ];" in multimedia.html.');
+            }
+
+            const prefix = arrayMatch[1];
+            const body = arrayMatch[2];
+            const suffix = arrayMatch[3];
+
+            const trimmedBody = body.trimEnd();
+            const hasItems = trimmedBody.trim().length > 0;
+            const ensuredCommaBody = hasItems && !trimmedBody.endsWith(',') ? `${trimmedBody},` : trimmedBody;
+            const cleanEntry = entryCode.replace(/,\s*$/, '');
+            const newBody = hasItems
+                ? `${ensuredCommaBody}\n            ${cleanEntry}`
+                : `\n            ${cleanEntry}`;
+
+            return htmlContent.replace(arrayMatch[0], `${prefix}${newBody}${suffix}`);
+        }
+
+        async function githubRequest(url, token, options = {}) {
+            const response = await fetch(url, {
+                ...options,
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28',
+                    ...(options.headers || {})
+                }
+            });
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(data.message || `Errore GitHub API (${response.status})`);
+            }
+            return data;
+        }
+
+        async function getExistingFileSha(owner, repo, path, branch, token) {
+            const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+            const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
+            const response = await fetch(url, {
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+            });
+
+            if (response.status === 404) {
+                return null;
+            }
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(data.message || `Errore lettura ${path} (${response.status})`);
+            }
+            return data;
+        }
+
+        publishBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const file = imageFileInput.files[0];
+            const targetImagePath = normalizeFilePath(filenameInput.value);
+            const title = titleInput.value.trim() || 'Orizzonte';
+
+            if (!token) {
+                setStatus('error', 'Inserisci un GitHub Personal Access Token con permesso Contents: Read and write.');
+                return;
+            }
+            if (!file) {
+                setStatus('error', 'Seleziona un file immagine da caricare nella cartella multimedia/.');
+                return;
+            }
+
+            publishBtn.disabled = true;
+            publishIcon.className = 'fa-solid fa-spinner fa-spin';
+            publishLabel.textContent = 'PUBBLICAZIONE IN CORSO...';
+            setStatus('info', `1/3 Lettura file su ${owner}/${repo} (${branch})...`);
+
+            try {
+                // 1. Carica o aggiorna l'immagine in multimedia/
+                const buffer = await file.arrayBuffer();
+                const base64Image = arrayBufferToBase64(buffer);
+                const existingImg = await getExistingFileSha(owner, repo, targetImagePath, branch, token);
+                const encodedImgPath = targetImagePath.split('/').map(encodeURIComponent).join('/');
+
+                setStatus('info', `2/3 Caricamento immagine su ${targetImagePath}...`);
+                await githubRequest(
+                    `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodedImgPath}`,
+                    token,
+                    {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            message: `feat(media): add ${targetImagePath}`,
+                            content: base64Image,
+                            branch,
+                            ...(existingImg && existingImg.sha ? { sha: existingImg.sha } : {})
+                        })
+                    }
+                );
+
+                // 2. Legge multimedia.html, inserisce la scheda in mediaItems e salva
+                setStatus('info', '3/3 Aggiornamento array mediaItems in multimedia.html...');
+                const existingHtml = await getExistingFileSha(owner, repo, 'multimedia.html', branch, token);
+                if (!existingHtml || !existingHtml.content || !existingHtml.sha) {
+                    throw new Error('Impossibile leggere multimedia.html dal repository.');
+                }
+
+                const currentHtml = base64ToUtf8(existingHtml.content);
+                const entryWithoutTrailingComma = buildMediaObjectCode(false);
+                const updatedHtml = insertIntoMediaItemsArray(currentHtml, entryWithoutTrailingComma);
+
+                if (updatedHtml === currentHtml) {
+                    throw new Error('Nessuna modifica applicata a multimedia.html.');
+                }
+
+                await githubRequest(
+                    `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/multimedia.html`,
+                    token,
+                    {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            message: `feat(media): add "${title}" entry to multimedia.html`,
+                            content: utf8ToBase64(updatedHtml),
+                            sha: existingHtml.sha,
+                            branch
+                        })
+                    }
+                );
+
+                setStatus(
+                    'success',
+                    `Completato con successo!\n- Immagine caricata: ${targetImagePath}\n- Aggiornato: multimedia.html (array mediaItems)\nAttendere il deploy di GitHub Pages per vedere la modifica online.`
+                );
+            } catch (err) {
+                setStatus('error', `Errore durante la pubblicazione:\n${err.message}`);
+            } finally {
+                publishBtn.disabled = false;
+                publishIcon.className = 'fa-solid fa-cloud-arrow-up';
+                publishLabel.textContent = 'CARICA IMMAGINE E AGGIORNA MULTIMEDIA.HTML';
+            }
+        });
+
+        imageFileInput.addEventListener('change', () => {
+            const file = imageFileInput.files[0];
+            if (localObjectUrl) {
+                URL.revokeObjectURL(localObjectUrl);
+                localObjectUrl = null;
+            }
+            if (file) {
+                localObjectUrl = URL.createObjectURL(file);
+                filenameInput.value = file.name;
+                selectedFileInfo.textContent = `File selezionato: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+            } else {
+                selectedFileInfo.textContent = 'Nessun file selezionato: verrà usato il percorso indicato qui sotto.';
+            }
+            updateOutput();
+        });
+
+        categorySelect.addEventListener('change', () => {
+            if (categorySelect.value === 'custom') {
+                customCategoryWrapper.classList.remove('hidden');
+                if (customCategoryInput.value.trim()) {
+                    categoryLabelInput.value = customCategoryInput.value.trim().toUpperCase();
+                }
+            } else {
+                customCategoryWrapper.classList.add('hidden');
+                if (categoryLabelsMap[categorySelect.value]) {
+                    categoryLabelInput.value = categoryLabelsMap[categorySelect.value];
+                }
+            }
+            updateOutput();
+        });
+
+        customCategoryInput.addEventListener('input', () => {
+            if (categorySelect.value === 'custom' && customCategoryInput.value.trim()) {
+                categoryLabelInput.value = customCategoryInput.value.trim().toUpperCase();
+            }
+            updateOutput();
+        });
+
+        [
+            filenameInput,
+            titleInput,
+            categoryLabelInput,
+            cmdrInput,
+            systemInput,
+            descriptionInput,
+            trailingCommaCheckbox
+        ].forEach(el => {
+            el.addEventListener('input', updateOutput);
+            el.addEventListener('change', updateOutput);
+        });
+
+        copyBtn.addEventListener('click', async () => {
+            const textToCopy = generatedCodeEl.textContent;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+            } catch (_) {
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+
+            copyIcon.className = 'fa-solid fa-check';
+            copyLabel.textContent = 'COPIATO!';
+            setTimeout(() => {
+                copyIcon.className = 'fa-regular fa-copy';
+                copyLabel.textContent = 'COPIA CODICE';
+            }, 1800);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (localObjectUrl) {
+                URL.revokeObjectURL(localObjectUrl);
+                localObjectUrl = null;
+            }
+            imageFileInput.value = '';
+            selectedFileInfo.textContent = 'Nessun file selezionato: verrà usato il percorso indicato qui sotto.';
+            filenameInput.value = 'esplorazione.jpg';
+            titleInput.value = 'Orizzonte';
+            categorySelect.value = 'esplorazione';
+            customCategoryWrapper.classList.add('hidden');
+            customCategoryInput.value = '';
+            categoryLabelInput.value = 'ESPLORAZIONE';
+            cmdrInput.value = 'CMDR ArmandoBug';
+            systemInput.value = 'Deep Space';
+            descriptionInput.value = 'Tramonto osservato durante una spedizione esplorativa dello squadrone.';
+            trailingCommaCheckbox.checked = true;
+            publishStatus.classList.add('hidden');
+            updateOutput();
+        });
+
+        updateOutput();
+    </script>
+</body>
+</html>
