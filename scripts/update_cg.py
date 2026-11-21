@@ -1,27 +1,58 @@
 import json
 import re
+import time
 from datetime import datetime, timezone
 from pathlib import Path
-import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 INARA_CG_URL = "https://inara.cz/elite/communitygoals/"
 OUTPUT_FILE = Path("community-goals.json")
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/128.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9,it;q=0.8",
-    "Referer": "https://inara.cz/elite/",
-}
-
 
 def clean_text(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
+
+
+def fetch_html_with_headless_browser(url: str) -> str:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-blink-features=AutomationControlled",
+            ],
+        )
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/128.0.0.0 Safari/537.36"
+            ),
+            locale="en-US",
+            viewport={"width": 1366, "height": 900},
+        )
+        context.add_init_script(
+            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+        )
+        page = context.new_page()
+
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=45000)
+            # Attendi eventuale challenge / caricamento contenuto CG
+            for _ in range(10):
+                body_text = page.inner_text("body")
+                if "Location" in body_text and "Objective" in body_text and "Status" in body_text:
+                    break
+                if "No active community goals" in body_text.lower() or "there are currently no active community goals" in body_text.lower():
+                    break
+                time.sleep(2)
+
+            html = page.content()
+            return html
+        finally:
+            browser.close()
 
 
 def parse_inara_community_goals(html: str) -> list[dict]:
@@ -145,18 +176,18 @@ def main():
 
     for attempt in range(1, 4):
         try:
-            resp = requests.get(INARA_CG_URL, headers=HEADERS, timeout=25)
-            resp.raise_for_status()
-            html = resp.text
-            break
+            html = fetch_html_with_headless_browser(INARA_CG_URL)
+            if html and len(html) > 500:
+                break
         except Exception as exc:
             last_error = exc
-            print(f"Tentativo {attempt}/3 fallito su Inara: {exc}")
+            print(f"Tentativo {attempt}/3 con browser headless fallito: {exc}")
+            time.sleep(3)
 
     if not html:
         existing = load_existing_goals()
         if existing:
-            print(f"Inara non raggiungibile ({last_error}). Mantengo i dati esistenti in {OUTPUT_FILE}.")
+            print(f"Impossibile recuperare la pagina Inara ({last_error}). Mantengo i dati esistenti in {OUTPUT_FILE}.")
             return
 
         fallback = [
@@ -164,13 +195,13 @@ def main():
                 "title": "Sincronizzazione Inara in attesa",
                 "status": "STANDBY",
                 "systems": ["Galassia"],
-                "description": "Inara ha risposto con un errore temporaneo (es. 503 Service Unavailable). Il workflow riprovera automaticamente al prossimo ciclo.",
+                "description": "Inara non ha restituito i dati al momento. Il workflow riprovera automaticamente al prossimo ciclo.",
                 "rewards": "Crediti e ricompense in base al tier raggiunto.",
                 "updatedAt": now_iso,
             }
         ]
         OUTPUT_FILE.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"Salvato stato di attesa in {OUTPUT_FILE} dopo errore: {last_error}")
+        print(f"Salvato stato di attesa in {OUTPUT_FILE}.")
         return
 
     active_goals = parse_inara_community_goals(html)
