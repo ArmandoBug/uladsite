@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>ULAD // Generatore Comunicazioni</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image:
+                radial-gradient(circle at 15% 45%, rgba(255, 102, 0, 0.045) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+        }
+
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .hud-input {
+            background-color: #111317;
+            border: 1px solid #2c313d;
+            color: #ffffff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hud-input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.15);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen grid-overlay">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-inaraBorder pb-6">
+            <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>ULAD // COMMS GENERATOR TOOL // [ULAD]</span>
+                </div>
+                <h1 class="font-hud text-2xl sm:text-4xl font-black text-white tracking-tight">
+                    GENERATORE <span class="text-uladOrange">COMUNICAZIONI</span>
+                </h1>
+                <p class="text-inaraMuted text-base">
+                    Crea e pubblica comunicazioni per <strong class="text-white">Squadrone</strong> o <strong class="text-white">Frontier</strong> in <code class="font-mono text-inaraText">comunicazioni.html</code> (con immagine opzionale).
+                </p>
+            </div>
+
+            <div class="flex items-center gap-3 self-start md:self-auto">
+                <a href="comunicazioni.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-satellite-dish text-uladOrange"></i> VAI A COMUNICAZIONI
+                </a>
+                <a href="homepage.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-house text-uladOrange"></i> HOME
+                </a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Colonna Sinistra: Form + Pubblicazione / Rimozione GitHub -->
+            <form id="comms-form" class="lg:col-span-6 tactical-card tactical-corner p-6 sm:p-7 rounded space-y-5">
+                <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                    <h2 class="font-hud text-base font-bold text-white uppercase tracking-wider">Nuova Comunicazione</h2>
+                    <button type="button" id="reset-comms-btn" class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Sezione di Destinazione -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="section-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Sezione Destinazione
+                        </label>
+                        <select id="section-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs">
+                            <option value="squadron" selected>1. Comunicazioni Squadrone (squadronComms)</option>
+                            <option value="frontier">3. Comunicazioni Frontier (frontierComms)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="tag-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Etichetta / Tag
+                        </label>
+                        <input
+                            type="text"
+                            id="tag-input"
+                            value="OPERATIVO"
+                            placeholder="Es. OPERATIVO, ROADMAP, PATCH"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs uppercase"
+                        >
+                    </div>
+                </div>
+
+                <!-- ID & Data -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="id-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Codice Dispaccio (<code class="text-inaraText">id</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="id-input"
+                            value="ulad-002"
+                            placeholder="Es. ulad-002 o fdev-002"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="date-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Data (<code class="text-inaraText">date</code>)
+                        </label>
+                        <input
+                            type="date"
+                            id="date-input"
+                            value="2026-11-21"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+                </div>
+
+                <!-- Titolo & Autore -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="title-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Titolo (<code class="text-inaraText">title</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="title-input"
+                            value="Ordine di Rotta: Balitcha"
+                            placeholder="Titolo comunicazione"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="author-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Mittente / Autore (<code class="text-inaraText">author</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="author-input"
+                            value="CMDR ArmandoBug"
+                            placeholder="Es. CMDR ArmandoBug o Frontier Developments"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+                </div>
+
+                <!-- Immagine Opzionale -->
+                <div class="p-4 rounded bg-inaraBg/70 border border-inaraBorder space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-mono text-white cursor-pointer select-none">
+                            <input type="checkbox" id="include-image-checkbox" class="w-4 h-4 accent-[#ff6600] rounded">
+                            <span>Allega immagine (opzionale)</span>
+                        </label>
+                        <span class="text-[11px] font-mono text-inaraMuted">NON OBBLIGATORIO</span>
+                    </div>
+
+                    <div id="image-fields-box" class="hidden space-y-3 pt-1">
+                        <div class="space-y-1.5">
+                            <label for="image-file-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                                Carica File Immagine dal PC (per upload su GitHub)
+                            </label>
+                            <input
+                                type="file"
+                                id="image-file-input"
+                                accept="image/*"
+                                class="hud-input w-full px-3 py-2 rounded font-mono text-xs file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:bg-uladOrange file:text-inaraBg file:font-hud file:font-bold file:text-[10px] hover:file:bg-uladAmber file:cursor-pointer"
+                            >
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label for="image-path-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                                Percorso Immagine nel Repo (<code class="text-inaraText">image</code>)
+                            </label>
+                            <input
+                                type="text"
+                                id="image-path-input"
+                                value="multimedia/comunicazione.jpg"
+                                placeholder="multimedia/comunicazione.jpg"
+                                class="hud-input w-full px-3 py-2 rounded font-mono text-xs"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testo Comunicazione -->
+                <div class="space-y-1.5">
+                    <label for="summary-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Testo / Sintesi (<code class="text-inaraText">summary</code>)
+                    </label>
+                    <textarea
+                        id="summary-input"
+                        rows="4"
+                        required
+                        class="hud-input w-full px-3.5 py-2.5 rounded text-base resize-y"
+                    >Aggiornamento operativo per i comandanti dello squadrone: la Ulad-01 Nostromo mantiene il presidio su Balitcha in attesa di nuove direttive.</textarea>
+                </div>
+
+                <!-- Pubblicazione GitHub API -->
+                <div class="pt-4 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-uladOrange uppercase tracking-wider">
+                            <i class="fa-brands fa-github mr-1.5"></i> Pubblica su ArmandoBug/uladsite
+                        </h3>
+                        <span class="text-[11px] font-mono text-inaraMuted">BRANCH: main</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="space-y-1">
+                            <label for="gh-owner" class="block text-[11px] font-mono text-inaraMuted uppercase">Owner</label>
+                            <input type="text" id="gh-owner" value="ArmandoBug" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-repo" class="block text-[11px] font-mono text-inaraMuted uppercase">Repository</label>
+                            <input type="text" id="gh-repo" value="uladsite" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-branch" class="block text-[11px] font-mono text-inaraMuted uppercase">Branch</label>
+                            <input type="text" id="gh-branch" value="main" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="gh-token" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            GitHub Personal Access Token (solo in memoria, non salvato)
+                        </label>
+                        <input
+                            type="password"
+                            id="gh-token"
+                            placeholder="github_pat_... (permesso Contents: Read and write)"
+                            autocomplete="off"
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+
+                    <button
+                        type="button"
+                        id="publish-comms-btn"
+                        class="w-full py-3 px-4 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-cloud-arrow-up" id="publish-icon"></i>
+                        <span id="publish-label">PUBBLICA IN COMUNICAZIONI.HTML</span>
+                    </button>
+
+                    <div id="publish-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+
+                <!-- Rimozione Comunicazione -->
+                <div class="pt-5 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-red-400 uppercase tracking-wider">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Rimuovi Comunicazione Esistente
+                        </h3>
+                        <button
+                            type="button"
+                            id="load-comms-btn"
+                            class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-rotate" id="load-comms-icon"></i> Carica lista
+                        </button>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="delete-comm-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Seleziona Comunicazione da Rimuovere
+                        </label>
+                        <select id="delete-comm-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs">
+                            <option value="">-- Clicca "Carica lista" per leggere comunicazioni.html --</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="delete-comm-btn"
+                        class="w-full py-2.5 px-4 rounded bg-red-600/90 hover:bg-red-500 text-white font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-trash" id="delete-icon"></i>
+                        <span id="delete-label">RIMUOVI COMUNICAZIONE SELEZIONATA</span>
+                    </button>
+
+                    <div id="delete-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+            </form>
+
+            <!-- Colonna Destra: Codice Generato + Anteprima -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="tactical-card tactical-corner p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-code text-uladOrange"></i>
+                            <h2 class="font-hud text-sm sm:text-base font-bold text-white uppercase tracking-wider">Codice Generato</h2>
+                        </div>
+                        <button
+                            type="button"
+                            id="copy-code-btn"
+                            class="px-3.5 py-1.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2"
+                        >
+                            <i class="fa-regular fa-copy" id="copy-icon"></i>
+                            <span id="copy-label">COPIA CODICE</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-inaraBg border border-inaraBorder rounded p-4 overflow-x-auto">
+                        <pre id="generated-code" class="font-mono text-xs sm:text-sm text-inaraText leading-relaxed"></pre>
+                    </div>
+                </div>
+
+                <div class="tactical-card p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">Anteprima Card Comunicazione</span>
+                        <span id="preview-target-label" class="font-mono text-xs text-inaraMuted">squadronComms</span>
+                    </div>
+
+                    <article class="tactical-card tactical-corner rounded overflow-hidden bg-inaraBg">
+                        <div id="preview-img-wrapper" class="hidden aspect-video w-full bg-inaraBg border-b border-inaraBorder overflow-hidden">
+                            <img id="preview-img" src="" alt="Anteprima immagine" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 space-y-3 bg-inaraPanel">
+                            <div class="flex items-center justify-between gap-2 text-xs font-mono">
+                                <span id="preview-tag" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">OPERATIVO</span>
+                                <span id="preview-date" class="text-inaraMuted">2026-11-21</span>
+                            </div>
+                            <h3 id="preview-title" class="font-hud text-lg font-bold text-white">Ordine di Rotta: Balitcha</h3>
+                            <p id="preview-summary" class="text-inaraText text-base leading-relaxed">
+                                Aggiornamento operativo per i comandanti dello squadrone: la Ulad-01 Nostromo mantiene il presidio su Balitcha in attesa di nuove direttive.
+                            </p>
+                            <div class="pt-3 border-t border-inaraBorder/80 flex items-center justify-between text-xs font-mono text-inaraMuted">
+                                <span id="preview-author">CMDR ArmandoBug</span>
+                                <span id="preview-id">ulad-002</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sectionSelect = document.getElementById('section-select');
+        const tagInput = document.getElementById('tag-input');
+        const idInput = document.getElementById('id-input');
+        const dateInput = document.getElementById('date-input');
+        const titleInput = document.getElementById('title-input');
+        const authorInput = document.getElementById('author-input');
+        const includeImageCheckbox = document.getElementById('include-image-checkbox');
+        const imageFieldsBox = document.getElementById('image-fields-box');
+        const imageFileInput = document.getElementById('image-file-input');
+        const imagePathInput = document.getElementById('image-path-input');
+        const summaryInput = document.getElementById('summary-input');
+
+        const ghOwnerInput = document.getElementById('gh-owner');
+        const ghRepoInput = document.getElementById('gh-repo');
+        const ghBranchInput = document.getElementById('gh-branch');
+        const ghTokenInput = document.getElementById('gh-token');
+
+        const publishBtn = document.getElementById('publish-comms-btn');
+        const publishIcon = document.getElementById('publish-icon');
+        const publishLabel = document.getElementById('publish-label');
+        const publishStatus = document.getElementById('publish-status');
+
+        const loadCommsBtn = document.getElementById('load-comms-btn');
+        const loadCommsIcon = document.getElementById('load-comms-icon');
+        const deleteCommSelect = document.getElementById('delete-comm-select');
+        const deleteCommBtn = document.getElementById('delete-comm-btn');
+        const deleteIcon = document.getElementById('delete-icon');
+        const deleteLabel = document.getElementById('delete-label');
+        const deleteStatus = document.getElementById('delete-status');
+
+        const generatedCodeEl = document.getElementById('generated-code');
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        const copyIcon = document.getElementById('copy-icon');
+        const copyLabel = document.getElementById('copy-label');
+        const resetCommsBtn = document.getElementById('reset-comms-btn');
+
+        const previewTargetLabel = document.getElementById('preview-target-label');
+        const previewImgWrapper = document.getElementById('preview-img-wrapper');
+        const previewImg = document.getElementById('preview-img');
+        const previewTag = document.getElementById('preview-tag');
+        const previewDate = document.getElementById('preview-date');
+        const previewTitle = document.getElementById('preview-title');
+        const previewSummary = document.getElementById('preview-summary');
+        const previewAuthor = document.getElementById('preview-author');
+        const previewId = document.getElementById('preview-id');
+
+        let localPreviewUrl = null;
+        let loadedEntries = [];
+
+        function escapeJs(str) {
+            return String(str ?? '')
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r?\n/g, ' ');
+        }
+
+        function normalizeMediaPath(rawPath) {
+            const cleaned = String(rawPath || '').trim().replace(/^\/+/, '').replace(/^multimedia\//i, '');
+            return cleaned ? `multimedia/${cleaned}` : '';
+        }
+
+        function getArrayVariableName() {
+            return sectionSelect.value === 'frontier' ? 'frontierComms' : 'squadronComms';
+        }
+
+        function buildCommObjectCode() {
+            const idVal = idInput.value.trim() || (sectionSelect.value === 'frontier' ? 'fdev-002' : 'ulad-002');
+            const dateVal = dateInput.value.trim() || '2026-11-21';
+            const authorVal = authorInput.value.trim() || (sectionSelect.value === 'frontier' ? 'Frontier Developments' : 'CMDR ArmandoBug');
+            const tagVal = (tagInput.value.trim() || (sectionSelect.value === 'frontier' ? 'ROADMAP' : 'OPERATIVO')).toUpperCase();
+            const titleVal = titleInput.value.trim() || 'Comunicazione';
+            const summaryVal = summaryInput.value.trim() || '';
+            const imageVal = includeImageCheckbox.checked ? normalizeMediaPath(imagePathInput.value) : '';
+
+            return `{
+                id: '${escapeJs(idVal)}',
+                title: '${escapeJs(titleVal)}',
+                date: '${escapeJs(dateVal)}',
+                author: '${escapeJs(authorVal)}',
+                tag: '${escapeJs(tagVal)}',
+                image: '${escapeJs(imageVal)}',
+                summary: '${escapeJs(summaryVal)}'
+            }`;
+        }
+
+        function updatePreviewAndCode() {
+            const arrayName = getArrayVariableName();
+            const idVal = idInput.value.trim() || (sectionSelect.value === 'frontier' ? 'fdev-002' : 'ulad-002');
+            const dateVal = dateInput.value.trim() || '2026-11-21';
+            const authorVal = authorInput.value.trim() || (sectionSelect.value === 'frontier' ? 'Frontier Developments' : 'CMDR ArmandoBug');
+            const tagVal = (tagInput.value.trim() || (sectionSelect.value === 'frontier' ? 'ROADMAP' : 'OPERATIVO')).toUpperCase();
+            const titleVal = titleInput.value.trim() || 'Comunicazione';
+            const summaryVal = summaryInput.value.trim() || '';
+            const imageVal = includeImageCheckbox.checked ? normalizeMediaPath(imagePathInput.value) : '';
+
+            generatedCodeEl.textContent = `${buildCommObjectCode()},`;
+            previewTargetLabel.textContent = arrayName;
+            previewTag.textContent = tagVal;
+            previewDate.textContent = dateVal;
+            previewTitle.textContent = titleVal;
+            previewSummary.textContent = summaryVal;
+            previewAuthor.textContent = authorVal;
+            previewId.textContent = idVal;
+
+            if (includeImageCheckbox.checked && (localPreviewUrl || imageVal)) {
+                previewImgWrapper.classList.remove('hidden');
+                previewImg.src = localPreviewUrl || imageVal;
+            } else {
+                previewImgWrapper.classList.add('hidden');
+                previewImg.removeAttribute('src');
+            }
+        }
+
+        function setBoxStatus(el, type, msg) {
+            el.classList.remove('hidden', 'border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300', 'border-red-500/50', 'bg-red-950/40', 'text-red-300', 'border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            if (type === 'success') {
+                el.classList.add('border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300');
+            } else if (type === 'error') {
+                el.classList.add('border-red-500/50', 'bg-red-950/40', 'text-red-300');
+            } else {
+                el.classList.add('border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            }
+            el.textContent = msg;
+        }
+
+        function arrayBufferToBase64(buffer) {
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            const chunk = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunk) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+            }
+            return btoa(binary);
+        }
+
+        function utf8ToBase64(str) {
+            return arrayBufferToBase64(new TextEncoder().encode(str).buffer);
+        }
+
+        function base64ToUtf8(b64) {
+            const clean = b64.replace(/\s+/g, '');
+            const bin = atob(clean);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            return new TextDecoder().decode(bytes);
+        }
+
+        async function getFileMeta(owner, repo, path, branch, token) {
+            const enc = path.split('/').map(encodeURIComponent).join('/');
+            const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}?ref=${encodeURIComponent(branch)}`;
+            const res = await fetch(url, {
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+            });
+            if (res.status === 404) return null;
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || `Errore lettura ${path} (${res.status})`);
+            return data;
+        }
+
+        async function ghPutFile(owner, repo, path, branch, token, payload) {
+            const enc = path.split('/').map(encodeURIComponent).join('/');
+            const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}`;
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                },
+                body: JSON.stringify({ ...payload, branch })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || `Errore scrittura ${path} (${res.status})`);
+            return data;
+        }
+
+        function insertIntoArray(htmlText, varName, itemCode) {
+            const re = new RegExp(`(const\\s+${varName}\\s*=\\s*\\[)([\\s\\S]*?)(\n\\s*\\];)`);
+            const m = htmlText.match(re);
+            if (!m) throw new Error(`Array "${varName}" non trovato in comunicazioni.html.`);
+
+            const prefix = m[1];
+            const body = m[2];
+            const suffix = m[3];
+            const trimmed = body.trimEnd();
+            const hasItems = trimmed.trim().length > 0;
+            const withComma = hasItems && !trimmed.endsWith(',') ? `${trimmed},` : trimmed;
+            const newBody = hasItems ? `${withComma}\n            ${itemCode}` : `\n            ${itemCode}`;
+
+            return htmlText.replace(m[0], `${prefix}${newBody}${suffix}`);
+        }
+
+        function findArraySpan(htmlText, varName) {
+            const re = new RegExp(`const\\s+${varName}\\s*=\\s*\\[`);
+            const m = htmlText.match(re);
+            if (!m) throw new Error(`Array "${varName}" non trovato in comunicazioni.html.`);
+            const openIdx = m.index + m[0].length - 1;
+            let depth = 0;
+            let inS = false, inD = false, inT = false, esc = false;
+            for (let i = openIdx; i < htmlText.length; i++) {
+                const ch = htmlText[i];
+                if (esc) { esc = false; continue; }
+                if (ch === '\\') { esc = true; continue; }
+                if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                if (!inS && !inT && ch === '"') { inD = !inD; continue; }
+                if (!inS && !inD && ch === '`') { inT = !inT; continue; }
+                if (inS || inD || inT) continue;
+                if (ch === '[') depth++;
+                else if (ch === ']') {
+                    depth--;
+                    if (depth === 0) return { start: openIdx + 1, end: i };
+                }
+            }
+            throw new Error(`Chiusura "]" non trovata per "${varName}".`);
+        }
+
+        function parseObjects(body) {
+            const out = [];
+            let i = 0;
+            while (i < body.length) {
+                if (body[i] === '{') {
+                    const start = i;
+                    let depth = 0, inS = false, inD = false, inT = false, esc = false;
+                    for (; i < body.length; i++) {
+                        const ch = body[i];
+                        if (esc) { esc = false; continue; }
+                        if (ch === '\\') { esc = true; continue; }
+                        if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                        if (!inS && !inT && ch === '"') { inD = !inD; continue; }
+                        if (!inS && !inD && ch === '`') { inT = !inT; continue; }
+                        if (inS || inD || inT) continue;
+                        if (ch === '{') depth++;
+                        else if (ch === '}') {
+                            depth--;
+                            if (depth === 0) {
+                                const raw = body.slice(start, i + 1);
+                                const titleM = raw.match(/title\s*:\s*(['"`])(.*?)\1/);
+                                const idM = raw.match(/id\s*:\s*(['"`])(.*?)\1/);
+                                out.push({
+                                    start,
+                                    end: i + 1,
+                                    title: titleM ? titleM[2] : `Voce #${out.length + 1}`,
+                                    id: idM ? idM[2] : ''
+                                });
+                                i++;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    i++;
+                }
+            }
+            return out;
+        }
+
+        publishBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const arrayName = getArrayVariableName();
+
+            if (!token) {
+                setBoxStatus(publishStatus, 'error', 'Inserisci un GitHub Personal Access Token con permesso Contents: Read and write.');
+                return;
+            }
+
+            publishBtn.disabled = true;
+            publishIcon.className = 'fa-solid fa-spinner fa-spin';
+            publishLabel.textContent = 'PUBBLICAZIONE IN CORSO...';
+
+            try {
+                let uploadedMsg = '- Nessuna immagine allegata.';
+                if (includeImageCheckbox.checked) {
+                    const file = imageFileInput.files[0];
+                    const imgPath = normalizeMediaPath(imagePathInput.value);
+                    if (!imgPath) {
+                        throw new Error('Specifica un percorso immagine valido (es. multimedia/foto.jpg) oppure disattiva l\'allegato immagine.');
+                    }
+                    if (file) {
+                        setBoxStatus(publishStatus, 'info', `Caricamento immagine ${imgPath}...`);
+                        const buf = await file.arrayBuffer();
+                        const existingImg = await getFileMeta(owner, repo, imgPath, branch, token);
+                        await ghPutFile(owner, repo, imgPath, branch, token, {
+                            message: `feat(comms): add ${imgPath}`,
+                            content: arrayBufferToBase64(buf),
+                            ...(existingImg && existingImg.sha ? { sha: existingImg.sha } : {})
+                        });
+                        uploadedMsg = `- Immagine caricata: ${imgPath}`;
+                    } else {
+                        uploadedMsg = `- Riferimento immagine impostato: ${imgPath} (file non caricato dal PC)`;
+                    }
+                }
+
+                setBoxStatus(publishStatus, 'info', `Aggiornamento ${arrayName} in comunicazioni.html...`);
+                const existingHtml = await getFileMeta(owner, repo, 'comunicazioni.html', branch, token);
+                if (!existingHtml || !existingHtml.content || !existingHtml.sha) {
+                    throw new Error('Impossibile leggere comunicazioni.html dal repository.');
+                }
+
+                const currentHtml = base64ToUtf8(existingHtml.content);
+                const updatedHtml = insertIntoArray(currentHtml, arrayName, buildCommObjectCode());
+
+                await ghPutFile(owner, repo, 'comunicazioni.html', branch, token, {
+                    message: `feat(comms): add entry to ${arrayName}`,
+                    content: utf8ToBase64(updatedHtml),
+                    sha: existingHtml.sha
+                });
+
+                setBoxStatus(publishStatus, 'success', `Pubblicazione completata!
+- Sezione: ${arrayName}
+${uploadedMsg}`);
+            } catch (err) {
+                setBoxStatus(publishStatus, 'error', `Errore:
+${err.message}`);
+            } finally {
+                publishBtn.disabled = false;
+                publishIcon.className = 'fa-solid fa-cloud-arrow-up';
+                publishLabel.textContent = 'PUBBLICA IN COMUNICAZIONI.HTML';
+            }
+        });
+
+        loadCommsBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const arrayName = getArrayVariableName();
+
+            if (!token) {
+                setBoxStatus(deleteStatus, 'error', 'Inserisci prima il GitHub Personal Access Token.');
+                return;
+            }
+
+            loadCommsBtn.disabled = true;
+            loadCommsIcon.className = 'fa-solid fa-spinner fa-spin';
+            setBoxStatus(deleteStatus, 'info', `Lettura ${arrayName} da comunicazioni.html...`);
+
+            try {
+                const fileMeta = await getFileMeta(owner, repo, 'comunicazioni.html', branch, token);
+                if (!fileMeta || !fileMeta.content) throw new Error('File comunicazioni.html non trovato.');
+                const html = base64ToUtf8(fileMeta.content);
+                const span = findArraySpan(html, arrayName);
+                const body = html.slice(span.start, span.end);
+                const items = parseObjects(body);
+
+                loadedEntries = items.map((it, idx) => ({ ...it, idx, arrayName }));
+                deleteCommSelect.innerHTML = '';
+
+                if (!loadedEntries.length) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = `-- Nessuna voce in ${arrayName} --`;
+                    deleteCommSelect.appendChild(opt);
+                    setBoxStatus(deleteStatus, 'info', `Nessuna voce presente in ${arrayName}.`);
+                    return;
+                }
+
+                loadedEntries.forEach(entry => {
+                    const opt = document.createElement('option');
+                    opt.value = String(entry.idx);
+                    opt.textContent = `[${arrayName}] ${entry.title}${entry.id ? ` (${entry.id})` : ''}`;
+                    deleteCommSelect.appendChild(opt);
+                });
+
+                setBoxStatus(deleteStatus, 'success', `Caricate ${loadedEntries.length} voci da ${arrayName}.`);
+            } catch (err) {
+                setBoxStatus(deleteStatus, 'error', `Errore lettura:
+${err.message}`);
+            } finally {
+                loadCommsBtn.disabled = false;
+                loadCommsIcon.className = 'fa-solid fa-rotate';
+            }
+        });
+
+        deleteCommBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const arrayName = getArrayVariableName();
+            const targetIdx = Number(deleteCommSelect.value);
+
+            if (!token) {
+                setBoxStatus(deleteStatus, 'error', 'Inserisci il GitHub Personal Access Token.');
+                return;
+            }
+            if (deleteCommSelect.value === '' || Number.isNaN(targetIdx)) {
+                setBoxStatus(deleteStatus, 'error', 'Carica prima la lista e seleziona una comunicazione.');
+                return;
+            }
+
+            deleteCommBtn.disabled = true;
+            deleteIcon.className = 'fa-solid fa-spinner fa-spin';
+            deleteLabel.textContent = 'RIMOZIONE IN CORSO...';
+
+            try {
+                const fileMeta = await getFileMeta(owner, repo, 'comunicazioni.html', branch, token);
+                if (!fileMeta || !fileMeta.content || !fileMeta.sha) {
+                    throw new Error('Impossibile leggere comunicazioni.html.');
+                }
+
+                const html = base64ToUtf8(fileMeta.content);
+                const span = findArraySpan(html, arrayName);
+                const body = html.slice(span.start, span.end);
+                const items = parseObjects(body);
+                const chosen = items[targetIdx];
+                if (!chosen) throw new Error('Voce selezionata non trovata.');
+
+                let remStart = chosen.start;
+                let remEnd = chosen.end;
+                let after = remEnd;
+                while (after < body.length && /\s/.test(body[after])) after++;
+                if (after < body.length && body[after] === ',') {
+                    remEnd = after + 1;
+                    if (body[remEnd] === '\r') remEnd++;
+                    if (body[remEnd] === '\n') remEnd++;
+                } else {
+                    let before = remStart - 1;
+                    while (before >= 0 && /\s/.test(body[before])) before--;
+                    if (before >= 0 && body[before] === ',') remStart = before;
+                }
+
+                const newBody = body.slice(0, remStart) + body.slice(remEnd);
+                const updatedHtml = html.slice(0, span.start) + newBody + html.slice(span.end);
+
+                await ghPutFile(owner, repo, 'comunicazioni.html', branch, token, {
+                    message: `chore(comms): remove "${chosen.title}" from ${arrayName}`,
+                    content: utf8ToBase64(updatedHtml),
+                    sha: fileMeta.sha
+                });
+
+                setBoxStatus(deleteStatus, 'success', `Rimossa "${chosen.title}" da ${arrayName}.`);
+            } catch (err) {
+                setBoxStatus(deleteStatus, 'error', `Errore rimozione:
+${err.message}`);
+            } finally {
+                deleteCommBtn.disabled = false;
+                deleteIcon.className = 'fa-solid fa-trash';
+                deleteLabel.textContent = 'RIMUOVI COMUNICAZIONE SELEZIONATA';
+            }
+        });
+
+        includeImageCheckbox.addEventListener('change', () => {
+            if (includeImageCheckbox.checked) {
+                imageFieldsBox.classList.remove('hidden');
+            } else {
+                imageFieldsBox.classList.add('hidden');
+            }
+            updatePreviewAndCode();
+        });
+
+        imageFileInput.addEventListener('change', () => {
+            const file = imageFileInput.files[0];
+            if (localPreviewUrl) {
+                URL.revokeObjectURL(localPreviewUrl);
+                localPreviewUrl = null;
+            }
+            if (file) {
+                localPreviewUrl = URL.createObjectURL(file);
+                imagePathInput.value = `multimedia/${file.name}`;
+            }
+            updatePreviewAndCode();
+        });
+
+        sectionSelect.addEventListener('change', () => {
+            if (sectionSelect.value === 'frontier') {
+                if (authorInput.value === 'CMDR ArmandoBug') authorInput.value = 'Frontier Developments';
+                if (tagInput.value === 'OPERATIVO') tagInput.value = 'ROADMAP';
+                if (idInput.value === 'ulad-002') idInput.value = 'fdev-002';
+            } else {
+                if (authorInput.value === 'Frontier Developments') authorInput.value = 'CMDR ArmandoBug';
+                if (tagInput.value === 'ROADMAP') tagInput.value = 'OPERATIVO';
+                if (idInput.value === 'fdev-002') idInput.value = 'ulad-002';
+            }
+            updatePreviewAndCode();
+        });
+
+        [tagInput, idInput, dateInput, titleInput, authorInput, imagePathInput, summaryInput].forEach(el => {
+            el.addEventListener('input', updatePreviewAndCode);
+            el.addEventListener('change', updatePreviewAndCode);
+        });
+
+        copyCodeBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(generatedCodeEl.textContent);
+            } catch (_) {
+                const ta = document.createElement('textarea');
+                ta.value = generatedCodeEl.textContent;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+            copyIcon.className = 'fa-solid fa-check';
+            copyLabel.textContent = 'COPIATO!';
+            setTimeout(() => {
+                copyIcon.className = 'fa-regular fa-copy';
+                copyLabel.textContent = 'COPIA CODICE';
+            }, 1800);
+        });
+
+        resetCommsBtn.addEventListener('click', () => {
+            if (localPreviewUrl) {
+                URL.revokeObjectURL(localPreviewUrl);
+                localPreviewUrl = null;
+            }
+            sectionSelect.value = 'squadron';
+            tagInput.value = 'OPERATIVO';
+            idInput.value = 'ulad-002';
+            dateInput.value = '2026-11-21';
+            titleInput.value = 'Ordine di Rotta: Balitcha';
+            authorInput.value = 'CMDR ArmandoBug';
+            includeImageCheckbox.checked = false;
+            imageFieldsBox.classList.add('hidden');
+            imageFileInput.value = '';
+            imagePathInput.value = 'multimedia/comunicazione.jpg';
+            summaryInput.value = 'Aggiornamento operativo per i comandanti dello squadrone: la Ulad-01 Nostromo mantiene il presidio su Balitcha in attesa di nuove direttive.';
+            publishStatus.classList.add('hidden');
+            deleteStatus.classList.add('hidden');
+            updatePreviewAndCode();
+        });
+
+        updatePreviewAndCode();
+    </script>
+</body>
+</html>

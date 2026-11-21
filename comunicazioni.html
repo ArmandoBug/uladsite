@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicazioni — Ultra Astra Dreamers [ULAD]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        /* Palette ispirata a Inara + Elite Dangerous HUD */
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        /* Dettagli angolari stile interfaccia nave */
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.5);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.2);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand & Logo -->
+                <a href="homepage.html" class="flex items-center gap-3.5 group">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition orange-glow">
+                        <img src="multimedia/logoULADpng.png" alt="Ultra Astra Dreamers Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-hud font-bold text-white tracking-wider text-base sm:text-lg">ULTRA ASTRA DREAMERS</span>
+                        </div>
+                        <p class="text-xs text-inaraMuted font-mono tracking-wide">FACTION: <span class="text-inaraText">ULTRA ASTRA CORP</span></p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigazione Desktop -->
+                <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
+                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
+                    <a href="comunicazioni.html" class="text-uladOrange border-b-2 border-uladOrange py-7">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7">Multimedia</a>
+                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
+                </nav>
+
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
+                <div class="hidden md:flex items-center gap-3">
+                    <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
+                    <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
+                    </a>
+                    <a href="homepage.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-inaraText hover:text-uladOrange p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
+            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
+            <a href="comunicazioni.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Multimedia</a>
+            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
+        </div>
+    </header>
+
+    <!-- HEADER PAGINA COMUNICAZIONI -->
+    <section class="relative overflow-hidden border-b border-inaraBorder grid-overlay">
+        <div class="absolute inset-0 bg-gradient-to-t from-inaraBg via-inaraBg/60 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        SUBSPACE DISPATCH // SQUADRON ID: <span class="text-white">12623</span>
+                    </div>
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
+                        CENTRO <span class="text-uladOrange">COMUNICAZIONI</span>
+                    </h1>
+                    <p class="text-inaraText text-lg max-w-2xl">
+                        Dispacci operativi degli <strong class="text-white">Ultra Astra Dreamers</strong>, monitoraggio Community Goal e bollettini ufficiali Frontier Developments.
+                    </p>
+                </div>
+
+                <!-- Riepilogo rapido -->
+                <div class="tactical-card tactical-corner px-5 py-3.5 rounded shrink-0">
+                    <span class="text-xs font-mono text-inaraMuted uppercase block">Stato Relè</span>
+                    <span class="font-hud text-base sm:text-lg font-bold text-emerald-400 flex items-center gap-2 mt-0.5">
+                        <i class="fa-solid fa-circle-check text-sm"></i> ATTIVO
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENUTO PRINCIPALE: 3 SEZIONI -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- SEZIONE 1: COMUNICAZIONI DELLO SQUADRONE -->
+        <section id="sezione-squadrone" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-2">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">01 // Dispacci Interni</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMUNICAZIONI DELLO SQUADRONE</h2>
+                </div>
+                <span id="squadron-count" class="text-xs font-mono text-inaraMuted">0 DISPACCI</span>
+            </div>
+
+            <div id="squadron-comms-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- SEZIONE 2: COMMUNITY GOAL -->
+        <section id="sezione-cg" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-2">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Iniziative Galattiche</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMMUNITY GOAL</h2>
+                </div>
+                <span id="cg-status-badge" class="text-xs font-mono text-inaraMuted">SINCRONIZZAZIONE CG</span>
+            </div>
+
+            <div id="cg-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- SEZIONE 3: COMUNICAZIONI FRONTIER -->
+        <section id="sezione-frontier" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-2">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Roadmap & Aggiornamenti</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">COMUNICAZIONI FRONTIER</h2>
+                </div>
+                <span id="frontier-count" class="text-xs font-mono text-inaraMuted">0 COMUNICAZIONI</span>
+            </div>
+
+            <div id="frontier-comms-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <div class="flex items-center gap-3">
+                <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // =========================================================================
+        // SEZIONE 1: COMUNICAZIONI DELLO SQUADRONE (aggiornabile da comms-generator.html)
+        // =========================================================================
+        const squadronComms = [
+            {
+                id: 'ulad-001',
+                title: 'Attivazione Relè Comunicazioni ULAD',
+                date: '2026-11-21',
+                author: 'CMDR ArmandoBug',
+                tag: 'OPERATIVO',
+                image: '',
+                summary: 'Benvenuti nel centro comunicazioni dello squadrone Ultra Astra Dreamers [ULAD]. Qui verranno pubblicati ordini di missione, raduni e aggiornamenti sulla Ulad-01 Nostromo.'
+            }
+        ];
+
+        // =========================================================================
+        // SEZIONE 2: COMMUNITY GOAL (caricamento automatico da community-goals.json + fallback)
+        // =========================================================================
+        const communityGoals = [
+            {
+                title: 'In attesa di sincronizzazione Community Goal',
+                status: 'STANDBY',
+                systems: ['Da definire'],
+                description: 'I dati dei Community Goal attivi (sistemi interessati, descrizione e ricompense/premi) vengono mostrati qui tramite feed automatico (community-goals.json) o tramite comms-generator.html.',
+                rewards: 'Premi in crediti, moduli o decal in base al tier raggiunto.'
+            }
+        ];
+
+        // =========================================================================
+        // SEZIONE 3: COMUNICAZIONI FRONTIER (aggiornabile da comms-generator.html)
+        // =========================================================================
+        const frontierComms = [
+            {
+                id: 'fdev-001',
+                title: 'Bollettino Frontier & Aggiornamenti Roadmap',
+                date: '2026-11-21',
+                author: 'Frontier Developments',
+                tag: 'ROADMAP',
+                image: '',
+                summary: 'Spazio dedicato alle comunicazioni ufficiali di Frontier Developments su patch, bilanciamenti, eventi narrativi e roadmap di Elite Dangerous.'
+            }
+        ];
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderStandardComms(containerId, countId, items, labelUnit) {
+            const container = document.getElementById(containerId);
+            const countEl = document.getElementById(countId);
+            countEl.textContent = `${items.length} ${labelUnit}`;
+
+            if (!items.length) {
+                container.innerHTML = `
+                    <div class="tactical-card rounded p-6 text-inaraMuted font-mono text-sm col-span-full">
+                        Nessuna comunicazione presente in questa sezione.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                const hasImage = item.image && String(item.image).trim().length > 0;
+                const imageBlock = hasImage
+                    ? `
+                        <div class="aspect-video w-full bg-inaraBg border-b border-inaraBorder overflow-hidden">
+                            <img
+                                src="${escapeHtml(item.image.trim())}"
+                                alt="${escapeHtml(item.title)}"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            >
+                        </div>
+                    `
+                    : '';
+
+                return `
+                    <article class="tactical-card tactical-corner rounded overflow-hidden flex flex-col justify-between">
+                        <div>
+                            ${imageBlock}
+                            <div class="p-6 space-y-3">
+                                <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                        ${escapeHtml(item.tag || 'AGGIORNAMENTO')}
+                                    </span>
+                                    <span class="text-inaraMuted">${escapeHtml(item.date || '')}</span>
+                                </div>
+                                <h3 class="font-hud text-lg sm:text-xl font-bold text-white leading-snug">
+                                    ${escapeHtml(item.title)}
+                                </h3>
+                                <p class="text-inaraText text-base leading-relaxed whitespace-pre-line">
+                                    ${escapeHtml(item.summary)}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-3.5 bg-inaraBg/70 border-t border-inaraBorder/80 flex items-center justify-between text-xs font-mono text-inaraMuted">
+                            <span><i class="fa-solid fa-broadcast-tower text-uladOrange/80 mr-1.5"></i>${escapeHtml(item.author || 'ULAD')}</span>
+                            <span>${escapeHtml(item.id || '')}</span>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderCommunityGoals(goals) {
+            const container = document.getElementById('cg-container');
+            const badge = document.getElementById('cg-status-badge');
+            badge.textContent = `${goals.length} ${goals.length === 1 ? 'INIZIATIVA' : 'INIZIATIVE'}`;
+
+            container.innerHTML = goals.map(cg => {
+                const systemsList = Array.isArray(cg.systems)
+                    ? cg.systems.join(', ')
+                    : (cg.systems || 'Non specificato');
+
+                return `
+                    <article class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2 text-xs font-mono">
+                                <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                    ${escapeHtml(cg.status || 'ATTIVO')}
+                                </span>
+                                <span class="text-inaraMuted"><i class="fa-solid fa-location-dot text-uladOrange/80 mr-1"></i>${escapeHtml(systemsList)}</span>
+                            </div>
+
+                            <h3 class="font-hud text-lg sm:text-xl font-bold text-white">
+                                ${escapeHtml(cg.title)}
+                            </h3>
+
+                            <p class="text-inaraText text-base leading-relaxed">
+                                ${escapeHtml(cg.description)}
+                            </p>
+                        </div>
+
+                        <div class="pt-3.5 border-t border-inaraBorder/80 text-xs font-mono text-inaraMuted space-y-1">
+                            <div class="text-uladAmber uppercase tracking-wider">Premi & Ricompense</div>
+                            <div class="text-inaraText">${escapeHtml(cg.rewards || 'Da definire')}</div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        async function initCommunityGoalsSection() {
+            try {
+                const res = await fetch('community-goals.json', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        renderCommunityGoals(data);
+                        return;
+                    }
+                }
+            } catch (_) {
+                // Fallback su array locale se community-goals.json non è presente
+            }
+            renderCommunityGoals(communityGoals);
+        }
+
+        renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
+        renderStandardComms('frontier-comms-container', 'frontier-count', frontierComms, 'COMUNICAZIONI');
+        initCommunityGoalsSection();
+    </script>
+</body>
+</html>
