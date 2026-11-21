@@ -2,7 +2,7 @@ name: Update Squadron Carrier
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +28,9 @@ jobs:
               payload = json.loads(resp.read().decode("utf-8"))
 
           station = payload.get("station", payload)
+          print("Chiavi disponibili in station:", list(station.keys()) if isinstance(station, dict) else type(station))
+          print("Estratto payload:", json.dumps(payload)[:1000])
+
           system_name = (
               station.get("system_name")
               or station.get("systemName")
@@ -36,6 +39,7 @@ jobs:
               or ""
           )
           carrier_name = station.get("name") or "Ulad-01 Nostromo"
+          print("Sistema estratto:", repr(system_name), "| Nome:", repr(carrier_name))
 
           out_path = "carrier.json"
           try:
@@ -54,6 +58,9 @@ jobs:
               with open(out_path, "w", encoding="utf-8") as f:
                   json.dump(updated, f, indent=2, ensure_ascii=False)
                   f.write("\n")
+              print("carrier.json aggiornato!")
+          else:
+              print("Nessun aggiornamento necessario o system_name vuoto.")
           EOF
 
       - name: Commit changes if carrier.json changed
