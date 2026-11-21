@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Nessun Community Goal attivo al momento",
+    "status": "STANDBY",
+    "systems": [
+      "Galassia"
+    ],
+    "description": "Il feed automatico è collegato a Inara. Quando verrà avviato un nuovo Community Goal attivo comparirà automaticamente in questa sezione.",
+    "rewards": "Crediti e ricompense in base al tier raggiunto."
+  }
+]
