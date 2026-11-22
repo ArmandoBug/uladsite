@@ -325,8 +325,8 @@
                 <span id="roster-section-count" class="text-xs font-mono text-inaraMuted">0 MEMBRI</span>
             </div>
 
-            <div id="roster-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Popolato via JS -->
+            <div id="roster-groups" class="space-y-10">
+                <!-- Popolato via JS per grado -->
             </div>
         </section>
 
@@ -533,6 +533,45 @@
             `;
         }
 
+        const RANK_TIERS = [
+            {
+                key: 'leader',
+                title: 'LEADER',
+                badge: 'multimedia/leader.jpg',
+                matches: (r) => r === 'squadron leader' || r === 'leader'
+            },
+            {
+                key: 'senior-officer',
+                title: 'SENIOR OFFICER',
+                badge: 'multimedia/seniorofficer.jpg',
+                matches: (r) => r === 'senior officer'
+            },
+            {
+                key: 'officer',
+                title: 'OFFICER',
+                badge: 'multimedia/officer.jpg',
+                matches: (r) => r === 'officer'
+            },
+            {
+                key: 'agent',
+                title: 'AGENT',
+                badge: 'multimedia/agent.jpg',
+                matches: (r) => r === 'agent'
+            },
+            {
+                key: 'rookie',
+                title: 'ROOKIE',
+                badge: 'multimedia/rookie.jpg',
+                matches: (r) => r === 'rookie'
+            }
+        ];
+
+        function getRankTierKey(rank) {
+            const normalized = String(rank || '').trim().toLowerCase().replace(/\s+/g, ' ');
+            const tier = RANK_TIERS.find(t => t.matches(normalized));
+            return tier ? tier.key : 'other';
+        }
+
         function renderRoster() {
             const q = searchQuery.trim().toLowerCase();
             const filtered = squadronRoster.filter(m => {
@@ -544,10 +583,48 @@
             document.getElementById('stat-total-cmdrs').textContent = `${squadronRoster.length} CMDR`;
             document.getElementById('roster-section-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'MEMBRO' : 'MEMBRI'}`;
 
-            const grid = document.getElementById('roster-grid');
-            grid.innerHTML = filtered.length
-                ? filtered.map(createMemberCard).join('')
-                : `<div class="col-span-full tactical-card p-6 rounded text-center text-inaraMuted font-mono text-sm">Nessun comandante trovato.</div>`;
+            const container = document.getElementById('roster-groups');
+            if (!filtered.length) {
+                container.innerHTML = `<div class="tactical-card p-6 rounded text-center text-inaraMuted font-mono text-sm">Nessun comandante trovato.</div>`;
+                return;
+            }
+
+            const sections = [];
+            RANK_TIERS.forEach(tier => {
+                const members = filtered.filter(m => getRankTierKey(m.rank) === tier.key);
+                if (!members.length) return;
+                sections.push(`
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-inaraBorder/80 pb-2.5">
+                            <div class="flex items-center gap-2.5">
+                                <img src="${tier.badge}" alt="${escapeHtml(tier.title)}" class="w-6 h-6 object-contain rounded-sm">
+                                <h3 class="font-hud text-base sm:text-lg font-bold text-white tracking-wider">${escapeHtml(tier.title)}</h3>
+                            </div>
+                            <span class="text-xs font-mono text-uladOrange">${members.length} ${members.length === 1 ? 'CMDR' : 'CMDRS'}</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${members.map(createMemberCard).join('')}
+                        </div>
+                    </div>
+                `);
+            });
+
+            const otherMembers = filtered.filter(m => getRankTierKey(m.rank) === 'other');
+            if (otherMembers.length) {
+                sections.push(`
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-inaraBorder/80 pb-2.5">
+                            <h3 class="font-hud text-base sm:text-lg font-bold text-white tracking-wider">ALTRI GRADI</h3>
+                            <span class="text-xs font-mono text-uladOrange">${otherMembers.length} ${otherMembers.length === 1 ? 'CMDR' : 'CMDRS'}</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${otherMembers.map(createMemberCard).join('')}
+                        </div>
+                    </div>
+                `);
+            }
+
+            container.innerHTML = sections.join('');
         }
 
         document.getElementById('roster-search').addEventListener('input', (e) => {
