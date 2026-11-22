@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="multimedia/logoULADpng.png">
+    <title>Errore 404 // Settore Non Trovato — Ultra Astra Dreamers [ULAD]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image:
+                radial-gradient(circle at 20% 25%, rgba(255, 102, 0, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 80% 75%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.5);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.22);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between grid-overlay">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- Brand & Logo -->
+                <a href="/uladsite/homepage.html" class="flex items-center gap-3.5 group">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition orange-glow">
+                        <img src="multimedia/logoULADpng.png" alt="Ultra Astra Dreamers Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-hud font-bold text-white tracking-wider text-base sm:text-lg">ULTRA ASTRA DREAMERS</span>
+                        </div>
+                        <p class="text-xs text-inaraMuted font-mono tracking-wide">FACTION: <span class="text-inaraText">ULTRA ASTRA CORP</span></p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigazione Desktop -->
+                <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
+                    <a href="/uladsite/homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="/uladsite/roster.html" class="text-inaraMuted hover:text-white transition py-7">Roster</a>
+                    <a href="/uladsite/comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7">Comunicazioni</a>
+                    <a href="/uladsite/multimedia.html" class="text-inaraMuted hover:text-white transition py-7">Multimedia</a>
+                    <a href="/uladsite/homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
+                </nav>
+
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
+                <div class="hidden md:flex items-center gap-3">
+                    <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
+                    <a href="https://inara.cz/elite/squadron/12623/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
+                    </a>
+                    <a href="/uladsite/homepage.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-inaraText hover:text-uladOrange p-2" aria-label="Apri menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
+            <a href="/uladsite/homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+                        <a href="/uladsite/comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Comunicazioni</a>
+            <a href="/uladsite/multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Multimedia</a>
+            <a href="/uladsite/homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
+        </div>
+    </header>
+
+    <!-- CONTENUTO PRINCIPALE 404 -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 flex items-center justify-center">
+        <div class="tactical-card tactical-corner rounded-lg p-7 sm:p-12 w-full space-y-8 shadow-2xl">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono border-b border-inaraBorder pb-4">
+                <span class="inline-flex items-center gap-2 text-uladOrange font-bold uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-uladOrange animate-ping"></span>
+                    ULAD // TELEMETRIA FSD
+                </span>
+                <span class="text-inaraMuted">CODICE ERRORE: <strong class="text-white">HTTP 404</strong></span>
+            </div>
+
+            <div class="text-center space-y-4">
+                <div class="font-hud text-6xl sm:text-8xl font-black text-uladOrange tracking-wider select-none">
+                    404
+                </div>
+                <h1 class="font-hud text-2xl sm:text-3xl font-bold text-white tracking-wide">
+                    ROTTA NON TROVATA // SETTORE INESISTENTE
+                </h1>
+                <p class="text-inaraText text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Il salto Frameshift ha puntato verso una coordinata non registrata nel database degli <strong class="text-white">Ultra Astra Dreamers [ULAD]</strong>. Verifica il percorso richiesto oppure torna alla base operativa.
+                </p>
+            </div>
+
+            <!-- Dettagli URL Richiesto -->
+            <div class="bg-inaraBg/90 border border-inaraBorder rounded p-4 font-mono text-xs space-y-2">
+                <div class="flex items-center justify-between text-inaraMuted uppercase tracking-wider">
+                    <span>PERCORSO RICHIEST0</span>
+                    <span class="text-uladOrange">DOMINIO: ARMANDOBUG.GITHUB.IO/ULADSITE</span>
+                </div>
+                <div id="requested-path-box" class="text-white break-all bg-inaraPanel px-3 py-2 rounded border border-inaraBorder/70">
+                    /uladsite/pagina-non-trovata
+                </div>
+            </div>
+
+            <!-- Azioni Rapide -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+                <a href="/uladsite/homepage.html" class="w-full sm:w-auto px-6 py-3 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider uppercase transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-house"></i> TORNA ALLA HOME
+                </a>
+                                            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <div class="flex items-center gap-3">
+                <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+
+        // Mostra il percorso richiesto dall'utente mantenendo l'URL reale
+        const pathBox = document.getElementById('requested-path-box');
+        if (pathBox) {
+            const currentPath = window.location.pathname + window.location.search + window.location.hash;
+            pathBox.textContent = currentPath || '/uladsite/';
+        }
+
+        // Pulsante Torna Indietro
+        const backBtn = document.getElementById('go-back-btn');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/uladsite/homepage.html';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
