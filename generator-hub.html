@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="multimedia/logoULADpng.png">
+    <title>Console Generator // ULAD — Ultra Astra Dreamers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(255, 102, 0, 0.07) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.55);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between grid-overlay">
+    <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="homepage.html" class="flex items-center gap-3.5 group">
+                <div class="w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition">
+                    <img src="multimedia/logoULADpng.png" alt="Ultra Astra Dreamers Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="font-hud font-bold text-white tracking-wider text-base sm:text-lg block">ULTRA ASTRA DREAMERS</span>
+                    <span class="text-xs text-inaraMuted font-mono tracking-wide">CONSOLE // <span class="text-uladOrange">GENERATOR HUB</span></span>
+                </div>
+            </a>
+            <a href="homepage.html" class="px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition">
+                <i class="fa-solid fa-arrow-left mr-1.5 text-uladOrange"></i> HOME
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+        <div class="space-y-2 border-b border-inaraBorder pb-6">
+            <div class="flex items-center gap-3">
+                <span class="h-px w-8 bg-uladOrange"></span>
+                <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">ACCESSO RISERVATO // STRUMENTI DI GESTIONE</span>
+            </div>
+            <h1 class="font-hud text-3xl sm:text-4xl font-black text-white">
+                GENERATOR <span class="text-uladOrange">CONSOLE</span>
+            </h1>
+            <p class="text-inaraText text-base sm:text-lg">
+                Seleziona lo strumento di generazione per aggiornare i moduli del sito <strong class="text-white">Ultra Astra Dreamers [ULAD]</strong>.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="roster-generator.html" class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-6 group">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">MODULO 01</span>
+                        <i class="fa-solid fa-users-gear text-uladOrange text-lg group-hover:scale-110 transition"></i>
+                    </div>
+                    <h2 class="font-hud text-xl font-bold text-white group-hover:text-uladOrange transition">Roster Generator</h2>
+                    <p class="text-inaraText text-sm leading-relaxed">
+                        Gestisci e genera i dati dei comandanti per la pagina del roster dello squadrone.
+                    </p>
+                </div>
+                <div class="pt-3 border-t border-inaraBorder/80 font-mono text-xs text-uladOrange flex items-center justify-between">
+                    <span>roster-generator.html</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="comunicazioni-generator.html" class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-6 group">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">MODULO 02</span>
+                        <i class="fa-solid fa-satellite-dish text-uladOrange text-lg group-hover:scale-110 transition"></i>
+                    </div>
+                    <h2 class="font-hud text-xl font-bold text-white group-hover:text-uladOrange transition">Comunicazioni Generator</h2>
+                    <p class="text-inaraText text-sm leading-relaxed">
+                        Crea e aggiorna dispacci operativi, Community Goal e bollettini dello squadrone.
+                    </p>
+                </div>
+                <div class="pt-3 border-t border-inaraBorder/80 font-mono text-xs text-uladOrange flex items-center justify-between">
+                    <span>comunicazioni-generator.html</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="multimedia-generator.html" class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-6 group">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">MODULO 03</span>
+                        <i class="fa-solid fa-photo-film text-uladOrange text-lg group-hover:scale-110 transition"></i>
+                    </div>
+                    <h2 class="font-hud text-xl font-bold text-white group-hover:text-uladOrange transition">Multimedia Generator</h2>
+                    <p class="text-inaraText text-sm leading-relaxed">
+                        Organizza e genera le voci multimediali, gallerie e contenuti visivi della community.
+                    </p>
+                </div>
+                <div class="pt-3 border-t border-inaraBorder/80 font-mono text-xs text-uladOrange flex items-center justify-between">
+                    <span>multimedia-generator.html</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Generator Hub</span>
+            <span>Elite Dangerous &copy; Frontier Developments plc.</span>
+        </div>
+    </footer>
+</body>
+</html>
