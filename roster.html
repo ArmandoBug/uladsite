@@ -460,11 +460,22 @@
             return /^cmdr\s+/i.test(cleaned) ? cleaned : `CMDR ${cleaned}`;
         }
 
+        function getRankBadgeSrc(rank) {
+            const normalized = String(rank || '').trim().toLowerCase().replace(/\s+/g, ' ');
+            if (normalized === 'squadron leader' || normalized === 'leader') return 'multimedia/leader.jpg';
+            if (normalized === 'senior officer') return 'multimedia/seniorofficer.jpg';
+            if (normalized === 'officer') return 'multimedia/officer.jpg';
+            if (normalized === 'agent') return 'multimedia/agent.jpg';
+            if (normalized === 'rookie') return 'multimedia/rookie.jpg';
+            return '';
+        }
+
         function createMemberCard(member) {
             const cmdrLabel = formatCmdrName(member.cmdr);
             const rankLabel = String(member.rank || '').trim() || 'Membro';
             const dutiesLabel = String(member.duties || '').trim() || 'Servizio di squadrone';
             const hasInara = isSafeUrl(member.inaraUrl);
+            const badgeSrc = getRankBadgeSrc(rankLabel);
 
             return `
                 <article class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-5">
@@ -477,8 +488,9 @@
                         </div>
 
                         <div>
-                            <h3 class="font-hud text-xl font-bold text-white tracking-wide">
-                                ${escapeHtml(cmdrLabel)}
+                            <h3 class="font-hud text-xl font-bold text-white tracking-wide flex items-center gap-2.5">
+                                <span>${escapeHtml(cmdrLabel)}</span>
+                                ${badgeSrc ? `<img src="${badgeSrc}" alt="${escapeHtml(rankLabel)}" class="w-6 h-6 object-contain rounded-sm shrink-0">` : ''}
                             </h3>
                         </div>
 
