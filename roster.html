@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="multimedia/logoULADpng.png">
+    <title>Roster Comandanti — Ultra Astra Dreamers [ULAD]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.5);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.2);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    
+        /* Overlay di transizione stile ULAD */
+        #ulad-nav-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: #111317;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(255, 102, 0, 0.06) 0%, transparent 55%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+        #ulad-nav-loader.is-active {
+            display: flex;
+        }
+        #ulad-nav-loader .tactical-panel {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+        }
+        #ulad-nav-loader .tactical-panel::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        #ulad-nav-loader .tactical-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+        @keyframes ulad-spin-cw {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes ulad-spin-ccw {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        #ulad-nav-loader .ring-outer {
+            animation: ulad-spin-cw 2.2s linear infinite;
+        }
+        #ulad-nav-loader .ring-inner {
+            animation: ulad-spin-ccw 1.3s linear infinite;
+        }
+        #ulad-nav-loader .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between">
+    <!-- Finestra di caricamento transizione pagina -->
+    <div id="ulad-nav-loader" aria-hidden="true">
+        <div class="tactical-panel max-w-lg w-full p-8 sm:p-10 rounded text-center space-y-7 shadow-2xl">
+            <div class="flex items-center justify-between text-[11px] font-mono text-inaraMuted border-b border-inaraBorder pb-3">
+                <span class="flex items-center gap-2 text-uladOrange">
+                    <span class="w-2 h-2 rounded-full bg-uladOrange animate-ping"></span>
+                    ULAD // FSD TRANSIT
+                </span>
+                <span>ID: 12623</span>
+            </div>
+
+            <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
+                <div class="ring-outer absolute inset-0 rounded-full border-2 border-dashed border-uladOrange/50"></div>
+                <div class="ring-inner absolute inset-3 rounded-full border-2 border-transparent border-t-uladOrange border-b-uladAmber"></div>
+                <div class="relative w-16 h-16 rounded-full bg-inaraBg border border-uladOrange/70 flex items-center justify-center orange-glow">
+                    <span class="font-hud font-black text-sm text-white tracking-wider">ULAD</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div class="font-hud text-xl sm:text-2xl font-bold text-white tracking-wider">
+                    ULTRA ASTRA DREAMERS
+                </div>
+                <p id="nav-status-text" class="font-mono text-xs text-uladOrange uppercase tracking-widest">
+                    Calcolo rotta Frameshift...
+                </p>
+            </div>
+
+            <div class="space-y-2.5 text-left">
+                <div class="flex justify-between items-center text-xs font-mono">
+                    <span class="text-inaraMuted">CARICAMENTO SETTORE</span>
+                    <span id="nav-progress-percent" class="text-white font-bold">0%</span>
+                </div>
+                <div class="w-full h-2 bg-inaraBg rounded overflow-hidden border border-inaraBorder p-[1px]">
+                    <div id="nav-progress-bar" class="h-full bg-gradient-to-r from-uladOrange to-uladAmber rounded-sm" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between items-center text-[11px] font-mono text-inaraMuted pt-1">
+                    <span>DESTINAZIONE: <span id="nav-dest-label" class="text-inaraText">homepage.html</span></span>
+                    <span id="nav-countdown-text">1.0s</span>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-inaraBorder/70">
+                <a id="nav-skip-link" href="#" class="inline-flex items-center gap-2 text-xs font-hud text-inaraMuted hover:text-uladOrange transition tracking-wider uppercase">
+                    Salta caricamento &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-50 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand & Logo -->
+                <a href="homepage.html" class="flex items-center gap-3.5 group">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition orange-glow">
+                        <img src="multimedia/logoULADpng.png" alt="Ultra Astra Dreamers Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-hud font-bold text-white tracking-wider text-base sm:text-lg">ULTRA ASTRA DREAMERS</span>
+                        </div>
+                        <p class="text-xs text-inaraMuted font-mono tracking-wide">FACTION: <span class="text-inaraText">ULTRA ASTRA CORP</span></p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigazione Desktop -->
+                <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
+                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home</a>
+                    <a href="roster.html" class="text-uladOrange border-b-2 border-uladOrange py-7">Roster</a>
+                    <a href="#" class="text-inaraMuted hover:text-white transition py-7">Tips & Tricks</a>
+                    <a href="comunicazioni.html" class="text-inaraMuted hover:text-white transition py-7">Comunicazioni</a>
+                    <a href="multimedia.html" class="text-inaraMuted hover:text-white transition py-7">Multimedia</a>
+                    <a href="homepage.html#link-utili" class="text-inaraMuted hover:text-white transition py-7">Link Utili</a>
+                </nav>
+
+                <!-- CTA Discord / Inara + Tag [ULAD] -->
+                <div class="hidden md:flex items-center gap-3">
+                    <span class="font-mono text-xs bg-uladOrangeDim text-uladOrange border border-uladOrange/40 px-2 py-1.5 rounded">[ULAD]</span>
+                    <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-uladOrange"></i> INARA
+                    </a>
+                    <a href="homepage.html#reclutamento" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold text-xs font-hud tracking-wider transition flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-sm"></i> UNISCITI
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-inaraText hover:text-uladOrange p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
+            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Home</a>
+            <a href="roster.html" class="block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">Roster Comandanti</a>
+            <a href="#" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Tips & Tricks</a>
+            <a href="comunicazioni.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Comunicazioni</a>
+            <a href="multimedia.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Multimedia</a>
+            <a href="homepage.html#link-utili" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Link Utili</a>
+        </div>
+    </header>
+
+    <!-- HEADER PAGINA ROSTER -->
+    <section class="relative overflow-hidden border-b border-inaraBorder grid-overlay">
+        <div class="absolute inset-0 bg-gradient-to-t from-inaraBg via-inaraBg/60 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                        PERSONNEL REGISTRY // SQUADRON ID: <span class="text-white">12623</span>
+                    </div>
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight">
+                        ROSTER <span class="text-uladOrange">COMANDANTI</span>
+                    </h1>
+                    <p class="text-inaraText text-lg max-w-2xl">
+                        L'organico operativo degli <strong class="text-white">Ultra Astra Dreamers</strong> al servizio della <span class="text-uladOrange font-semibold">Ultra Astra Corp</span>.
+                    </p>
+                </div>
+
+                <!-- Telemetria Organico -->
+                <div class="grid grid-cols-2 gap-3 shrink-0">
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded">
+                        <span class="text-[11px] font-mono text-inaraMuted uppercase block">Comandanti</span>
+                        <span class="font-hud text-lg sm:text-xl font-bold text-white" id="stat-total-cmdrs">0 CMDR</span>
+                    </div>
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded">
+                        <span class="text-[11px] font-mono text-inaraMuted uppercase block">Database</span>
+                        <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="font-hud text-sm sm:text-base font-bold text-emerald-400 hover:text-uladAmber transition flex items-center gap-1.5 mt-0.5">
+                            INARA <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra Ricerca -->
+            <div class="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="text-xs font-mono text-inaraMuted">
+                    SCHEDE MANUALI // <span class="text-uladOrange">CMDR • GRADO • MANSIONI • INARA</span>
+                </div>
+
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-inaraMuted text-xs"></i>
+                    <input
+                        id="roster-search"
+                        type="text"
+                        placeholder="Cerca CMDR, grado o mansioni..."
+                        class="w-full pl-9 pr-4 py-2 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted font-mono"
+                    >
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- SEZIONE 01: ELENCO COMANDANTI -->
+        <section id="sezione-elenco-comandanti" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-2">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">01 // Organico [ULAD]</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">ELENCO COMANDANTI</h2>
+                </div>
+                <span id="roster-section-count" class="text-xs font-mono text-inaraMuted">0 MEMBRI</span>
+            </div>
+
+            <div id="roster-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Popolato via JS -->
+            </div>
+        </section>
+
+        <!-- SEZIONE 02: NUOVI ARRUOLAMENTI -->
+        <section id="vuoi-vedere-il-tuo-nome" class="tactical-card tactical-corner rounded p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="space-y-2">
+                <div class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // NUOVI ARRUOLAMENTI</div>
+                <h3 class="font-hud text-xl sm:text-2xl font-bold text-white">VUOI VEDERE IL TUO NOME NEL ROSTER DEGLI ULAD?</h3>
+                <p class="text-inaraText text-base max-w-2xl">
+                    Unisciti al nostro canale Discord, richiedi l'ingresso in-game cercando il tag <strong class="text-white">ULAD</strong> e registra il tuo profilo su Inara.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-3 shrink-0">
+                <a href="https://discord.gg/9syMhauvX6" target="_blank" class="px-5 py-3 bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider rounded transition flex items-center gap-2">
+                    <i class="fa-brands fa-discord text-base"></i> DISCORD
+                </a>
+                <a href="https://inara.cz/elite/squadron/12623/" target="_blank" class="px-5 py-3 bg-inaraBg hover:bg-inaraPanelHover text-white border border-inaraBorder hover:border-uladOrange font-hud text-xs tracking-wider rounded transition flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-uladOrange"></i> INARA
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <div class="flex items-center gap-3">
+                <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Ogni voce ha: cmdr ("CMDR nome"), rank ("Grado"), duties ("Mansioni") e inaraUrl (link profilo INARA)
+        const squadronRoster = [
+            {
+                cmdr: 'CMDR Luft',
+                rank: 'Squadron Leader',
+                duties: 'Fondatore, strategia BGS e coordinamento generale',
+                inaraUrl: 'https://inara.cz/elite/cmdr/102322/'
+            },
+            {
+                cmdr: 'CMDR ArmandoBug',
+                rank: 'Senior Officer',
+                duties: 'Comunicazioni, operazioni e supporto squadrone',
+                inaraUrl: 'https://inara.cz/elite/cmdr/517668/'
+            }
+        ];
+
+        let searchQuery = '';
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function isSafeUrl(url) {
+            return /^https?:\/\//i.test(String(url || '').trim());
+        }
+
+        function formatCmdrName(raw) {
+            const cleaned = String(raw || '').trim();
+            if (!cleaned) return 'CMDR';
+            return /^cmdr\s+/i.test(cleaned) ? cleaned : `CMDR ${cleaned}`;
+        }
+
+        function createMemberCard(member) {
+            const cmdrLabel = formatCmdrName(member.cmdr);
+            const rankLabel = String(member.rank || '').trim() || 'Membro';
+            const dutiesLabel = String(member.duties || '').trim() || 'Servizio di squadrone';
+            const hasInara = isSafeUrl(member.inaraUrl);
+
+            return `
+                <article class="tactical-card tactical-corner rounded p-6 flex flex-col justify-between space-y-5">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between gap-2 text-xs font-mono">
+                            <span class="px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/50 text-uladOrange uppercase font-bold">
+                                ${escapeHtml(rankLabel)}
+                            </span>
+                            <span class="text-inaraMuted">[ULAD]</span>
+                        </div>
+
+                        <div>
+                            <h3 class="font-hud text-xl font-bold text-white tracking-wide">
+                                ${escapeHtml(cmdrLabel)}
+                            </h3>
+                        </div>
+
+                        <div class="bg-inaraBg/80 border border-inaraBorder/80 rounded p-3.5 space-y-1.5 text-xs font-mono">
+                            <div class="text-inaraMuted uppercase tracking-wider">Mansioni</div>
+                            <div class="text-inaraText text-sm font-body leading-relaxed whitespace-pre-line">
+                                ${escapeHtml(dutiesLabel)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-inaraBorder/70 flex items-center justify-end text-xs font-mono">
+                        ${hasInara ? `
+                            <a href="${escapeHtml(member.inaraUrl.trim())}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-uladOrange hover:text-uladAmber font-hud font-bold uppercase tracking-wider transition">
+                                Profilo INARA <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                            </a>
+                        ` : `
+                            <span class="text-inaraMuted">Link INARA non impostato</span>
+                        `}
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderRoster() {
+            const q = searchQuery.trim().toLowerCase();
+            const filtered = squadronRoster.filter(m => {
+                if (!q) return true;
+                const hay = [formatCmdrName(m.cmdr), m.rank, m.duties, m.inaraUrl].join(' ').toLowerCase();
+                return hay.includes(q);
+            });
+
+            document.getElementById('stat-total-cmdrs').textContent = `${squadronRoster.length} CMDR`;
+            document.getElementById('roster-section-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'MEMBRO' : 'MEMBRI'}`;
+
+            const grid = document.getElementById('roster-grid');
+            grid.innerHTML = filtered.length
+                ? filtered.map(createMemberCard).join('')
+                : `<div class="col-span-full tactical-card p-6 rounded text-center text-inaraMuted font-mono text-sm">Nessun comandante trovato.</div>`;
+        }
+
+        document.getElementById('roster-search').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderRoster();
+        });
+
+        renderRoster();
+    </script>
+    <script>
+    (function () {
+        const DURATION = 1000;
+        const loader = document.getElementById('ulad-nav-loader');
+        const progressBar = document.getElementById('nav-progress-bar');
+        const progressPercent = document.getElementById('nav-progress-percent');
+        const countdownText = document.getElementById('nav-countdown-text');
+        const statusText = document.getElementById('nav-status-text');
+        const destLabel = document.getElementById('nav-dest-label');
+        const skipLink = document.getElementById('nav-skip-link');
+
+        if (!loader) return;
+
+        const statusMessages = [
+            { at: 0, text: 'Calcolo rotta Frameshift...' },
+            { at: 35, text: 'Sincronizzazione dati settore [ULAD]...' },
+            { at: 75, text: 'Allineamento vettore — Ingaggio...' }
+        ];
+
+        let navigating = false;
+        let pendingHref = '';
+
+        function formatDestinationName(href) {
+            try {
+                const url = new URL(href, window.location.href);
+                const parts = url.pathname.split('/').filter(Boolean);
+                const fileName = parts.length ? parts[parts.length - 1] : 'homepage.html';
+                return url.hash ? `${fileName}${url.hash}` : fileName;
+            } catch (_) {
+                return href;
+            }
+        }
+
+        function startPageTransition(targetHref) {
+            if (navigating) return;
+            navigating = true;
+            pendingHref = targetHref;
+
+            destLabel.textContent = formatDestinationName(targetHref);
+            skipLink.href = targetHref;
+            loader.classList.add('is-active');
+            loader.setAttribute('aria-hidden', 'false');
+
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min((elapsed / DURATION) * 100, 100);
+                const remaining = Math.max((DURATION - elapsed) / 1000, 0);
+
+                progressBar.style.width = progress.toFixed(1) + '%';
+                progressPercent.textContent = Math.floor(progress) + '%';
+                countdownText.textContent = remaining.toFixed(1) + 's';
+
+                for (let i = statusMessages.length - 1; i >= 0; i--) {
+                    if (progress >= statusMessages[i].at) {
+                        statusText.textContent = statusMessages[i].text;
+                        break;
+                    }
+                }
+
+                if (elapsed < DURATION) {
+                    requestAnimationFrame(step);
+                } else {
+                    window.location.href = pendingHref;
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        skipLink.addEventListener('click', function (e) {
+            if (pendingHref) {
+                e.preventDefault();
+                window.location.href = pendingHref;
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+            if (link.id === 'nav-skip-link') return;
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (link.target === '_blank' || link.hasAttribute('download')) return;
+
+            const rawHref = (link.getAttribute('href') || '').trim();
+            if (!rawHref || rawHref === '#' || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || rawHref.startsWith('javascript:')) {
+                return;
+            }
+
+            const targetUrl = new URL(rawHref, window.location.href);
+            if (targetUrl.origin !== window.location.origin) return;
+
+            const samePage = targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search;
+            if (samePage && targetUrl.hash) return;
+
+            e.preventDefault();
+            startPageTransition(targetUrl.href);
+        });
+
+        window.addEventListener('pageshow', function () {
+            navigating = false;
+            pendingHref = '';
+            loader.classList.remove('is-active');
+            loader.setAttribute('aria-hidden', 'true');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+            countdownText.textContent = '1.0s';
+        });
+    })();
+    </script>
+</body>
+</html>
