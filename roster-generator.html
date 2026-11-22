@@ -6,331 +6,7 @@
     <meta name="robots" content="noindex, nofollow, noarchive">
     <title>ULAD // Generatore Roster</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        inaraBg: '#111317',
-                        inaraPanel: '#191c22',
-                        inaraPanelHover: '#20242c',
-                        inaraBorder: '#2c313d',
-                        inaraText: '#d1d5db',
-                        inaraMuted: '#8b92a2',
-                        uladOrange: '#ff6600',
-                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
-                        uladAmber: '#ff944d'
-                    },
-                    fontFamily: {
-                        hud: ['Orbitron', 'sans-serif'],
-                        body: ['Rajdhani', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #111317;
-            color: #d1d5db;
-            font-family: 'Rajdhani', sans-serif;
-            background-image:
-                radial-gradient(circle at 15% 45%, rgba(255, 102, 0, 0.045) 0%, transparent 45%),
-                linear-gradient(to bottom, #111317, #0d0f12);
-        }
-
-        .tactical-card {
-            background-color: #191c22;
-            border: 1px solid #2c313d;
-            position: relative;
-        }
-
-        .tactical-corner::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: -1px;
-            width: 10px;
-            height: 10px;
-            border-top: 2px solid #ff6600;
-            border-left: 2px solid #ff6600;
-        }
-
-        .tactical-corner::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            right: -1px;
-            width: 10px;
-            height: 10px;
-            border-bottom: 2px solid #ff6600;
-            border-right: 2px solid #ff6600;
-        }
-
-        .hud-input {
-            background-color: #111317;
-            border: 1px solid #2c313d;
-            color: #ffffff;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .hud-input:focus {
-            outline: none;
-            border-color: #ff6600;
-            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.15);
-        }
-
-        .grid-overlay {
-            background-size: 40px 40px;
-            background-image:
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-        }
-    </style>
-</head>
-<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen grid-overlay">
-
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-
-        <!-- Header -->
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-inaraBorder pb-6">
-            <div class="space-y-1.5">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
-                    <i class="fa-solid fa-terminal"></i>
-                    <span>ULAD // ROSTER GENERATOR TOOL // [ULAD]</span>
-                </div>
-                <h1 class="font-hud text-2xl sm:text-4xl font-black text-white tracking-tight">
-                    GENERATORE <span class="text-uladOrange">ROSTER</span>
-                </h1>
-                <p class="text-inaraMuted text-base">
-                    Carica o elimina i profili dei comandanti in <strong class="text-white">roster.html</strong> (<code class="text-inaraText">CMDR nome</code>, <code class="text-inaraText">Grado</code>, <code class="text-inaraText">Mansioni</code> e <code class="text-inaraText">link INARA</code>).
-                </p>
-            </div>
-
-            <div class="flex items-center gap-3 self-start md:self-auto">
-                <a href="roster.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
-                    <i class="fa-solid fa-users-viewfinder text-uladOrange"></i> VAI A ROSTER
-                </a>
-                <a href="homepage.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
-                    <i class="fa-solid fa-house text-uladOrange"></i> HOME
-                </a>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-            <!-- Colonna Sinistra: Caricamento ed Eliminazione Profili -->
-            <form id="roster-form" class="lg:col-span-6 tactical-card tactical-corner p-6 sm:p-7 rounded space-y-5">
-                <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
-                    <h2 class="font-hud text-base font-bold text-white uppercase tracking-wider">Carica Profilo Comandante</h2>
-                    <button type="button" id="reset-roster-form-btn" class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
-                    </button>
-                </div>
-
-                <!-- CMDR nome -->
-                <div class="space-y-1.5">
-                    <label for="cmdr-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                        CMDR nome (<code class="text-inaraText">cmdr</code>)
-                    </label>
-                    <input
-                        type="text"
-                        id="cmdr-input"
-                        value="CMDR ArmandoBug"
-                        placeholder="Es. CMDR ArmandoBug"
-                        required
-                        class="hud-input w-full px-3.5 py-2.5 rounded text-base"
-                    >
-                </div>
-
-                <!-- Grado -->
-                <div class="space-y-1.5">
-                    <label for="rank-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                        Grado (<code class="text-inaraText">rank</code>)
-                    </label>
-                    <input
-                        type="text"
-                        id="rank-input"
-                        value="Senior Officer"
-                        placeholder="Es. Squadron Leader, Senior Officer, Pilot"
-                        required
-                        class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
-                    >
-                </div>
-
-                <!-- Mansioni -->
-                <div class="space-y-1.5">
-                    <label for="duties-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                        Mansioni (<code class="text-inaraText">duties</code>)
-                    </label>
-                    <textarea
-                        id="duties-input"
-                        rows="3"
-                        placeholder="Es. Comunicazioni, operazioni e supporto squadrone"
-                        required
-                        class="hud-input w-full px-3.5 py-2.5 rounded text-base resize-y"
-                    >Comunicazioni, operazioni e supporto squadrone</textarea>
-                </div>
-
-                <!-- Link profilo INARA -->
-                <div class="space-y-1.5">
-                    <label for="inara-url-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                        Link profilo INARA (<code class="text-inaraText">inaraUrl</code>)
-                    </label>
-                    <input
-                        type="url"
-                        id="inara-url-input"
-                        value="https://inara.cz/elite/cmdr/517668/"
-                        placeholder="https://inara.cz/elite/cmdr/517668/"
-                        class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
-                    >
-                </div>
-
-                <!-- Pubblicazione su GitHub -->
-                <div class="pt-4 border-t border-inaraBorder space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-hud text-xs sm:text-sm font-bold text-uladOrange uppercase tracking-wider">
-                            <i class="fa-brands fa-github mr-1.5"></i> Salva su GitHub (roster.html)
-                        </h3>
-                        <span class="text-[11px] font-mono text-inaraMuted">BRANCH: main</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="space-y-1">
-                            <label for="gh-owner" class="block text-[11px] font-mono text-inaraMuted uppercase">Owner</label>
-                            <input type="text" id="gh-owner" value="ArmandoBug" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
-                        </div>
-                        <div class="space-y-1">
-                            <label for="gh-repo" class="block text-[11px] font-mono text-inaraMuted uppercase">Repository</label>
-                            <input type="text" id="gh-repo" value="uladsite" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
-                        </div>
-                        <div class="space-y-1">
-                            <label for="gh-branch" class="block text-[11px] font-mono text-inaraMuted uppercase">Branch</label>
-                            <input type="text" id="gh-branch" value="main" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
-                        </div>
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <label for="gh-token" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                            GitHub Personal Access Token (solo in memoria, non salvato)
-                        </label>
-                        <input
-                            type="password"
-                            id="gh-token"
-                            placeholder="github_pat_... (permesso Contents: Read and write)"
-                            autocomplete="off"
-                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
-                        >
-                    </div>
-
-                    <button
-                        type="button"
-                        id="publish-roster-btn"
-                        class="w-full py-3 px-4 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
-                    >
-                        <i class="fa-solid fa-cloud-arrow-up" id="publish-icon"></i>
-                        <span id="publish-label">CARICA PROFILO IN ROSTER.HTML</span>
-                    </button>
-
-                    <div id="publish-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
-                </div>
-
-                <!-- Eliminazione Profilo Comandante -->
-                <div class="pt-5 border-t border-inaraBorder space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-hud text-xs sm:text-sm font-bold text-red-400 uppercase tracking-wider">
-                            <i class="fa-solid fa-user-minus mr-1.5"></i> Elimina Profilo Comandante
-                        </h3>
-                        <button
-                            type="button"
-                            id="load-roster-btn"
-                            class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5"
-                        >
-                            <i class="fa-solid fa-rotate" id="load-roster-icon"></i> Carica profili
-                        </button>
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <label for="delete-cmdr-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
-                            Seleziona Profilo CMDR da Eliminare
-                        </label>
-                        <select id="delete-cmdr-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs">
-                            <option value="">-- Clicca "Carica profili" per leggere roster.html --</option>
-                        </select>
-                    </div>
-
-                    <button
-                        type="button"
-                        id="delete-cmdr-btn"
-                        class="w-full py-2.5 px-4 rounded bg-red-600/90 hover:bg-red-500 text-white font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
-                    >
-                        <i class="fa-solid fa-trash" id="delete-icon"></i>
-                        <span id="delete-label">ELIMINA PROFILO SELEZIONATO</span>
-                    </button>
-
-                    <div id="delete-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
-                </div>
-            </form>
-
-            <!-- Colonna Destra: Codice Generato + Anteprima -->
-            <div class="lg:col-span-6 space-y-6">
-                <div class="tactical-card tactical-corner p-6 rounded space-y-4">
-                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-code text-uladOrange"></i>
-                            <h2 class="font-hud text-sm sm:text-base font-bold text-white uppercase tracking-wider">Codice Generato</h2>
-                        </div>
-                        <button
-                            type="button"
-                            id="copy-code-btn"
-                            class="px-3.5 py-1.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2"
-                        >
-                            <i class="fa-regular fa-copy" id="copy-icon"></i>
-                            <span id="copy-label">COPIA CODICE</span>
-                        </button>
-                    </div>
-
-                    <div class="bg-inaraBg border border-inaraBorder rounded p-4 overflow-x-auto">
-                        <pre id="generated-code" class="font-mono text-xs sm:text-sm text-inaraText leading-relaxed"></pre>
-                    </div>
-                </div>
-
-                <div class="tactical-card p-6 rounded space-y-4">
-                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">Anteprima Card Comandante</span>
-                        <span class="font-mono text-xs text-inaraMuted">[ULAD]</span>
-                    </div>
-
-                    <article class="tactical-card tactical-corner rounded p-6 bg-inaraPanel space-y-4">
-                        <div class="flex items-center justify-between gap-2 text-xs font-mono">
-                            <span id="preview-rank" class="px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/50 text-uladOrange uppercase font-bold">SENIOR OFFICER</span>
-                            <span class="text-inaraMuted">[ULAD]</span>
-                        </div>
-
-                        <h3 id="preview-cmdr" class="font-hud text-xl font-bold text-white tracking-wide">CMDR ArmandoBug</h3>
-
-                        <div class="bg-inaraBg/80 border border-inaraBorder/80 rounded p-3.5 space-y-1.5 text-xs font-mono">
-                            <div class="text-inaraMuted uppercase tracking-wider">Mansioni</div>
-                            <div id="preview-duties" class="text-inaraText text-sm font-body leading-relaxed">
-                                Comunicazioni, operazioni e supporto squadrone
-                            </div>
-                        </div>
-
-                        <div class="pt-2 border-t border-inaraBorder/70 flex items-center justify-end text-xs font-mono">
-                            <span id="preview-inara" class="text-uladOrange font-hud font-bold uppercase tracking-wider">Profilo INARA &rarr;</span>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const cmdrInput = document.getElementById('cmdr-input');
+    <script>const cmdrInput = document.getElementById('cmdr-input');
         const rankInput = document.getElementById('rank-input');
         const dutiesInput = document.getElementById('duties-input');
         const inaraUrlInput = document.getElementById('inara-url-input');
@@ -366,10 +42,9 @@
 
         function escapeJs(str) {
             return String(str ?? '')
-                .replace(/\/g, '\\')
-                .replace(/'/g, "\'")
-                .replace(/?
-/g, ' ');
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r?\n/g, ' ');
         }
 
         function formatCmdrName(raw) {
@@ -472,8 +147,7 @@
         }
 
         function insertIntoRosterArray(htmlText, itemCode) {
-            const re = /(const\s+squadronRoster\s*=\s*\[)([\s\S]*?)(
-\s*\];)/;
+            const re = /(const\s+squadronRoster\s*=\s*\[)([\s\S]*?)(\n\s*\];)/;
             const m = htmlText.match(re);
             if (!m) throw new Error('Array "squadronRoster" non trovato in roster.html.');
 
@@ -483,9 +157,7 @@
             const trimmed = body.trimEnd();
             const hasItems = trimmed.trim().length > 0;
             const withComma = hasItems && !trimmed.endsWith(',') ? `${trimmed},` : trimmed;
-            const newBody = hasItems ? `${withComma}
-            ${itemCode}` : `
-            ${itemCode}`;
+            const newBody = hasItems ? `${withComma}\n            ${itemCode}` : `\n            ${itemCode}`;
 
             return htmlText.replace(m[0], `${prefix}${newBody}${suffix}`);
         }
@@ -499,7 +171,7 @@
             for (let i = openIdx; i < htmlText.length; i++) {
                 const ch = htmlText[i];
                 if (esc) { esc = false; continue; }
-                if (ch === '\') { esc = true; continue; }
+                if (ch === '\\') { esc = true; continue; }
                 if (!inD && !inT && ch === "'") { inS = !inS; continue; }
                 if (!inS && !inT && ch === '"') { inD = !inD; continue; }
                 if (!inS && !inD && ch === '`') { inT = !inT; continue; }
@@ -523,7 +195,7 @@
                     for (; i < body.length; i++) {
                         const ch = body[i];
                         if (esc) { esc = false; continue; }
-                        if (ch === '\') { esc = true; continue; }
+                        if (ch === '\\') { esc = true; continue; }
                         if (!inD && !inT && ch === "'") { inS = !inS; continue; }
                         if (!inS && !inT && ch === '"') { inD = !inD; continue; }
                         if (!inS && !inD && ch === '`') { inT = !inT; continue; }
@@ -533,8 +205,8 @@
                             depth--;
                             if (depth === 0) {
                                 const raw = body.slice(start, i + 1);
-                                const cmdrM = raw.match(/cmdr\s*:\s*(['"`])(.*?)/);
-                                const rankM = raw.match(/rank\s*:\s*(['"`])(.*?)/);
+                                const cmdrM = raw.match(/cmdr\s*:\s*(['"`])(.*?)\1/);
+                                const rankM = raw.match(/rank\s*:\s*(['"`])(.*?)\1/);
                                 out.push({
                                     start,
                                     end: i + 1,
@@ -614,8 +286,7 @@
                 await refreshDeleteDropdown(owner, repo, branch, token);
                 setBoxStatus(publishStatus, 'success', `Profilo caricato in roster.html per ${cmdrName}.`);
             } catch (err) {
-                setBoxStatus(publishStatus, 'error', `Errore:
-${err.message}`);
+                setBoxStatus(publishStatus, 'error', `Errore:\n${err.message}`);
             } finally {
                 publishBtn.disabled = false;
                 publishIcon.className = 'fa-solid fa-cloud-arrow-up';
@@ -646,8 +317,7 @@ ${err.message}`);
                     setBoxStatus(deleteStatus, 'success', `Caricati ${count} profili CMDR da roster.html.`);
                 }
             } catch (err) {
-                setBoxStatus(deleteStatus, 'error', `Errore lettura:
-${err.message}`);
+                setBoxStatus(deleteStatus, 'error', `Errore lettura:\n${err.message}`);
             } finally {
                 loadRosterBtn.disabled = false;
                 loadRosterIcon.className = 'fa-solid fa-rotate';
@@ -693,9 +363,8 @@ ${err.message}`);
                 while (after < body.length && /\s/.test(body[after])) after++;
                 if (after < body.length && body[after] === ',') {
                     remEnd = after + 1;
-                    if (body[remEnd] === '') remEnd++;
-                    if (body[remEnd] === '
-') remEnd++;
+                    if (body[remEnd] === '\r') remEnd++;
+                    if (body[remEnd] === '\n') remEnd++;
                 } else {
                     let before = remStart - 1;
                     while (before >= 0 && /\s/.test(body[before])) before--;
@@ -714,8 +383,7 @@ ${err.message}`);
                 await refreshDeleteDropdown(owner, repo, branch, token);
                 setBoxStatus(deleteStatus, 'success', `Eliminato il profilo di ${formatCmdrName(chosen.cmdr)} da roster.html.`);
             } catch (err) {
-                setBoxStatus(deleteStatus, 'error', `Errore eliminazione:
-${err.message}`);
+                setBoxStatus(deleteStatus, 'error', `Errore eliminazione:\n${err.message}`);
             } finally {
                 deleteCmdrBtn.disabled = false;
                 deleteIcon.className = 'fa-solid fa-trash';
