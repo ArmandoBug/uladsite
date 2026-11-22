@@ -347,30 +347,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
             <div class="flex items-center gap-3">
                 <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
-                <span id="ulad-secret-trigger" title="ULAD Telemetry Node" style="cursor:default;user-select:none;"><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
-    <script>
-    (function () {
-        const trigger = document.getElementById('ulad-secret-trigger');
-        if (!trigger) return;
-        let clicks = 0;
-        let resetTimer = null;
-        trigger.addEventListener('click', function () {
-            clicks += 1;
-            clearTimeout(resetTimer);
-            resetTimer = setTimeout(function () { clicks = 0; }, 1200);
-            if (clicks >= 5) {
-                clicks = 0;
-                window.location.href = 'generator-hub.html';
-            }
-        });
-        document.addEventListener('keydown', function (e) {
-            if (e.altKey && e.shiftKey && String(e.key).toLowerCase() === 'g') {
-                e.preventDefault();
-                window.location.href = 'generator-hub.html';
-            }
-        });
-    })();
-    </script>
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Ultra Astra Corp</span>
             </div>
             <div class="text-center sm:text-right">
                 <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
