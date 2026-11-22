@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ulad-cmdr-102322",
+    "cmdr": "Luft",
+    "inaraUrl": "https://inara.cz/elite/cmdr/102322/",
+    "rank": "Squadron Leader",
+    "tier": "comando",
+    "role": "Fondatore & Comandante Supremo",
+    "division": "Strategia BGS & Comando",
+    "ship": "Squadron Carrier Ulad-01 Nostromo",
+    "status": "ATTIVO",
+    "bio": "Guida dello squadrone Ultra Astra Dreamers e coordinatore delle operazioni politiche della Ultra Astra Corp."
+  },
+  {
+    "id": "ulad-cmdr-517668",
+    "cmdr": "ArmandoBug",
+    "inaraUrl": "https://inara.cz/elite/cmdr/517668/",
+    "rank": "Senior Officer",
+    "tier": "ufficiali",
+    "role": "Ufficiale Comunicazioni & Operazioni",
+    "division": "BGS / Recon / Media",
+    "ship": "Krait MkII // Mandalay",
+    "status": "ATTIVO",
+    "bio": "Responsabile del centro comunicazioni subspaziali, supporto tattico in wing e documentazione spedizioni."
+  }
+]
