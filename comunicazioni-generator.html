@@ -250,8 +250,8 @@
                             <input
                                 type="text"
                                 id="image-path-input"
-                                value="multimedia/comunicazione.jpg"
-                                placeholder="multimedia/comunicazione.jpg"
+                                value="https://armandobug.github.io/uladsite/multimedia/comunicazione.jpg"
+                                placeholder="https://armandobug.github.io/uladsite/multimedia/comunicazione.jpg"
                                 class="hud-input w-full px-3 py-2 rounded font-mono text-xs"
                             >
                         </div>
@@ -468,8 +468,11 @@
         }
 
         function normalizeMediaPath(rawPath) {
-            const cleaned = String(rawPath || '').trim().replace(/^\/+/, '').replace(/^multimedia\//i, '');
-            return cleaned ? `multimedia/${cleaned}` : '';
+            const trimmed = String(rawPath || '').trim();
+            if (!trimmed) return '';
+            if (/^https?:\/\//i.test(trimmed)) return trimmed;
+            const cleaned = trimmed.replace(/^\/+/, '').replace(/^multimedia\//i, '');
+            return cleaned ? `https://armandobug.github.io/uladsite/multimedia/${cleaned}` : '';
         }
 
         function getArrayVariableName() {
@@ -876,7 +879,7 @@ ${err.message}`);
             }
             if (file) {
                 localPreviewUrl = URL.createObjectURL(file);
-                imagePathInput.value = `multimedia/${file.name}`;
+                imagePathInput.value = `https://armandobug.github.io/uladsite/multimedia/${file.name}`;
             }
             updatePreviewAndCode();
         });
@@ -932,7 +935,7 @@ ${err.message}`);
             includeImageCheckbox.checked = false;
             imageFieldsBox.classList.add('hidden');
             imageFileInput.value = '';
-            imagePathInput.value = 'multimedia/comunicazione.jpg';
+            imagePathInput.value = 'https://armandobug.github.io/uladsite/multimedia/comunicazione.jpg';
             summaryInput.value = 'Aggiornamento operativo per i comandanti dello squadrone: la Ulad-01 Nostromo mantiene il presidio su Balitcha in attesa di nuove direttive.';
             publishStatus.classList.add('hidden');
             deleteStatus.classList.add('hidden');
