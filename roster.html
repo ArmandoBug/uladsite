@@ -492,11 +492,11 @@
 
         function getRankBadgeSrc(rank) {
             const normalized = String(rank || '').trim().toLowerCase().replace(/\s+/g, ' ');
-            if (normalized === 'squadron leader' || normalized === 'leader') return 'multimedia/leader.jpg';
-            if (normalized === 'senior officer') return 'multimedia/seniorofficer.jpg';
-            if (normalized === 'officer') return 'multimedia/officer.jpg';
-            if (normalized === 'agent') return 'multimedia/agent.jpg';
-            if (normalized === 'rookie') return 'multimedia/rookie.jpg';
+            if (normalized === 'squadron leader' || normalized === 'leader') return 'multimedia/leader.png';
+            if (normalized === 'senior officer') return 'multimedia/seniorofficer.png';
+            if (normalized === 'officer') return 'multimedia/officer.png';
+            if (normalized === 'agent') return 'multimedia/agent.png';
+            if (normalized === 'rookie') return 'multimedia/rookie.png';
             return '';
         }
 
@@ -549,31 +549,31 @@
             {
                 key: 'leader',
                 title: 'LEADER',
-                badge: 'multimedia/leader.jpg',
+                badge: 'multimedia/leader.png',
                 matches: (r) => r === 'squadron leader' || r === 'leader'
             },
             {
                 key: 'senior-officer',
                 title: 'SENIOR OFFICER',
-                badge: 'multimedia/seniorofficer.jpg',
+                badge: 'multimedia/seniorofficer.png',
                 matches: (r) => r === 'senior officer'
             },
             {
                 key: 'officer',
                 title: 'OFFICER',
-                badge: 'multimedia/officer.jpg',
+                badge: 'multimedia/officer.png',
                 matches: (r) => r === 'officer'
             },
             {
                 key: 'agent',
                 title: 'AGENT',
-                badge: 'multimedia/agent.jpg',
+                badge: 'multimedia/agent.png',
                 matches: (r) => r === 'agent'
             },
             {
                 key: 'rookie',
                 title: 'ROOKIE',
-                badge: 'multimedia/rookie.jpg',
+                badge: 'multimedia/rookie.png',
                 matches: (r) => r === 'rookie'
             }
         ];
