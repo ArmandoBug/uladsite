@@ -583,7 +583,24 @@
             renderStandardComms('frontier-comms-container', 'frontier-count', frontierComms, 'COMUNICAZIONI');
         }
 
-        renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
+        function compareSquadronCommsDesc(a, b) {
+            const dateA = String(a && a.date ? a.date : '').trim();
+            const dateB = String(b && b.date ? b.date : '').trim();
+            if (dateA !== dateB) {
+                return dateB.localeCompare(dateA);
+            }
+            const matchA = String(a && a.id ? a.id : '').match(/ulad-(\d+)/i);
+            const matchB = String(b && b.id ? b.id : '').match(/ulad-(\d+)/i);
+            const numA = matchA ? parseInt(matchA[1], 10) : -1;
+            const numB = matchB ? parseInt(matchB[1], 10) : -1;
+            if (numA !== numB) {
+                return numB - numA;
+            }
+            return String(b && b.id ? b.id : '').localeCompare(String(a && a.id ? a.id : ''));
+        }
+
+        const sortedSquadronComms = [...squadronComms].sort(compareSquadronCommsDesc);
+        renderStandardComms('squadron-comms-container', 'squadron-count', sortedSquadronComms, 'DISPACCI');
         initFrontierCommsSection();
         initCommunityGoalsSection();
     </script>
