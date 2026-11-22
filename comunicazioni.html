@@ -383,12 +383,12 @@
             },
             {
                 id: 'ulad-003',
-                title: 'Progetto Marco Polo: la circumnavigazione galattica di CMDR Fix66',
+                title: 'Ordi',
                 date: '2026-11-22',
-                author: 'CMDR ArmandoBug',
+                author: 'CMDR Ar',
                 tag: 'OPERATIVO',
-                image: 'https://armandobug.github.io/uladsite/multimedia/rottamarcopolofix66.png',
-                summary: 'Luft-Star ha condiviso con lo squadrone il resoconto del viaggio che Fix66 sta affrontando, lasciando direttamente la parola al comandante. Come racconta Fix66, il progetto — battezzato Marco Polo — è iniziato già da un po\' di tempo e prevede un\'ampia circumnavigazione della galassia con partenza da Bokip, il quartier generale dello squadrone, procedendo verso destra. La prima frazione della spedizione, definita come tappa intermedia, porterà a Colonia (senza ancora una data fissata), mentre il rientro finale si chiuderà nuovamente a Bokip, anch\'esso in tempi ancora da definire. Fix66 ha ringraziato tutti per l\'attenzione, esprimendo il piacere di condividere questi aggiornamenti sulla rotta e di invitare nell\'impresa i compagni d\'avventure dello squadrone. A completare il quadro è la chiosa di Luft-Star, che ha sottolineato con entusiasmo lo spirito dell\'impresa: «Come si vede, abbiamo il nostro nuovo Odisseo, BUON VIAGGIO».'
+                image: '',
+                summary: 'Aggiornamento operativo per i comandanti dello squadrone: la Ulad-01 Nostromo mantiene il presidio su Balitcha in attesa di nuove direttive.'
             }
         ];
 
@@ -583,7 +583,37 @@
             renderStandardComms('frontier-comms-container', 'frontier-count', frontierComms, 'COMUNICAZIONI');
         }
 
-        renderStandardComms('squadron-comms-container', 'squadron-count', squadronComms, 'DISPACCI');
+                function parseDateValue(dateStr) {
+            const cleaned = String(dateStr || '').trim();
+            if (!cleaned) return Number.NEGATIVE_INFINITY;
+            const isoMatch = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (isoMatch) {
+                return Date.UTC(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+            }
+            const parsed = Date.parse(cleaned);
+            return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
+        }
+
+        function parseUladNumber(idStr) {
+            const match = String(idStr || '').trim().match(/ulad[-_]?(\d+)/i);
+            return match ? Number(match[1]) : Number.NEGATIVE_INFINITY;
+        }
+
+        function sortSquadronCommsNewestFirst(items) {
+            return [...items].sort((a, b) => {
+                const dateA = parseDateValue(a && a.date);
+                const dateB = parseDateValue(b && b.date);
+                if (dateA !== dateB) return dateB - dateA;
+
+                const uladA = parseUladNumber(a && a.id);
+                const uladB = parseUladNumber(b && b.id);
+                if (uladA !== uladB) return uladB - uladA;
+
+                return 0;
+            });
+        }
+
+        renderStandardComms('squadron-comms-container', 'squadron-count', sortSquadronCommsNewestFirst(squadronComms), 'DISPACCI');
         initFrontierCommsSection();
         initCommunityGoalsSection();
     </script>
