@@ -808,32 +808,38 @@ function usernameToAuthEmail(username) {
                 return;
             }
 
-            currentUser = user;
-            const userDocRef = doc(db, 'ulad_members', user.uid);
-            const userSnap = await getDoc(userDocRef);
+            try {
+                currentUser = user;
+                const userDocRef = doc(db, 'ulad_members', user.uid);
+                const userSnap = await getDoc(userDocRef);
 
-            const fallbackName = user.displayName || (user.email ? user.email.split('@')[0] : 'CMDR');
-            const profileData = userSnap.exists() ? userSnap.data() : { username: fallbackName, role: 'member' };
+                const fallbackName = user.displayName || (user.email ? user.email.split('@')[0] : 'CMDR');
+                const profileData = userSnap.exists() ? userSnap.data() : { username: fallbackName, role: 'member' };
 
-            updateDisplayedCmdrName(profileData.username || fallbackName);
+                updateDisplayedCmdrName(profileData.username || fallbackName);
 
-            if (profileData.role === 'admin') {
-                document.getElementById('admin-panel-link').classList.remove('hidden');
+                if (profileData.role === 'admin') {
+                    document.getElementById('admin-panel-link').classList.remove('hidden');
+                }
+
+                const tasksCol = collection(db, 'ulad_members', user.uid, 'tasks');
+                onSnapshot(query(tasksCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                    tasksState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    renderTasks();
+                }, (err) => console.error('Errore tasks:', err));
+
+                const notesCol = collection(db, 'ulad_members', user.uid, 'notes');
+                onSnapshot(query(notesCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                    notesState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    renderNotes();
+                }, (err) => console.error('Errore notes:', err));
+
+                gate.classList.add('hidden');
+            } catch (err) {
+                console.error('Errore verifica Command Deck:', err);
+                gateMsg.textContent = 'Errore durante il caricamento del profilo su Firestore: ' + err.message;
+                gateActions.classList.remove('hidden');
             }
-
-            const tasksCol = collection(db, 'ulad_members', user.uid, 'tasks');
-            onSnapshot(query(tasksCol, orderBy('createdAtMs', 'desc')), (snap) => {
-                tasksState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderTasks();
-            });
-
-            const notesCol = collection(db, 'ulad_members', user.uid, 'notes');
-            onSnapshot(query(notesCol, orderBy('createdAtMs', 'desc')), (snap) => {
-                notesState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderNotes();
-            });
-
-            gate.classList.add('hidden');
         });
 
         document.getElementById('task-form').addEventListener('submit', async (e) => {
