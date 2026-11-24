@@ -249,6 +249,14 @@
                 </div>
             </div>
 
+            <!-- AVVISO SICUREZZA DATI -->
+            <div class="rounded bg-amber-950/30 border border-amber-500/40 px-4 py-3 flex items-start gap-3 text-xs font-mono text-amber-200/90">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0"></i>
+                <p class="leading-relaxed">
+                    <strong class="text-amber-300 uppercase">Avviso di sicurezza:</strong> non inserire password, codici di accesso, dati sensibili o informazioni personali all'interno di task, note o promemoria. Usa questo archivio esclusivamente per appunti operativi di gioco.
+                </p>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
                 <!-- COLONNA SINISTRA (5 col): TASK DA FARE -->
@@ -741,7 +749,7 @@ function usernameToAuthEmail(username) {
                                 ${hasSystem ? `<i class="fa-solid fa-location-dot text-uladOrange/80 mr-1"></i>${escapeHtml(note.system)}` : '<i class="fa-solid fa-terminal text-uladOrange/60 mr-1"></i>LOG PERSONALE'}
                             </span>
                             <span>
-                                ${hasDue ? `<i class="fa-regular fa-bell text-amber-400 mr-1"></i>Data: ${escapeHtml(note.due)}` : escapeHtml(note.dateLabel || '')}
+                                ${hasDue ? `<i class="fa-regular fa-bell text-amber-400 mr-1"></i>Scad: ${escapeHtml(note.due)}` : escapeHtml(note.dateLabel || '')}
                             </span>
                         </div>
                     </article>
