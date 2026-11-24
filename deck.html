@@ -151,6 +151,9 @@
                     <a id="admin-panel-link" href="admin-ulad.html" class="hidden px-3 py-2 rounded bg-uladOrangeDim border border-uladOrange/50 text-xs font-hud text-uladOrange hover:bg-uladOrange hover:text-inaraBg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-user-shield"></i> ADMIN
                     </a>
+                    <a id="generator-hub-link" href="generator-hub.html" class="hidden px-3 py-2 rounded bg-uladOrangeDim border border-uladOrange/50 text-xs font-hud text-uladOrange hover:bg-uladOrange hover:text-inaraBg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders"></i> GENERATOR HUB
+                    </a>
                     <button type="button" id="open-profile-modal-btn" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-white hover:text-uladOrange transition flex items-center gap-1.5">
                         <i class="fa-solid fa-user-gear text-uladOrange"></i> ACCOUNT
                     </button>
@@ -175,6 +178,9 @@
             <a href="#sezione-task" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Task & Checklist</a>
             <a href="#sezione-note" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Note & Promemoria</a>
             <a href="#sezione-tool" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Suite Strumenti ED</a>
+            <a id="generator-hub-link-mobile" href="generator-hub.html" class="hidden block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">
+                <i class="fa-solid fa-sliders mr-1.5"></i> Generator Hub
+            </a>
             <button type="button" id="open-profile-modal-mobile" class="w-full text-left px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">
                 <i class="fa-solid fa-user-gear mr-1.5"></i> Modifica Nome Utente / Password
             </button>
@@ -817,6 +823,9 @@ function usernameToAuthEmail(username) {
             const gateActions = document.getElementById('auth-gate-actions');
 
             if (!user) {
+                document.getElementById('admin-panel-link')?.classList.add('hidden');
+                document.getElementById('generator-hub-link')?.classList.add('hidden');
+                document.getElementById('generator-hub-link-mobile')?.classList.add('hidden');
                 gateMsg.textContent = 'Accesso negato. Devi effettuare il login dalla Homepage ULAD.';
                 gateActions.classList.remove('hidden');
                 return;
@@ -832,8 +841,16 @@ function usernameToAuthEmail(username) {
 
                 updateDisplayedCmdrName(profileData.username || fallbackName);
 
+                const hubLinkEl = document.getElementById('generator-hub-link');
+                const hubLinkMobileEl = document.getElementById('generator-hub-link-mobile');
                 if (profileData.role === 'admin') {
                     document.getElementById('admin-panel-link').classList.remove('hidden');
+                    if (hubLinkEl) hubLinkEl.classList.remove('hidden');
+                    if (hubLinkMobileEl) hubLinkMobileEl.classList.remove('hidden');
+                } else {
+                    document.getElementById('admin-panel-link').classList.add('hidden');
+                    if (hubLinkEl) hubLinkEl.classList.add('hidden');
+                    if (hubLinkMobileEl) hubLinkMobileEl.classList.add('hidden');
                 }
 
                 const tasksCol = collection(db, 'ulad_members', user.uid, 'tasks');
