@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="multimedia/logoULADpng.png">
+    <title>ULAD Command Deck — Area Riservata Comandante</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 102, 0, 0.04) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .tactical-card:hover {
+            border-color: rgba(255, 102, 0, 0.5);
+            background-color: #1d2128;
+        }
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.2);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111317;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c313d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6600;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- SCHERMATA VERIFICA SESSIONE / ACCESSO NEGATO -->
+    <div id="auth-gate" class="fixed inset-0 z-50 bg-inaraBg flex items-center justify-center p-4">
+        <div class="tactical-card tactical-corner max-w-md w-full p-8 rounded text-center space-y-5">
+            <div class="w-16 h-16 mx-auto rounded-full bg-inaraPanel border border-uladOrange/60 flex items-center justify-center text-uladOrange orange-glow">
+                <i class="fa-solid fa-shield-halved text-2xl animate-pulse"></i>
+            </div>
+            <h2 class="font-hud text-xl font-bold text-white tracking-wider">AUTENTICAZIONE COMMAND DECK</h2>
+            <p id="auth-gate-msg" class="text-sm font-mono text-inaraMuted">Verifica credenziali comandante [ULAD] in corso...</p>
+            <div id="auth-gate-actions" class="hidden pt-2">
+                <a href="homepage.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider uppercase transition">
+                    <i class="fa-solid fa-arrow-left"></i> Torna alla Homepage per il Login
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 bg-inaraBg/95 backdrop-blur-md border-b border-inaraBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand & Logo -->
+                <a href="homepage.html" class="flex items-center gap-3.5 group">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border border-uladOrange/60 group-hover:border-uladOrange transition orange-glow bg-inaraPanel flex items-center justify-center">
+                        <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="navbar-cmdr-name" class="font-hud font-bold text-white tracking-wider text-base sm:text-lg">CMDR [ULAD]</span>
+                        </div>
+                        <p class="text-xs text-inaraMuted font-mono tracking-wide">SQUADRON: <span class="text-uladOrange font-semibold">[ULAD]</span> // ULTRA ASTRA DREAMERS</p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigazione Desktop -->
+                <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide uppercase">
+                    <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home ULAD</a>
+                    <a href="#sezione-task" class="text-inaraMuted hover:text-uladOrange transition py-7">Task & Checklist</a>
+                    <a href="#sezione-note" class="text-inaraMuted hover:text-uladOrange transition py-7">Note & Promemoria</a>
+                    <a href="#sezione-tool" class="text-inaraMuted hover:text-uladOrange transition py-7">Suite Strumenti ED</a>
+                </nav>
+
+                <!-- Azioni Account & Squadrone -->
+                <div class="hidden md:flex items-center gap-2.5">
+                    <a id="admin-panel-link" href="admin-ulad.html" class="hidden px-3 py-2 rounded bg-uladOrangeDim border border-uladOrange/50 text-xs font-hud text-uladOrange hover:bg-uladOrange hover:text-inaraBg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield"></i> ADMIN
+                    </a>
+                    <button type="button" id="open-profile-modal-btn" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-white hover:text-uladOrange transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-gear text-uladOrange"></i> ACCOUNT
+                    </button>
+                    <a href="https://inara.cz/elite/squadron/12623/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-satellite-dish text-uladOrange"></i> [ULAD]
+                    </a>
+                    <button type="button" id="logout-btn" class="px-3.5 py-2 rounded bg-red-950/50 hover:bg-red-900/60 border border-red-500/40 text-xs font-hud text-red-300 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i> ESCI
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-inaraText hover:text-uladOrange p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-inaraPanel border-b border-inaraBorder px-4 pt-2 pb-6 space-y-2">
+            <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Torna a Home ULAD</a>
+            <a href="#sezione-task" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Task & Checklist</a>
+            <a href="#sezione-note" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Note & Promemoria</a>
+            <a href="#sezione-tool" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Suite Strumenti ED</a>
+            <button type="button" id="open-profile-modal-mobile" class="w-full text-left px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">
+                <i class="fa-solid fa-user-gear mr-1.5"></i> Modifica Nome Utente / Password
+            </button>
+            <button type="button" id="logout-btn-mobile" class="w-full text-left px-3 py-2 rounded bg-red-950/40 text-red-300 font-semibold">
+                <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Disconnetti
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO / COMMAND DECK HEADER -->
+    <section id="top" class="relative overflow-hidden border-b border-inaraBorder grid-overlay">
+        <div class="absolute inset-0 bg-gradient-to-t from-inaraBg via-inaraBg/70 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        ULTRA ASTRA DREAMERS [ULAD] // DECK PRIVATO SINCRONIZZATO
+                    </div>
+                    <h1 class="font-hud text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+                        COMMAND DECK <span id="hero-cmdr-name" class="text-uladOrange">COMANDANTE</span>
+                    </h1>
+                    <p class="text-inaraText text-lg max-w-2xl leading-relaxed">
+                        Terminale operativo privato riservato ai piloti <strong class="text-white">Ultra Astra Dreamers [ULAD]</strong>: i tuoi task, appunti e promemoria sono salvati sul cloud e visibili esclusivamente al tuo account.
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <a href="https://inara.cz/elite/squadron/12623/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition inline-flex items-center gap-2">
+                            <i class="fa-solid fa-satellite-dish"></i> SQUADRONE [ULAD] SU INARA
+                        </a>
+                        <button type="button" id="hero-account-btn" class="px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-white tracking-wider transition inline-flex items-center gap-2">
+                            <i class="fa-solid fa-key text-uladOrange"></i> CAMBIA USERNAME / PASSWORD
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Telemetria Rapida & Orologio Galattico -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0">
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded">
+                        <span class="text-[11px] font-mono text-inaraMuted uppercase block">Galactic Time (UTC)</span>
+                        <span id="galactic-clock" class="font-hud text-base sm:text-lg font-bold text-uladOrange mt-0.5 block">00:00:00</span>
+                    </div>
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded">
+                        <span class="text-[11px] font-mono text-inaraMuted uppercase block">Task Attivi</span>
+                        <span id="hero-task-count" class="font-hud text-base sm:text-lg font-bold text-white mt-0.5 block">0 APERTI</span>
+                    </div>
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded col-span-2 sm:col-span-1">
+                        <span class="text-[11px] font-mono text-inaraMuted uppercase block">Log & Note</span>
+                        <span id="hero-note-count" class="font-hud text-base sm:text-lg font-bold text-emerald-400 mt-0.5 block">0 SALVATE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- SEZIONE 01: WORKSPACE OPERATIVO -->
+        <section id="sezione-task" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">01 // Archivio Privato Criptato</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">TASK DA FARE, NOTE & PROMEMORIA</h2>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-mono">
+                    <span class="px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">
+                        <i class="fa-solid fa-lock mr-1.5"></i>Visibile solo al tuo account
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- COLONNA SINISTRA (5 col): TASK DA FARE -->
+                <div class="lg:col-span-5 tactical-card tactical-corner rounded p-6 space-y-5">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-list-check text-uladOrange"></i>
+                            <h3 class="font-hud text-base font-bold text-white uppercase tracking-wider">Task da Fare</h3>
+                        </div>
+                        <span id="tasks-counter-label" class="font-mono text-xs text-uladOrange">0/0</span>
+                    </div>
+
+                    <form id="task-form" class="space-y-3">
+                        <input
+                            id="task-input"
+                            type="text"
+                            required
+                            placeholder="Es. Farmare Pharmaceutical Isolators a..."
+                            class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted"
+                        >
+                        <div class="flex gap-2">
+                            <select id="task-category" class="flex-grow px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                <option value="INGEGNERIA">INGEGNERIA / MATERIALI</option>
+                                <option value="BGS / ULAD">BGS / ULAD</option>
+                                <option value="ESPLORAZIONE">ESPLORAZIONE / EXO</option>
+                                <option value="COMBATTIMENTO">COMBATTIMENTO / AX</option>
+                                <option value="COMMERCIO">COMMERCIO / MINING</option>
+                                <option value="GENERALE">GENERALE</option>
+                            </select>
+                            <button type="submit" class="px-4 py-2 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition shrink-0 flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus"></i> AGGIUNGI
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="flex items-center justify-between text-xs font-mono pt-1">
+                        <div class="flex gap-1.5">
+                            <button type="button" data-task-filter="all" class="task-filter-btn px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/50 text-uladOrange">Tutti</button>
+                            <button type="button" data-task-filter="open" class="task-filter-btn px-2.5 py-1 rounded bg-inaraBg border border-inaraBorder text-inaraMuted hover:text-white">Da fare</button>
+                            <button type="button" data-task-filter="done" class="task-filter-btn px-2.5 py-1 rounded bg-inaraBg border border-inaraBorder text-inaraMuted hover:text-white">Completati</button>
+                        </div>
+                        <button type="button" id="clear-completed-tasks" class="text-inaraMuted hover:text-red-400 transition">
+                            Pulisci completati
+                        </button>
+                    </div>
+
+                    <div id="tasks-list" class="space-y-2.5 max-h-[520px] overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- COLONNA DESTRA (7 col): NOTE E PROMEMORIA -->
+                <div id="sezione-note" class="lg:col-span-7 space-y-6">
+                    <div class="tactical-card tactical-corner rounded p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-book-journal-whills text-uladOrange"></i>
+                                <h3 class="font-hud text-base font-bold text-white uppercase tracking-wider">Nuovo Appunto / Promemoria</h3>
+                            </div>
+                            <span class="font-mono text-[11px] text-inaraMuted">CLOUD SYNC</span>
+                        </div>
+
+                        <form id="note-form" class="space-y-3.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                                <div class="sm:col-span-7">
+                                    <input
+                                        id="note-title"
+                                        type="text"
+                                        required
+                                        placeholder="Titolo (es. Sistema ingegnere, Rotta Tritium, Build...)"
+                                        class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted"
+                                    >
+                                </div>
+                                <div class="sm:col-span-5">
+                                    <select id="note-type" class="w-full px-3 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                        <option value="PROMEMORIA">PROMEMORIA</option>
+                                        <option value="APPUNTO">APPUNTO DI VOLO</option>
+                                        <option value="COORDINATE">SISTEMA / COORDINATE</option>
+                                        <option value="BUILD">BUILD / INGEGNERIA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                                <div class="sm:col-span-6">
+                                    <input
+                                        id="note-system"
+                                        type="text"
+                                        placeholder="Sistema / Stazione (opzionale, es. Bokip)"
+                                        class="w-full px-3.5 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                                    >
+                                </div>
+                                <div class="sm:col-span-6">
+                                    <input
+                                        id="note-due"
+                                        type="date"
+                                        title="Data promemoria (opzionale)"
+                                        class="w-full px-3.5 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText"
+                                    >
+                                </div>
+                            </div>
+
+                            <textarea
+                                id="note-content"
+                                rows="3"
+                                required
+                                placeholder="Scrivi qui appunti, materiali mancanti, coordinate planetarie, link a build EDSY/Coriolis o promemoria..."
+                                class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted leading-relaxed"
+                            ></textarea>
+
+                            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                                <label class="inline-flex items-center gap-2 text-xs font-mono text-inaraMuted cursor-pointer select-none">
+                                    <input id="note-pinned" type="checkbox" class="accent-[#ff6600] rounded">
+                                    <span>Fissa in alto (Priorità)</span>
+                                </label>
+                                <button type="submit" class="px-5 py-2.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2">
+                                    <i class="fa-solid fa-floppy-disk"></i> SALVA NEL LOG
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" data-note-filter="ALL" class="note-filter-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider">TUTTE</button>
+                            <button type="button" data-note-filter="PROMEMORIA" class="note-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">PROMEMORIA</button>
+                            <button type="button" data-note-filter="APPUNTO" class="note-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">APPUNTI</button>
+                            <button type="button" data-note-filter="COORDINATE" class="note-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">SISTEMI</button>
+                            <button type="button" data-note-filter="BUILD" class="note-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">BUILD</button>
+                        </div>
+                        <div class="relative w-full sm:w-60">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-inaraMuted text-xs"></i>
+                            <input
+                                id="note-search"
+                                type="text"
+                                placeholder="Cerca nelle note..."
+                                class="w-full pl-8 pr-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                            >
+                        </div>
+                    </div>
+
+                    <div id="notes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEZIONE 02: SUITE STRUMENTI ELITE DANGEROUS -->
+        <section id="sezione-tool" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Database & Utilities Galattiche</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">SUITE STRUMENTI ELITE DANGEROUS</h2>
+                </div>
+                <div class="relative w-full sm:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-inaraMuted text-xs"></i>
+                    <input
+                        id="tools-search"
+                        type="text"
+                        placeholder="Filtra tool (es. Spansh, EDSY, Mining...)"
+                        class="w-full pl-9 pr-4 py-2 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                    >
+                </div>
+            </div>
+
+            <div id="tools-container" class="space-y-10"></div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-inaraBorder bg-inaraPanel/50 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inaraMuted">
+            <div class="flex items-center gap-3">
+                <img src="multimedia/logoULADpng.png" alt="ULAD" class="w-7 h-7 rounded-full border border-uladOrange/50">
+                <span><strong class="text-white">ULTRA ASTRA DREAMERS [ULAD]</strong> — Command Deck Riservato</span>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>Elite Dangerous &copy; Frontier Developments plc. Sito non ufficiale creato dalla community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALE IMPOSTAZIONI ACCOUNT -->
+    <div id="profile-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="tactical-card tactical-corner max-w-lg w-full rounded bg-inaraPanel p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-inaraBorder pb-4">
+                <div>
+                    <span class="font-mono text-xs text-uladOrange uppercase">Profilo Pilota // [ULAD]</span>
+                    <h3 class="font-hud text-xl font-bold text-white">IMPOSTAZIONI ACCOUNT</h3>
+                </div>
+                <button type="button" id="close-profile-modal" class="w-9 h-9 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder text-inaraText hover:text-uladOrange flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="change-username-form" class="space-y-3 border-b border-inaraBorder pb-6">
+                <h4 class="font-hud text-sm font-bold text-white uppercase">1. Modifica Nome Utente (Visualizzato & Login)</h4>
+                <p class="text-xs text-inaraMuted">Caratteri consentiti: lettere, numeri, punti, trattini e underscore.</p>
+                <div class="flex gap-2">
+                    <input
+                        id="new-username-input"
+                        type="text"
+                        required
+                        minlength="3"
+                        placeholder="Nuovo nome utente CMDR"
+                        class="flex-grow px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white"
+                    >
+                    <button type="submit" class="px-4 py-2.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition shrink-0">
+                        AGGIORNA
+                    </button>
+                </div>
+            </form>
+
+            <form id="change-password-form" class="space-y-3">
+                <h4 class="font-hud text-sm font-bold text-white uppercase">2. Modifica Password</h4>
+                <input
+                    id="current-password-input"
+                    type="password"
+                    required
+                    placeholder="Password attuale (per sicurezza)"
+                    class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white"
+                >
+                <input
+                    id="new-password-input"
+                    type="password"
+                    required
+                    minlength="6"
+                    placeholder="Nuova password (minimo 6 caratteri)"
+                    class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white"
+                >
+                <button type="submit" class="w-full py-2.5 rounded bg-inaraBg hover:bg-inaraPanelHover border border-uladOrange text-uladOrange hover:bg-uladOrange hover:text-inaraBg font-hud font-bold text-xs tracking-wider transition">
+                    SALVA NUOVA PASSWORD
+                </button>
+            </form>
+
+            <div id="profile-feedback" class="hidden text-xs font-mono p-3 rounded border"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut,
+            updateProfile,
+            updatePassword,
+            updateEmail,
+            EmailAuthProvider,
+            reauthenticateWithCredential
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            getDoc,
+            setDoc,
+            addDoc,
+            updateDoc,
+            deleteDoc,
+            onSnapshot,
+            query,
+            orderBy,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        
+// ============================================================================
+// CONFIGURAZIONE FIREBASE [ULAD]
+// Incolla qui sotto i dati della tua Web App dalla Firebase Console.
+// ============================================================================const firebaseConfig = {
+  apiKey: "AIzaSyAeS6i7vUA13FHnQxJCsNnL2NL4RzbXZeQ",
+  authDomain: "ulad-de921.firebaseapp.com",
+  projectId: "ulad-de921",
+  storageBucket: "ulad-de921.firebasestorage.app",
+  messagingSenderId: "780852375378",
+  appId: "1:780852375378:web:e2580b8a61b97a260b548b"
+};
+
+const ULAD_AUTH_DOMAIN = "ulad.local";
+
+function usernameToAuthEmail(username) {
+    const clean = String(username || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9._-]/g, "");
+    return `${clean}@${ULAD_AUTH_DOMAIN}`;
+}
+
+
+        const app = initializeApp(FIREBASE_CONFIG);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let tasksState = [];
+        let notesState = [];
+        let taskFilter = 'all';
+        let noteFilter = 'ALL';
+        let noteSearchQuery = '';
+        let toolSearchQuery = '';
+
+        const edToolCategories = [
+            {
+                category: 'SQUADRONE [ULAD] & BGS',
+                icon: 'fa-solid fa-satellite-dish',
+                tools: [
+                    { name: 'INARA — Squadron [ULAD]', desc: 'Pagina ufficiale Ultra Astra Dreamers (ID 12623), roster e bacheca.', url: 'https://inara.cz/elite/squadron/12623/', tag: 'SQUADRONE' },
+                    { name: 'INARA — Ultra Astra Corp', desc: 'Stato BGS della fazione, influenza nei sistemi, guerre ed elezioni.', url: 'https://inara.cz/elite/minorfaction/78882/', tag: 'BGS' },
+                    { name: 'INARA — Nearest & Outfitting', desc: 'Cerca stazioni, moduli, navi, Material Trader e Technology Broker vicini.', url: 'https://inara.cz/elite/nearest/', tag: 'RICERCA' },
+                    { name: 'EliteBGS', desc: 'Monitoraggio storico dettagliato di tick, stati BGS e conflitti.', url: 'https://elitebgs.app/', tag: 'BGS' },
+                    { name: 'EDSM (Star Map)', desc: 'Mappa galattica 3D, diario di bordo e rotte di esplorazione.', url: 'https://www.edsm.net/', tag: 'MAPPA' }
+                ]
+            },
+            {
+                category: 'SHIP BUILDING & INGEGNERIA',
+                icon: 'fa-solid fa-wrench',
+                tools: [
+                    { name: 'EDSY (ED Shipyard)', desc: 'Simulatore avanzato di build navi con calcolo termico esatto e moduli pre-ingegnerizzati.', url: 'https://edsy.org/', tag: 'BUILD' },
+                    { name: 'Coriolis.io', desc: 'Configuratore rapido per statistiche di salto, scudi, armi e consumi energetici.', url: 'https://coriolis.io/', tag: 'BUILD' },
+                    { name: 'INARA — Engineers & Blueprints', desc: 'Requisiti di sblocco ingegneri, ricette e lista materiali mancanti.', url: 'https://inara.cz/elite/engineers/', tag: 'INGEGNERIA' },
+                    { name: 'ED Odyssey Materials Helper', desc: 'Gestione materiali per tute e armi Odyssey + ingegneria navi.', url: 'https://github.com/jixxed/ed-odyssey-materials-helper', tag: 'ODYSSEY' }
+                ]
+            },
+            {
+                category: 'ESPLORAZIONE, ROTTE & EXOBIOLOGIA',
+                icon: 'fa-solid fa-compass',
+                tools: [
+                    { name: 'Spansh — Neutron Router', desc: 'Calcolatore rotte supercharge su stelle di neutroni per lunghi viaggi.', url: 'https://spansh.co.uk/plotter', tag: 'ROTTE' },
+                    { name: 'Spansh — Expressways to Exomastery', desc: 'Pianificatore ottimizzato per scan biologici ad altissimo rendimento.', url: 'https://spansh.co.uk/exobiology', tag: 'EXOBIOLOGIA' },
+                    { name: 'Spansh — Road to Riches', desc: 'Percorsi ad alto valore cartografico per esplorazione rapida.', url: 'https://spansh.co.uk/riches', tag: 'ESPLORAZIONE' },
+                    { name: 'Canonn Research Group', desc: 'Codex scientifico su Thargoid, Guardian, anomalie e siti biologici.', url: 'https://canonn.science/', tag: 'SCIENZA' },
+                    { name: 'EDAstro — Galaxy Maps', desc: 'Mappe di densità stellare, regioni galattiche e rotte delle Fleet Carrier.', url: 'https://edastro.com/galmap/', tag: 'MAPPA' }
+                ]
+            },
+            {
+                category: 'COMMERCIO, MINING & FLEET CARRIER',
+                icon: 'fa-solid fa-gem',
+                tools: [
+                    { name: 'INARA — Commodities & Trade Routes', desc: 'Prezzi aggiornati delle merci, rotte commerciali e domanda/offerta.', url: 'https://inara.cz/elite/commodities/', tag: 'COMMERCIO' },
+                    { name: "Miner's Tool (edtools.cc)", desc: 'Trova hotspot di Platino, Painite, Core Mining e stazioni di vendita vicine.', url: 'https://edtools.cc/miner', tag: 'MINING' },
+                    { name: 'Spansh — Fleet Carrier Router', desc: 'Calcolo salti e consumo di Tritium per spostamenti della Carrier.', url: 'https://spansh.co.uk/fleet-carrier', tag: 'CARRIER' },
+                    { name: 'DSSA Carrier Network', desc: 'Rete di Fleet Carrier di supporto nello spazio profondo per riparazioni e vendita dati.', url: 'https://edastro.com/galmap/?layer=regions&pins=DSSAcarriers', tag: 'SUPPORTO' }
+                ]
+            },
+            {
+                category: 'COMBATTIMENTO, POWERPLAY & SOFTWARE PC',
+                icon: 'fa-solid fa-crosshairs',
+                tools: [
+                    { name: 'Anti-Xeno Initiative (AXI Wiki)', desc: 'Build, tattiche e guide complete per il combattimento contro i Thargoid.', url: 'https://wiki.antixenoinitiative.com/', tag: 'AX COMBAT' },
+                    { name: 'EDPVE — Bounty Hunting Finder', desc: 'Trova sistemi ottimali per impilare missioni massacro pirati.', url: 'https://edtools.cc/pve', tag: 'BOUNTY' },
+                    { name: 'EDMC (Elite Dangerous Market Connector)', desc: 'Client leggero essenziale per sincronizzare automaticamente il tuo profilo INARA.', url: 'https://github.com/EDCD/EDMarketConnector', tag: 'CLIENT PC' },
+                    { name: 'EDDiscovery', desc: 'Diario di volo completo, mappa 3D, telemetria e sincronizzazione EDSM/Inara.', url: 'https://github.com/EDDiscovery/EDDiscovery/wiki', tag: 'CLIENT PC' }
+                ]
+            }
+        ];
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function updateGalacticClock() {
+            const now = new Date();
+            const hh = String(now.getUTCHours()).padStart(2, '0');
+            const mm = String(now.getUTCMinutes()).padStart(2, '0');
+            const ss = String(now.getUTCSeconds()).padStart(2, '0');
+            const el = document.getElementById('galactic-clock');
+            if (el) el.textContent = `${hh}:${mm}:${ss} UTC`;
+        }
+        updateGalacticClock();
+        setInterval(updateGalacticClock, 1000);
+
+        function updateCounters() {
+            const openTasks = tasksState.filter(t => !t.done).length;
+            const totalTasks = tasksState.length;
+            document.getElementById('hero-task-count').textContent = `${openTasks} APERTI`;
+            document.getElementById('tasks-counter-label').textContent = `${totalTasks - openTasks}/${totalTasks} COMPLETATI`;
+            document.getElementById('hero-note-count').textContent = `${notesState.length} SALVATE`;
+        }
+
+        function updateDisplayedCmdrName(name) {
+            const safeName = String(name || 'CMDR').trim();
+            document.getElementById('navbar-cmdr-name').textContent = `CMDR ${safeName.toUpperCase()}`;
+            document.getElementById('hero-cmdr-name').textContent = safeName.toUpperCase();
+            document.getElementById('new-username-input').value = safeName;
+            document.title = `CMDR ${safeName} — Command Deck [ULAD]`;
+        }
+
+        function renderTasks() {
+            updateCounters();
+            const listEl = document.getElementById('tasks-list');
+            const filtered = tasksState.filter(t => {
+                if (taskFilter === 'open') return !t.done;
+                if (taskFilter === 'done') return !!t.done;
+                return true;
+            });
+
+            if (!filtered.length) {
+                listEl.innerHTML = `<div class="p-5 rounded bg-inaraBg/70 border border-inaraBorder text-center text-xs font-mono text-inaraMuted">Nessun task in questa vista. Aggiungi un nuovo obiettivo qui sopra.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(task => `
+                <div class="p-3 rounded bg-inaraBg border ${task.done ? 'border-inaraBorder/60 opacity-65' : 'border-inaraBorder hover:border-uladOrange/50'} flex items-start justify-between gap-3 transition group">
+                    <button type="button" data-toggle-task="${escapeHtml(task.id)}" class="flex items-start gap-3 text-left flex-grow">
+                        <span class="mt-0.5 w-5 h-5 rounded border ${task.done ? 'bg-uladOrange border-uladOrange text-inaraBg' : 'border-inaraMuted group-hover:border-uladOrange text-transparent'} flex items-center justify-center text-xs shrink-0 transition">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <div class="space-y-1">
+                            <div class="text-sm font-semibold ${task.done ? 'line-through text-inaraMuted' : 'text-white'} leading-snug">
+                                ${escapeHtml(task.text)}
+                            </div>
+                            <span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-inaraPanel border border-inaraBorder text-uladOrange">
+                                ${escapeHtml(task.category || 'GENERALE')}
+                            </span>
+                        </div>
+                    </button>
+                    <button type="button" data-delete-task="${escapeHtml(task.id)}" title="Elimina task" class="text-inaraMuted hover:text-red-400 p-1 transition shrink-0">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderNotes() {
+            updateCounters();
+            const gridEl = document.getElementById('notes-grid');
+            const q = noteSearchQuery.trim().toLowerCase();
+
+            const sorted = [...notesState].sort((a, b) => {
+                if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+                return (b.createdAtMs || 0) - (a.createdAtMs || 0);
+            });
+
+            const filtered = sorted.filter(n => {
+                if (noteFilter !== 'ALL' && n.type !== noteFilter) return false;
+                if (!q) return true;
+                return [n.title, n.content, n.system, n.type].join(' ').toLowerCase().includes(q);
+            });
+
+            if (!filtered.length) {
+                gridEl.innerHTML = `<div class="col-span-full tactical-card rounded p-8 text-center text-xs font-mono text-inaraMuted">Nessun appunto o promemoria trovato. Compila il modulo sopra per salvare il primo log.</div>`;
+                return;
+            }
+
+            gridEl.innerHTML = filtered.map(note => {
+                const isPinned = !!note.pinned;
+                const hasSystem = note.system && String(note.system).trim().length > 0;
+                const hasDue = note.due && String(note.due).trim().length > 0;
+
+                return `
+                    <article class="tactical-card ${isPinned ? 'tactical-corner border-uladOrange/60' : ''} rounded p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2 text-[11px] font-mono">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="px-2 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                        ${escapeHtml(note.type || 'APPUNTO')}
+                                    </span>
+                                    ${isPinned ? `<span class="px-2 py-0.5 rounded bg-amber-500/15 border border-amber-400/40 text-amber-300"><i class="fa-solid fa-thumbtack mr-1"></i>PIN</span>` : ''}
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" data-pin-note="${escapeHtml(note.id)}" title="${isPinned ? 'Rimuovi priorità' : 'Fissa in alto'}" class="p-1 text-inaraMuted hover:text-uladOrange transition">
+                                        <i class="fa-solid fa-thumbtack text-xs"></i>
+                                    </button>
+                                    <button type="button" data-delete-note="${escapeHtml(note.id)}" title="Cancella nota" class="p-1 text-inaraMuted hover:text-red-400 transition">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <h4 class="font-hud text-base font-bold text-white leading-snug">
+                                ${escapeHtml(note.title)}
+                            </h4>
+
+                            <p class="text-inaraText text-sm leading-relaxed whitespace-pre-line">
+                                ${escapeHtml(note.content)}
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-t border-inaraBorder/70 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-inaraMuted">
+                            <span>
+                                ${hasSystem ? `<i class="fa-solid fa-location-dot text-uladOrange/80 mr-1"></i>${escapeHtml(note.system)}` : '<i class="fa-solid fa-terminal text-uladOrange/60 mr-1"></i>LOG PERSONALE'}
+                            </span>
+                            <span>
+                                ${hasDue ? `<i class="fa-regular fa-bell text-amber-400 mr-1"></i>Scad: ${escapeHtml(note.due)}` : escapeHtml(note.dateLabel || '')}
+                            </span>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderTools() {
+            const container = document.getElementById('tools-container');
+            const q = toolSearchQuery.trim().toLowerCase();
+
+            const blocks = edToolCategories.map(cat => {
+                const matchingTools = cat.tools.filter(t => {
+                    if (!q) return true;
+                    return [t.name, t.desc, t.tag, cat.category].join(' ').toLowerCase().includes(q);
+                });
+                if (!matchingTools.length) return '';
+
+                return `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-inaraBorder/80 pb-2.5">
+                            <div class="flex items-center gap-2.5">
+                                <i class="${cat.icon} text-uladOrange"></i>
+                                <h3 class="font-hud text-base sm:text-lg font-bold text-white tracking-wider">${escapeHtml(cat.category)}</h3>
+                            </div>
+                            <span class="text-xs font-mono text-inaraMuted">${matchingTools.length} TOOL</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${matchingTools.map(tool => `
+                                <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener noreferrer" class="tactical-card rounded p-5 flex flex-col justify-between space-y-3 group">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                                ${escapeHtml(tool.tag)}
+                                            </span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-xs text-inaraMuted group-hover:text-uladOrange transition"></i>
+                                        </div>
+                                        <h4 class="font-hud text-sm sm:text-base font-bold text-white group-hover:text-uladOrange transition">
+                                            ${escapeHtml(tool.name)}
+                                        </h4>
+                                        <p class="text-sm text-inaraMuted leading-relaxed">
+                                            ${escapeHtml(tool.desc)}
+                                        </p>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).filter(Boolean);
+
+            container.innerHTML = blocks.length
+                ? blocks.join('')
+                : `<div class="tactical-card rounded p-8 text-center text-xs font-mono text-inaraMuted">Nessuno strumento corrispondente alla ricerca.</div>`;
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            const gate = document.getElementById('auth-gate');
+            const gateMsg = document.getElementById('auth-gate-msg');
+            const gateActions = document.getElementById('auth-gate-actions');
+
+            if (!user) {
+                gateMsg.textContent = 'Accesso negato. Devi effettuare il login dalla Homepage ULAD.';
+                gateActions.classList.remove('hidden');
+                return;
+            }
+
+            currentUser = user;
+            const userDocRef = doc(db, 'ulad_members', user.uid);
+            const userSnap = await getDoc(userDocRef);
+
+            const fallbackName = user.displayName || (user.email ? user.email.split('@')[0] : 'CMDR');
+            const profileData = userSnap.exists() ? userSnap.data() : { username: fallbackName, role: 'member' };
+
+            updateDisplayedCmdrName(profileData.username || fallbackName);
+
+            if (profileData.role === 'admin') {
+                document.getElementById('admin-panel-link').classList.remove('hidden');
+            }
+
+            const tasksCol = collection(db, 'ulad_members', user.uid, 'tasks');
+            onSnapshot(query(tasksCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                tasksState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderTasks();
+            });
+
+            const notesCol = collection(db, 'ulad_members', user.uid, 'notes');
+            onSnapshot(query(notesCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                notesState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderNotes();
+            });
+
+            gate.classList.add('hidden');
+        });
+
+        document.getElementById('task-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+            const input = document.getElementById('task-input');
+            const cat = document.getElementById('task-category');
+            if (!input.value.trim()) return;
+
+            await addDoc(collection(db, 'ulad_members', currentUser.uid, 'tasks'), {
+                text: input.value.trim(),
+                category: cat.value,
+                done: false,
+                createdAtMs: Date.now(),
+                createdAt: serverTimestamp()
+            });
+            input.value = '';
+        });
+
+        document.getElementById('tasks-list').addEventListener('click', async (e) => {
+            if (!currentUser) return;
+            const toggleBtn = e.target.closest('[data-toggle-task]');
+            if (toggleBtn) {
+                const id = toggleBtn.getAttribute('data-toggle-task');
+                const t = tasksState.find(x => x.id === id);
+                if (t) await updateDoc(doc(db, 'ulad_members', currentUser.uid, 'tasks', id), { done: !t.done });
+                return;
+            }
+            const delBtn = e.target.closest('[data-delete-task]');
+            if (delBtn) {
+                const id = delBtn.getAttribute('data-delete-task');
+                await deleteDoc(doc(db, 'ulad_members', currentUser.uid, 'tasks', id));
+            }
+        });
+
+        document.getElementById('clear-completed-tasks').addEventListener('click', async () => {
+            if (!currentUser) return;
+            const completed = tasksState.filter(t => t.done);
+            await Promise.all(completed.map(t => deleteDoc(doc(db, 'ulad_members', currentUser.uid, 'tasks', t.id))));
+        });
+
+        document.querySelectorAll('.task-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                taskFilter = btn.getAttribute('data-task-filter');
+                document.querySelectorAll('.task-filter-btn').forEach(b => {
+                    b.className = 'task-filter-btn px-2.5 py-1 rounded bg-inaraBg border border-inaraBorder text-inaraMuted hover:text-white';
+                });
+                btn.className = 'task-filter-btn px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/50 text-uladOrange';
+                renderTasks();
+            });
+        });
+
+        document.getElementById('note-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+            const titleEl = document.getElementById('note-title');
+            const typeEl = document.getElementById('note-type');
+            const sysEl = document.getElementById('note-system');
+            const dueEl = document.getElementById('note-due');
+            const contentEl = document.getElementById('note-content');
+            const pinnedEl = document.getElementById('note-pinned');
+
+            if (!titleEl.value.trim() || !contentEl.value.trim()) return;
+
+            await addDoc(collection(db, 'ulad_members', currentUser.uid, 'notes'), {
+                title: titleEl.value.trim(),
+                type: typeEl.value,
+                system: sysEl.value.trim(),
+                due: dueEl.value,
+                pinned: !!pinnedEl.checked,
+                content: contentEl.value.trim(),
+                dateLabel: new Date().toISOString().slice(0, 10),
+                createdAtMs: Date.now(),
+                createdAt: serverTimestamp()
+            });
+
+            titleEl.value = '';
+            sysEl.value = '';
+            dueEl.value = '';
+            contentEl.value = '';
+            pinnedEl.checked = false;
+        });
+
+        document.getElementById('notes-grid').addEventListener('click', async (e) => {
+            if (!currentUser) return;
+            const pinBtn = e.target.closest('[data-pin-note]');
+            if (pinBtn) {
+                const id = pinBtn.getAttribute('data-pin-note');
+                const n = notesState.find(x => x.id === id);
+                if (n) await updateDoc(doc(db, 'ulad_members', currentUser.uid, 'notes', id), { pinned: !n.pinned });
+                return;
+            }
+            const delBtn = e.target.closest('[data-delete-note]');
+            if (delBtn) {
+                const id = delBtn.getAttribute('data-delete-note');
+                await deleteDoc(doc(db, 'ulad_members', currentUser.uid, 'notes', id));
+            }
+        });
+
+        document.querySelectorAll('.note-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                noteFilter = btn.getAttribute('data-note-filter');
+                document.querySelectorAll('.note-filter-btn').forEach(b => {
+                    b.className = 'note-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider';
+                });
+                btn.className = 'note-filter-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider';
+                renderNotes();
+            });
+        });
+
+        document.getElementById('note-search').addEventListener('input', (e) => {
+            noteSearchQuery = e.target.value;
+            renderNotes();
+        });
+
+        document.getElementById('tools-search').addEventListener('input', (e) => {
+            toolSearchQuery = e.target.value;
+            renderTools();
+        });
+
+        const profileModal = document.getElementById('profile-modal');
+        const profileFeedback = document.getElementById('profile-feedback');
+
+        function showProfileFeedback(msg, isError = false) {
+            profileFeedback.textContent = msg;
+            profileFeedback.className = isError
+                ? 'text-xs font-mono p-3 rounded border border-red-500/50 bg-red-950/40 text-red-300'
+                : 'text-xs font-mono p-3 rounded border border-emerald-500/50 bg-emerald-950/40 text-emerald-300';
+            profileFeedback.classList.remove('hidden');
+        }
+
+        function openProfileModal() {
+            profileFeedback.classList.add('hidden');
+            profileModal.classList.remove('hidden');
+        }
+
+        document.getElementById('open-profile-modal-btn').addEventListener('click', openProfileModal);
+        document.getElementById('open-profile-modal-mobile').addEventListener('click', openProfileModal);
+        document.getElementById('hero-account-btn').addEventListener('click', openProfileModal);
+        document.getElementById('close-profile-modal').addEventListener('click', () => profileModal.classList.add('hidden'));
+
+        document.getElementById('change-username-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const rawName = document.getElementById('new-username-input').value.trim();
+            const cleanSlug = rawName.toLowerCase().replace(/[^a-z0-9._-]/g, '');
+            if (cleanSlug.length < 3) {
+                showProfileFeedback('Il nome utente deve contenere almeno 3 caratteri validi (lettere o numeri).', true);
+                return;
+            }
+
+            try {
+                const newEmail = usernameToAuthEmail(cleanSlug);
+                await updateEmail(currentUser, newEmail);
+                await updateProfile(currentUser, { displayName: rawName });
+                await setDoc(doc(db, 'ulad_members', currentUser.uid), {
+                    username: rawName,
+                    usernameSlug: cleanSlug
+                }, { merge: true });
+
+                updateDisplayedCmdrName(rawName);
+                showProfileFeedback(`Nome utente aggiornato in "${rawName}". Usalo al prossimo accesso.`, false);
+            } catch (err) {
+                if (err.code === 'auth/requires-recent-login') {
+                    showProfileFeedback('Per motivi di sicurezza, esci e rientra prima di cambiare il nome utente.', true);
+                } else if (err.code === 'auth/email-already-in-use') {
+                    showProfileFeedback('Questo nome utente è già utilizzato da un altro comandante ULAD.', true);
+                } else {
+                    showProfileFeedback('Errore aggiornamento nome utente: ' + err.message, true);
+                }
+            }
+        });
+
+        document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const currentPwd = document.getElementById('current-password-input').value;
+            const newPwd = document.getElementById('new-password-input').value;
+
+            try {
+                const cred = EmailAuthProvider.credential(currentUser.email, currentPwd);
+                await reauthenticateWithCredential(currentUser, cred);
+                await updatePassword(currentUser, newPwd);
+
+                document.getElementById('current-password-input').value = '';
+                document.getElementById('new-password-input').value = '';
+                showProfileFeedback('Password aggiornata e criptata con successo su Firebase!', false);
+            } catch (err) {
+                showProfileFeedback('Password attuale errata o sessione scaduta: ' + err.message, true);
+            }
+        });
+
+        async function doLogout() {
+            await signOut(auth);
+            window.location.href = 'homepage.html';
+        }
+        document.getElementById('logout-btn').addEventListener('click', doLogout);
+        document.getElementById('logout-btn-mobile').addEventListener('click', doLogout);
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        renderTools();
+    </script>
+</body>
+</html>
