@@ -623,6 +623,7 @@
             const enc = path.split('/').map(encodeURIComponent).join('/');
             const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}?ref=${encodeURIComponent(branch)}`;
             const res = await fetch(url, {
+                cache: 'no-store',
                 headers: {
                     'Accept': 'application/vnd.github+json',
                     'Authorization': `Bearer ${token}`,
@@ -640,9 +641,11 @@
             const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}`;
             const res = await fetch(url, {
                 method: 'PUT',
+                cache: 'no-store',
                 headers: {
                     'Accept': 'application/vnd.github+json',
                     'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                     'X-GitHub-Api-Version': '2022-11-28'
                 },
                 body: JSON.stringify({ ...payload, branch })
@@ -653,19 +656,14 @@
         }
 
         function insertIntoArray(htmlText, varName, itemCode) {
-            const re = new RegExp(`(const\\s+${varName}\\s*=\\s*\\[)([\\s\\S]*?)(\n\\s*\\];)`);
-            const m = htmlText.match(re);
-            if (!m) throw new Error(`Array "${varName}" non trovato in tips-tricks.html.`);
-
-            const prefix = m[1];
-            const body = m[2];
-            const suffix = m[3];
+            const span = findArraySpan(htmlText, varName);
+            const body = htmlText.slice(span.start, span.end);
             const trimmed = body.trimEnd();
             const hasItems = trimmed.trim().length > 0;
             const withComma = hasItems && !trimmed.endsWith(',') ? `${trimmed},` : trimmed;
-            const newBody = hasItems ? `${withComma}\n            ${itemCode}` : `\n            ${itemCode}`;
+            const newBody = hasItems ? `${withComma}\n            ${itemCode}\n        ` : `\n            ${itemCode}\n        `;
 
-            return htmlText.replace(m[0], `${prefix}${newBody}${suffix}`);
+            return htmlText.slice(0, span.start) + newBody + htmlText.slice(span.end);
         }
 
         function findArraySpan(htmlText, varName) {
@@ -786,8 +784,8 @@
                     sha: existingHtml.sha
                 });
 
-                setBoxStatus(publishStatus, 'success', `Pubblicazione completata in tips-tricks.html!
-${uploadedMsg}`);
+                setBoxStatus(publishStatus, 'success', `Pubblicazione completata in tips-tricks.html!\n${uploadedMsg}`);
+                await refreshTipsList(true);
             } catch (err) {
                 setBoxStatus(publishStatus, 'error', `Errore:
 ${err.message}`);
@@ -798,20 +796,20 @@ ${err.message}`);
             }
         });
 
-        loadTipsBtn.addEventListener('click', async () => {
+        async function refreshTipsList(silent = false) {
             const owner = ghOwnerInput.value.trim();
             const repo = ghRepoInput.value.trim();
             const branch = ghBranchInput.value.trim() || 'main';
             const token = ghTokenInput.value.trim();
 
             if (!token) {
-                setBoxStatus(deleteStatus, 'error', 'Inserisci prima il GitHub Personal Access Token.');
+                if (!silent) setBoxStatus(deleteStatus, 'error', 'Inserisci prima il GitHub Personal Access Token.');
                 return;
             }
 
             loadTipsBtn.disabled = true;
             loadTipsIcon.className = 'fa-solid fa-spinner fa-spin';
-            setBoxStatus(deleteStatus, 'info', 'Lettura squadronTips da tips-tricks.html...');
+            if (!silent) setBoxStatus(deleteStatus, 'info', 'Lettura squadronTips da tips-tricks.html...');
 
             try {
                 const fileMeta = await getFileMeta(owner, repo, 'tips-tricks.html', branch, token);
@@ -829,7 +827,7 @@ ${err.message}`);
                     opt.value = '';
                     opt.textContent = '-- Nessuna voce in squadronTips --';
                     deleteTipSelect.appendChild(opt);
-                    setBoxStatus(deleteStatus, 'info', 'Nessuna voce presente in squadronTips.');
+                    if (!silent) setBoxStatus(deleteStatus, 'info', 'Nessuna voce presente in squadronTips.');
                     return;
                 }
 
@@ -840,15 +838,16 @@ ${err.message}`);
                     deleteTipSelect.appendChild(opt);
                 });
 
-                setBoxStatus(deleteStatus, 'success', `Caricate ${loadedEntries.length} guide da tips-tricks.html.`);
+                if (!silent) setBoxStatus(deleteStatus, 'success', `Caricate ${loadedEntries.length} guide da tips-tricks.html.`);
             } catch (err) {
-                setBoxStatus(deleteStatus, 'error', `Errore lettura:
-${err.message}`);
+                if (!silent) setBoxStatus(deleteStatus, 'error', `Errore lettura:\n${err.message}`);
             } finally {
                 loadTipsBtn.disabled = false;
                 loadTipsIcon.className = 'fa-solid fa-rotate';
             }
-        });
+        }
+
+        loadTipsBtn.addEventListener('click', () => refreshTipsList(false));
 
         deleteTipBtn.addEventListener('click', async () => {
             const owner = ghOwnerInput.value.trim();
@@ -907,6 +906,7 @@ ${err.message}`);
                 });
 
                 setBoxStatus(deleteStatus, 'success', `Rimossa "${chosen.title}" da tips-tricks.html.`);
+                await refreshTipsList(true);
             } catch (err) {
                 setBoxStatus(deleteStatus, 'error', `Errore rimozione:
 ${err.message}`);
