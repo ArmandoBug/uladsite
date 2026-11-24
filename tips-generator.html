@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <link rel="icon" type="image/png" href="multimedia/logoULADpng.png">
+    <title>ULAD // Generatore Tips &amp; Tricks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        inaraBg: '#111317',
+                        inaraPanel: '#191c22',
+                        inaraPanelHover: '#20242c',
+                        inaraBorder: '#2c313d',
+                        inaraText: '#d1d5db',
+                        inaraMuted: '#8b92a2',
+                        uladOrange: '#ff6600',
+                        uladOrangeDim: 'rgba(255, 102, 0, 0.15)',
+                        uladAmber: '#ff944d'
+                    },
+                    fontFamily: {
+                        hud: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111317;
+            color: #d1d5db;
+            font-family: 'Rajdhani', sans-serif;
+            background-image:
+                radial-gradient(circle at 15% 45%, rgba(255, 102, 0, 0.045) 0%, transparent 45%),
+                linear-gradient(to bottom, #111317, #0d0f12);
+        }
+
+        .tactical-card {
+            background-color: #191c22;
+            border: 1px solid #2c313d;
+            position: relative;
+        }
+
+        .tactical-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #ff6600;
+            border-left: 2px solid #ff6600;
+        }
+
+        .tactical-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #ff6600;
+            border-right: 2px solid #ff6600;
+        }
+
+        .hud-input {
+            background-color: #111317;
+            border: 1px solid #2c313d;
+            color: #ffffff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hud-input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.15);
+        }
+
+        .grid-overlay {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen grid-overlay">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-inaraBorder pb-6">
+            <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-inaraPanel border border-inaraBorder text-xs font-mono text-uladOrange">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>ULAD // TIPS &amp; TRICKS GENERATOR TOOL // [ULAD]</span>
+                </div>
+                <h1 class="font-hud text-2xl sm:text-4xl font-black text-white tracking-tight">
+                    GENERATORE <span class="text-uladOrange">TIPS &amp; TRICKS</span>
+                </h1>
+                <p class="text-inaraMuted text-base">
+                    Crea e pubblica nuove guide tattiche in <code class="font-mono text-inaraText">tips-tricks.html</code> (array <code class="font-mono text-inaraText">squadronTips</code>).
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 self-start md:self-auto">
+                <a href="tips-tricks.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-uladOrange"></i> VAI A TIPS &amp; TRICKS
+                </a>
+                <a href="generator-hub.html" class="px-4 py-2.5 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder hover:border-uladOrange text-xs font-hud text-inaraText hover:text-uladOrange transition flex items-center gap-2">
+                    <i class="fa-solid fa-grid-2 text-uladOrange"></i> HUB
+                </a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Colonna Sinistra: Form + Pubblicazione / Rimozione GitHub -->
+            <form id="tips-form" class="lg:col-span-6 tactical-card tactical-corner p-6 sm:p-7 rounded space-y-5">
+                <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                    <h2 class="font-hud text-base font-bold text-white uppercase tracking-wider">Nuovo Tip / Guida Tattica</h2>
+                    <button type="button" id="reset-tips-btn" class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Categoria & Difficoltà -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="category-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Categoria (<code class="text-inaraText">category</code>)
+                        </label>
+                        <select id="category-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs uppercase">
+                            <option value="PILOTAGGIO" selected>PILOTAGGIO</option>
+                            <option value="INGEGNERIA">INGEGNERIA</option>
+                            <option value="BGS">BGS</option>
+                            <option value="ESPLORAZIONE">ESPLORAZIONE</option>
+                            <option value="COMBATTIMENTO">COMBATTIMENTO</option>
+                            <option value="MINING & COMMERCIO">MINING &amp; COMMERCIO</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="difficulty-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Livello (<code class="text-inaraText">difficulty</code>)
+                        </label>
+                        <select id="difficulty-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs uppercase">
+                            <option value="BASE" selected>BASE</option>
+                            <option value="INTERMEDIO">INTERMEDIO</option>
+                            <option value="AVANZATO">AVANZATO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ID & Data -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="id-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Codice Tip (<code class="text-inaraText">id</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="id-input"
+                            value="tip-005"
+                            placeholder="Es. tip-005"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="date-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Data (<code class="text-inaraText">date</code>)
+                        </label>
+                        <input
+                            type="date"
+                            id="date-input"
+                            value="2026-11-24"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+                </div>
+
+                <!-- Titolo & Autore -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="title-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Titolo Guida (<code class="text-inaraText">title</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="title-input"
+                            value="Supercharge FSD su Stelle di Neutroni"
+                            placeholder="Titolo del tip"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="author-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Autore (<code class="text-inaraText">author</code>)
+                        </label>
+                        <input
+                            type="text"
+                            id="author-input"
+                            value="CMDR ArmandoBug"
+                            placeholder="Es. CMDR ArmandoBug"
+                            required
+                            class="hud-input w-full px-3.5 py-2.5 rounded text-base"
+                        >
+                    </div>
+                </div>
+
+                <!-- Immagine Opzionale -->
+                <div class="p-4 rounded bg-inaraBg/70 border border-inaraBorder space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-mono text-white cursor-pointer select-none">
+                            <input type="checkbox" id="include-image-checkbox" class="w-4 h-4 accent-[#ff6600] rounded">
+                            <span>Allega immagine illustrativa (opzionale)</span>
+                        </label>
+                        <span class="text-[11px] font-mono text-inaraMuted">NON OBBLIGATORIO</span>
+                    </div>
+
+                    <div id="image-fields-box" class="hidden space-y-3 pt-1">
+                        <div class="space-y-1.5">
+                            <label for="image-file-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                                Carica File Immagine dal PC (per upload su GitHub)
+                            </label>
+                            <input
+                                type="file"
+                                id="image-file-input"
+                                accept="image/*"
+                                class="hud-input w-full px-3 py-2 rounded font-mono text-xs file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:bg-uladOrange file:text-inaraBg file:font-hud file:font-bold file:text-[10px] hover:file:bg-uladAmber file:cursor-pointer"
+                            >
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label for="image-path-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                                URL / Percorso Immagine (<code class="text-inaraText">image</code>)
+                            </label>
+                            <input
+                                type="text"
+                                id="image-path-input"
+                                value="https://armandobug.github.io/uladsite/multimedia/tip-guida.jpg"
+                                placeholder="https://armandobug.github.io/uladsite/multimedia/tip-guida.jpg"
+                                class="hud-input w-full px-3 py-2 rounded font-mono text-xs"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spiegazione Principale -->
+                <div class="space-y-1.5">
+                    <label for="content-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Spiegazione Dettagliata (<code class="text-inaraText">content</code>)
+                    </label>
+                    <textarea
+                        id="content-input"
+                        rows="4"
+                        required
+                        class="hud-input w-full px-3.5 py-2.5 rounded text-base resize-y"
+                    >Entra lentamente nel getto relativistico di una stella di neutroni puntando verso l'esterno rispetto al nucleo. Quando ricevi il messaggio "Frame Shift Drive Supercharged", esci dal cono: il tuo prossimo salto avrà una portata quadruplicata (400%).</textarea>
+                </div>
+
+                <!-- Nota Tattica (Pro Tip opzionale) -->
+                <div class="space-y-1.5">
+                    <label for="protip-input" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                        Nota Tattica / Consiglio Extra (<code class="text-inaraText">proTip</code> — opzionale)
+                    </label>
+                    <input
+                        type="text"
+                        id="protip-input"
+                        value="Ogni supercharge danneggia l'FSD dell'1% circa: porta sempre un AFMU per ripararlo sotto l'80%."
+                        placeholder="Consiglio rapido evidenziato in fondo alla scheda"
+                        class="hud-input w-full px-3.5 py-2.5 rounded text-sm"
+                    >
+                </div>
+
+                <!-- Pubblicazione GitHub API -->
+                <div class="pt-4 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-uladOrange uppercase tracking-wider">
+                            <i class="fa-brands fa-github mr-1.5"></i> Pubblica su ArmandoBug/uladsite
+                        </h3>
+                        <span class="text-[11px] font-mono text-inaraMuted">BRANCH: main</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="space-y-1">
+                            <label for="gh-owner" class="block text-[11px] font-mono text-inaraMuted uppercase">Owner</label>
+                            <input type="text" id="gh-owner" value="ArmandoBug" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-repo" class="block text-[11px] font-mono text-inaraMuted uppercase">Repository</label>
+                            <input type="text" id="gh-repo" value="uladsite" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="gh-branch" class="block text-[11px] font-mono text-inaraMuted uppercase">Branch</label>
+                            <input type="text" id="gh-branch" value="main" class="hud-input w-full px-3 py-2 rounded font-mono text-xs">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="gh-token" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            GitHub Personal Access Token (solo in memoria, non salvato)
+                        </label>
+                        <input
+                            type="password"
+                            id="gh-token"
+                            placeholder="github_pat_... (permesso Contents: Read and write)"
+                            autocomplete="off"
+                            class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs"
+                        >
+                    </div>
+
+                    <button
+                        type="button"
+                        id="publish-tip-btn"
+                        class="w-full py-3 px-4 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-cloud-arrow-up" id="publish-icon"></i>
+                        <span id="publish-label">PUBBLICA IN TIPS-TRICKS.HTML</span>
+                    </button>
+
+                    <div id="publish-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+
+                <!-- Rimozione Tip Esistente -->
+                <div class="pt-5 border-t border-inaraBorder space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-hud text-xs sm:text-sm font-bold text-red-400 uppercase tracking-wider">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Rimuovi Tip Esistente
+                        </h3>
+                        <button
+                            type="button"
+                            id="load-tips-btn"
+                            class="text-xs font-mono text-inaraMuted hover:text-uladOrange transition flex items-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-rotate" id="load-tips-icon"></i> Carica lista
+                        </button>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="delete-tip-select" class="block text-xs font-mono uppercase tracking-wider text-inaraMuted">
+                            Seleziona Guida da Rimuovere
+                        </label>
+                        <select id="delete-tip-select" class="hud-input w-full px-3.5 py-2.5 rounded font-mono text-xs">
+                            <option value="">-- Clicca "Carica lista" per leggere tips-tricks.html --</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="delete-tip-btn"
+                        class="w-full py-2.5 px-4 rounded bg-red-600/90 hover:bg-red-500 text-white font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-trash" id="delete-icon"></i>
+                        <span id="delete-label">RIMUOVI TIP SELEZIONATO</span>
+                    </button>
+
+                    <div id="delete-status" class="hidden p-3.5 rounded border text-xs font-mono whitespace-pre-line"></div>
+                </div>
+            </form>
+
+            <!-- Colonna Destra: Codice Generato + Anteprima -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="tactical-card tactical-corner p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-code text-uladOrange"></i>
+                            <h2 class="font-hud text-sm sm:text-base font-bold text-white uppercase tracking-wider">Codice Generato</h2>
+                        </div>
+                        <button
+                            type="button"
+                            id="copy-code-btn"
+                            class="px-3.5 py-1.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2"
+                        >
+                            <i class="fa-regular fa-copy" id="copy-icon"></i>
+                            <span id="copy-label">COPIA CODICE</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-inaraBg border border-inaraBorder rounded p-4 overflow-x-auto">
+                        <pre id="generated-code" class="font-mono text-xs sm:text-sm text-inaraText leading-relaxed"></pre>
+                    </div>
+                </div>
+
+                <div class="tactical-card p-6 rounded space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">Anteprima Card Tips &amp; Tricks</span>
+                        <span class="font-mono text-xs text-inaraMuted">squadronTips</span>
+                    </div>
+
+                    <article class="tactical-card tactical-corner rounded overflow-hidden bg-inaraPanel">
+                        <div id="preview-img-wrapper" class="hidden aspect-video w-full bg-inaraBg border-b border-inaraBorder overflow-hidden">
+                            <img id="preview-img" src="" alt="Anteprima immagine" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center justify-between gap-2 text-xs font-mono">
+                                <span id="preview-category" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">PILOTAGGIO</span>
+                                <span id="preview-difficulty" class="px-2.5 py-0.5 rounded border uppercase bg-emerald-950/50 border-emerald-500/40 text-emerald-300">BASE</span>
+                            </div>
+                            <h3 id="preview-title" class="font-hud text-lg font-bold text-white">Supercharge FSD su Stelle di Neutroni</h3>
+                            <p id="preview-content" class="text-inaraText text-base leading-relaxed">
+                                Entra lentamente nel getto relativistico di una stella di neutroni puntando verso l'esterno rispetto al nucleo. Quando ricevi il messaggio "Frame Shift Drive Supercharged", esci dal cono: il tuo prossimo salto avrà una portata quadruplicata (400%).
+                            </p>
+                            <div id="preview-protip-box" class="p-3.5 rounded bg-inaraBg/90 border-l-2 border-uladOrange text-xs sm:text-sm space-y-1">
+                                <div class="font-hud text-[11px] text-uladOrange uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb"></i> Nota Tattica
+                                </div>
+                                <p id="preview-protip" class="text-inaraText leading-relaxed">Ogni supercharge danneggia l'FSD dell'1% circa: porta sempre un AFMU per ripararlo sotto l'80%.</p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-3.5 bg-inaraBg/60 border-t border-inaraBorder/80 flex items-center justify-between text-xs font-mono text-inaraMuted">
+                            <span id="preview-author">CMDR ArmandoBug</span>
+                            <span id="preview-date">2026-11-24</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categorySelect = document.getElementById('category-select');
+        const difficultySelect = document.getElementById('difficulty-select');
+        const idInput = document.getElementById('id-input');
+        const dateInput = document.getElementById('date-input');
+        const titleInput = document.getElementById('title-input');
+        const authorInput = document.getElementById('author-input');
+        const includeImageCheckbox = document.getElementById('include-image-checkbox');
+        const imageFieldsBox = document.getElementById('image-fields-box');
+        const imageFileInput = document.getElementById('image-file-input');
+        const imagePathInput = document.getElementById('image-path-input');
+        const contentInput = document.getElementById('content-input');
+        const protipInput = document.getElementById('protip-input');
+
+        const ghOwnerInput = document.getElementById('gh-owner');
+        const ghRepoInput = document.getElementById('gh-repo');
+        const ghBranchInput = document.getElementById('gh-branch');
+        const ghTokenInput = document.getElementById('gh-token');
+
+        const publishBtn = document.getElementById('publish-tip-btn');
+        const publishIcon = document.getElementById('publish-icon');
+        const publishLabel = document.getElementById('publish-label');
+        const publishStatus = document.getElementById('publish-status');
+
+        const loadTipsBtn = document.getElementById('load-tips-btn');
+        const loadTipsIcon = document.getElementById('load-tips-icon');
+        const deleteTipSelect = document.getElementById('delete-tip-select');
+        const deleteTipBtn = document.getElementById('delete-tip-btn');
+        const deleteIcon = document.getElementById('delete-icon');
+        const deleteLabel = document.getElementById('delete-label');
+        const deleteStatus = document.getElementById('delete-status');
+
+        const generatedCodeEl = document.getElementById('generated-code');
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        const copyIcon = document.getElementById('copy-icon');
+        const copyLabel = document.getElementById('copy-label');
+        const resetTipsBtn = document.getElementById('reset-tips-btn');
+
+        const previewImgWrapper = document.getElementById('preview-img-wrapper');
+        const previewImg = document.getElementById('preview-img');
+        const previewCategory = document.getElementById('preview-category');
+        const previewDifficulty = document.getElementById('preview-difficulty');
+        const previewTitle = document.getElementById('preview-title');
+        const previewContent = document.getElementById('preview-content');
+        const previewProtipBox = document.getElementById('preview-protip-box');
+        const previewProtip = document.getElementById('preview-protip');
+        const previewAuthor = document.getElementById('preview-author');
+        const previewDate = document.getElementById('preview-date');
+
+        let localPreviewUrl = null;
+        let loadedEntries = [];
+
+        function escapeJs(str) {
+            return String(str ?? '')
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r?\n/g, ' ');
+        }
+
+        function normalizeMediaPath(rawPath) {
+            const trimmed = String(rawPath || '').trim();
+            if (!trimmed) return '';
+            if (/^https?:\/\//i.test(trimmed)) return trimmed;
+            const cleaned = trimmed.replace(/^\/+/, '').replace(/^multimedia\//i, '');
+            return cleaned ? `https://armandobug.github.io/uladsite/multimedia/${cleaned}` : '';
+        }
+
+        function buildTipObjectCode() {
+            const idVal = idInput.value.trim() || 'tip-005';
+            const titleVal = titleInput.value.trim() || 'Nuova Guida';
+            const catVal = (categorySelect.value || 'PILOTAGGIO').toUpperCase();
+            const diffVal = (difficultySelect.value || 'BASE').toUpperCase();
+            const dateVal = dateInput.value.trim() || '2026-11-24';
+            const authorVal = authorInput.value.trim() || 'CMDR ArmandoBug';
+            const imageVal = includeImageCheckbox.checked ? normalizeMediaPath(imagePathInput.value) : '';
+            const contentVal = contentInput.value.trim() || '';
+            const proTipVal = protipInput.value.trim() || '';
+
+            return `{
+                id: '${escapeJs(idVal)}',
+                title: '${escapeJs(titleVal)}',
+                category: '${escapeJs(catVal)}',
+                difficulty: '${escapeJs(diffVal)}',
+                date: '${escapeJs(dateVal)}',
+                author: '${escapeJs(authorVal)}',
+                image: '${escapeJs(imageVal)}',
+                content: '${escapeJs(contentVal)}',
+                proTip: '${escapeJs(proTipVal)}'
+            }`;
+        }
+
+        function updatePreviewAndCode() {
+            const catVal = (categorySelect.value || 'PILOTAGGIO').toUpperCase();
+            const diffVal = (difficultySelect.value || 'BASE').toUpperCase();
+            const dateVal = dateInput.value.trim() || '2026-11-24';
+            const titleVal = titleInput.value.trim() || 'Nuova Guida';
+            const authorVal = authorInput.value.trim() || 'CMDR ArmandoBug';
+            const contentVal = contentInput.value.trim() || '';
+            const proTipVal = protipInput.value.trim() || '';
+            const imageVal = includeImageCheckbox.checked ? normalizeMediaPath(imagePathInput.value) : '';
+
+            generatedCodeEl.textContent = `${buildTipObjectCode()},`;
+            previewCategory.textContent = catVal;
+            previewDifficulty.textContent = diffVal;
+            previewTitle.textContent = titleVal;
+            previewContent.textContent = contentVal;
+            previewAuthor.textContent = authorVal;
+            previewDate.textContent = dateVal;
+
+            previewDifficulty.className = 'px-2.5 py-0.5 rounded border uppercase ' + (
+                diffVal === 'AVANZATO'
+                    ? 'bg-red-950/50 border-red-500/40 text-red-300'
+                    : diffVal === 'INTERMEDIO'
+                        ? 'bg-amber-950/50 border-amber-500/40 text-amber-300'
+                        : 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
+            );
+
+            if (proTipVal) {
+                previewProtipBox.classList.remove('hidden');
+                previewProtip.textContent = proTipVal;
+            } else {
+                previewProtipBox.classList.add('hidden');
+            }
+
+            if (includeImageCheckbox.checked && (localPreviewUrl || imageVal)) {
+                previewImgWrapper.classList.remove('hidden');
+                previewImg.src = localPreviewUrl || imageVal;
+            } else {
+                previewImgWrapper.classList.add('hidden');
+                previewImg.removeAttribute('src');
+            }
+        }
+
+        function setBoxStatus(el, type, msg) {
+            el.classList.remove('hidden', 'border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300', 'border-red-500/50', 'bg-red-950/40', 'text-red-300', 'border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            if (type === 'success') {
+                el.classList.add('border-emerald-500/50', 'bg-emerald-950/40', 'text-emerald-300');
+            } else if (type === 'error') {
+                el.classList.add('border-red-500/50', 'bg-red-950/40', 'text-red-300');
+            } else {
+                el.classList.add('border-uladOrange/50', 'bg-uladOrangeDim', 'text-uladAmber');
+            }
+            el.textContent = msg;
+        }
+
+        function arrayBufferToBase64(buffer) {
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            const chunk = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunk) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+            }
+            return btoa(binary);
+        }
+
+        function utf8ToBase64(str) {
+            return arrayBufferToBase64(new TextEncoder().encode(str).buffer);
+        }
+
+        function base64ToUtf8(b64) {
+            const clean = b64.replace(/\s+/g, '');
+            const bin = atob(clean);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            return new TextDecoder().decode(bytes);
+        }
+
+        async function getFileMeta(owner, repo, path, branch, token) {
+            const enc = path.split('/').map(encodeURIComponent).join('/');
+            const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}?ref=${encodeURIComponent(branch)}`;
+            const res = await fetch(url, {
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+            });
+            if (res.status === 404) return null;
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || `Errore lettura ${path} (${res.status})`);
+            return data;
+        }
+
+        async function ghPutFile(owner, repo, path, branch, token, payload) {
+            const enc = path.split('/').map(encodeURIComponent).join('/');
+            const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${enc}`;
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                },
+                body: JSON.stringify({ ...payload, branch })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || `Errore scrittura ${path} (${res.status})`);
+            return data;
+        }
+
+        function insertIntoArray(htmlText, varName, itemCode) {
+            const re = new RegExp(`(const\\s+${varName}\\s*=\\s*\\[)([\\s\\S]*?)(\n\\s*\\];)`);
+            const m = htmlText.match(re);
+            if (!m) throw new Error(`Array "${varName}" non trovato in tips-tricks.html.`);
+
+            const prefix = m[1];
+            const body = m[2];
+            const suffix = m[3];
+            const trimmed = body.trimEnd();
+            const hasItems = trimmed.trim().length > 0;
+            const withComma = hasItems && !trimmed.endsWith(',') ? `${trimmed},` : trimmed;
+            const newBody = hasItems ? `${withComma}\n            ${itemCode}` : `\n            ${itemCode}`;
+
+            return htmlText.replace(m[0], `${prefix}${newBody}${suffix}`);
+        }
+
+        function findArraySpan(htmlText, varName) {
+            const re = new RegExp(`const\\s+${varName}\\s*=\\s*\\[`);
+            const m = htmlText.match(re);
+            if (!m) throw new Error(`Array "${varName}" non trovato in tips-tricks.html.`);
+            const openIdx = m.index + m[0].length - 1;
+            let depth = 0;
+            let inS = false, inD = false, inT = false, esc = false;
+            for (let i = openIdx; i < htmlText.length; i++) {
+                const ch = htmlText[i];
+                if (esc) { esc = false; continue; }
+                if (ch === '\\') { esc = true; continue; }
+                if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                if (!inS && !inT && ch === '"') { inD = !inD; continue; }
+                if (!inS && !inD && ch === '`') { inT = !inT; continue; }
+                if (inS || inD || inT) continue;
+                if (ch === '[') depth++;
+                else if (ch === ']') {
+                    depth--;
+                    if (depth === 0) return { start: openIdx + 1, end: i };
+                }
+            }
+            throw new Error(`Chiusura "]" non trovata per "${varName}".`);
+        }
+
+        function parseObjects(body) {
+            const out = [];
+            let i = 0;
+            while (i < body.length) {
+                if (body[i] === '{') {
+                    const start = i;
+                    let depth = 0, inS = false, inD = false, inT = false, esc = false;
+                    for (; i < body.length; i++) {
+                        const ch = body[i];
+                        if (esc) { esc = false; continue; }
+                        if (ch === '\\') { esc = true; continue; }
+                        if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                        if (!inS && !inT && ch === '"') { inD = !inD; continue; }
+                        if (!inS && !inD && ch === '`') { inT = !inT; continue; }
+                        if (inS || inD || inT) continue;
+                        if (ch === '{') depth++;
+                        else if (ch === '}') {
+                            depth--;
+                            if (depth === 0) {
+                                const raw = body.slice(start, i + 1);
+                                const titleM = raw.match(/title\s*:\s*(['"`])(.*?)\1/);
+                                const idM = raw.match(/id\s*:\s*(['"`])(.*?)\1/);
+                                out.push({
+                                    start,
+                                    end: i + 1,
+                                    title: titleM ? titleM[2] : `Voce #${out.length + 1}`,
+                                    id: idM ? idM[2] : ''
+                                });
+                                i++;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    i++;
+                }
+            }
+            return out;
+        }
+
+        publishBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+
+            if (!token) {
+                setBoxStatus(publishStatus, 'error', 'Inserisci un GitHub Personal Access Token con permesso Contents: Read and write.');
+                return;
+            }
+
+            publishBtn.disabled = true;
+            publishIcon.className = 'fa-solid fa-spinner fa-spin';
+            publishLabel.textContent = 'PUBBLICAZIONE IN CORSO...';
+
+            try {
+                let uploadedMsg = '- Nessuna immagine allegata.';
+                if (includeImageCheckbox.checked) {
+                    const file = imageFileInput.files[0];
+                    const imgPath = normalizeMediaPath(imagePathInput.value);
+                    if (!imgPath) {
+                        throw new Error('Specifica un percorso immagine valido oppure disattiva l\'allegato immagine.');
+                    }
+                    if (file) {
+                        const repoRelativePath = imgPath.replace(/^https?:\/\/armandobug\.github\.io\/uladsite\//i, '');
+                        setBoxStatus(publishStatus, 'info', `Caricamento immagine ${repoRelativePath}...`);
+                        const buf = await file.arrayBuffer();
+                        const existingImg = await getFileMeta(owner, repo, repoRelativePath, branch, token);
+                        await ghPutFile(owner, repo, repoRelativePath, branch, token, {
+                            message: `feat(tips): add ${repoRelativePath}`,
+                            content: arrayBufferToBase64(buf),
+                            ...(existingImg && existingImg.sha ? { sha: existingImg.sha } : {})
+                        });
+                        uploadedMsg = `- Immagine caricata: ${repoRelativePath}`;
+                    } else {
+                        uploadedMsg = `- Riferimento immagine impostato: ${imgPath}`;
+                    }
+                }
+
+                setBoxStatus(publishStatus, 'info', 'Aggiornamento squadronTips in tips-tricks.html...');
+                const existingHtml = await getFileMeta(owner, repo, 'tips-tricks.html', branch, token);
+                if (!existingHtml || !existingHtml.content || !existingHtml.sha) {
+                    throw new Error('Impossibile leggere tips-tricks.html dal repository.');
+                }
+
+                const currentHtml = base64ToUtf8(existingHtml.content);
+                const updatedHtml = insertIntoArray(currentHtml, 'squadronTips', buildTipObjectCode());
+
+                await ghPutFile(owner, repo, 'tips-tricks.html', branch, token, {
+                    message: `feat(tips): add "${titleInput.value.trim()}" to squadronTips`,
+                    content: utf8ToBase64(updatedHtml),
+                    sha: existingHtml.sha
+                });
+
+                setBoxStatus(publishStatus, 'success', `Pubblicazione completata in tips-tricks.html!
+${uploadedMsg}`);
+            } catch (err) {
+                setBoxStatus(publishStatus, 'error', `Errore:
+${err.message}`);
+            } finally {
+                publishBtn.disabled = false;
+                publishIcon.className = 'fa-solid fa-cloud-arrow-up';
+                publishLabel.textContent = 'PUBBLICA IN TIPS-TRICKS.HTML';
+            }
+        });
+
+        loadTipsBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+
+            if (!token) {
+                setBoxStatus(deleteStatus, 'error', 'Inserisci prima il GitHub Personal Access Token.');
+                return;
+            }
+
+            loadTipsBtn.disabled = true;
+            loadTipsIcon.className = 'fa-solid fa-spinner fa-spin';
+            setBoxStatus(deleteStatus, 'info', 'Lettura squadronTips da tips-tricks.html...');
+
+            try {
+                const fileMeta = await getFileMeta(owner, repo, 'tips-tricks.html', branch, token);
+                if (!fileMeta || !fileMeta.content) throw new Error('File tips-tricks.html non trovato.');
+                const html = base64ToUtf8(fileMeta.content);
+                const span = findArraySpan(html, 'squadronTips');
+                const body = html.slice(span.start, span.end);
+                const items = parseObjects(body);
+
+                loadedEntries = items.map((it, idx) => ({ ...it, idx }));
+                deleteTipSelect.innerHTML = '';
+
+                if (!loadedEntries.length) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = '-- Nessuna voce in squadronTips --';
+                    deleteTipSelect.appendChild(opt);
+                    setBoxStatus(deleteStatus, 'info', 'Nessuna voce presente in squadronTips.');
+                    return;
+                }
+
+                loadedEntries.forEach(entry => {
+                    const opt = document.createElement('option');
+                    opt.value = String(entry.idx);
+                    opt.textContent = `${entry.title}${entry.id ? ` (${entry.id})` : ''}`;
+                    deleteTipSelect.appendChild(opt);
+                });
+
+                setBoxStatus(deleteStatus, 'success', `Caricate ${loadedEntries.length} guide da tips-tricks.html.`);
+            } catch (err) {
+                setBoxStatus(deleteStatus, 'error', `Errore lettura:
+${err.message}`);
+            } finally {
+                loadTipsBtn.disabled = false;
+                loadTipsIcon.className = 'fa-solid fa-rotate';
+            }
+        });
+
+        deleteTipBtn.addEventListener('click', async () => {
+            const owner = ghOwnerInput.value.trim();
+            const repo = ghRepoInput.value.trim();
+            const branch = ghBranchInput.value.trim() || 'main';
+            const token = ghTokenInput.value.trim();
+            const targetIdx = Number(deleteTipSelect.value);
+
+            if (!token) {
+                setBoxStatus(deleteStatus, 'error', 'Inserisci il GitHub Personal Access Token.');
+                return;
+            }
+            if (deleteTipSelect.value === '' || Number.isNaN(targetIdx)) {
+                setBoxStatus(deleteStatus, 'error', 'Carica prima la lista e seleziona un tip.');
+                return;
+            }
+
+            deleteTipBtn.disabled = true;
+            deleteIcon.className = 'fa-solid fa-spinner fa-spin';
+            deleteLabel.textContent = 'RIMOZIONE IN CORSO...';
+
+            try {
+                const fileMeta = await getFileMeta(owner, repo, 'tips-tricks.html', branch, token);
+                if (!fileMeta || !fileMeta.content || !fileMeta.sha) {
+                    throw new Error('Impossibile leggere tips-tricks.html.');
+                }
+
+                const html = base64ToUtf8(fileMeta.content);
+                const span = findArraySpan(html, 'squadronTips');
+                const body = html.slice(span.start, span.end);
+                const items = parseObjects(body);
+                const chosen = items[targetIdx];
+                if (!chosen) throw new Error('Voce selezionata non trovata.');
+
+                let remStart = chosen.start;
+                let remEnd = chosen.end;
+                let after = remEnd;
+                while (after < body.length && /\s/.test(body[after])) after++;
+                if (after < body.length && body[after] === ',') {
+                    remEnd = after + 1;
+                    if (body[remEnd] === '\r') remEnd++;
+                    if (body[remEnd] === '\n') remEnd++;
+                } else {
+                    let before = remStart - 1;
+                    while (before >= 0 && /\s/.test(body[before])) before--;
+                    if (before >= 0 && body[before] === ',') remStart = before;
+                }
+
+                const newBody = body.slice(0, remStart) + body.slice(remEnd);
+                const updatedHtml = html.slice(0, span.start) + newBody + html.slice(span.end);
+
+                await ghPutFile(owner, repo, 'tips-tricks.html', branch, token, {
+                    message: `chore(tips): remove "${chosen.title}" from squadronTips`,
+                    content: utf8ToBase64(updatedHtml),
+                    sha: fileMeta.sha
+                });
+
+                setBoxStatus(deleteStatus, 'success', `Rimossa "${chosen.title}" da tips-tricks.html.`);
+            } catch (err) {
+                setBoxStatus(deleteStatus, 'error', `Errore rimozione:
+${err.message}`);
+            } finally {
+                deleteTipBtn.disabled = false;
+                deleteIcon.className = 'fa-solid fa-trash';
+                deleteLabel.textContent = 'RIMUOVI TIP SELEZIONATO';
+            }
+        });
+
+        includeImageCheckbox.addEventListener('change', () => {
+            if (includeImageCheckbox.checked) {
+                imageFieldsBox.classList.remove('hidden');
+            } else {
+                imageFieldsBox.classList.add('hidden');
+            }
+            updatePreviewAndCode();
+        });
+
+        imageFileInput.addEventListener('change', () => {
+            const file = imageFileInput.files[0];
+            if (localPreviewUrl) {
+                URL.revokeObjectURL(localPreviewUrl);
+                localPreviewUrl = null;
+            }
+            if (file) {
+                localPreviewUrl = URL.createObjectURL(file);
+                imagePathInput.value = `https://armandobug.github.io/uladsite/multimedia/${file.name}`;
+            }
+            updatePreviewAndCode();
+        });
+
+        [categorySelect, difficultySelect, idInput, dateInput, titleInput, authorInput, imagePathInput, contentInput, protipInput].forEach(el => {
+            el.addEventListener('input', updatePreviewAndCode);
+            el.addEventListener('change', updatePreviewAndCode);
+        });
+
+        copyCodeBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(generatedCodeEl.textContent);
+            } catch (_) {
+                const ta = document.createElement('textarea');
+                ta.value = generatedCodeEl.textContent;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+            copyIcon.className = 'fa-solid fa-check';
+            copyLabel.textContent = 'COPIATO!';
+            setTimeout(() => {
+                copyIcon.className = 'fa-regular fa-copy';
+                copyLabel.textContent = 'COPIA CODICE';
+            }, 1800);
+        });
+
+        resetTipsBtn.addEventListener('click', () => {
+            if (localPreviewUrl) {
+                URL.revokeObjectURL(localPreviewUrl);
+                localPreviewUrl = null;
+            }
+            categorySelect.value = 'PILOTAGGIO';
+            difficultySelect.value = 'BASE';
+            idInput.value = 'tip-005';
+            dateInput.value = '2026-11-24';
+            titleInput.value = 'Supercharge FSD su Stelle di Neutroni';
+            authorInput.value = 'CMDR ArmandoBug';
+            includeImageCheckbox.checked = false;
+            imageFieldsBox.classList.add('hidden');
+            imageFileInput.value = '';
+            imagePathInput.value = 'https://armandobug.github.io/uladsite/multimedia/tip-guida.jpg';
+            contentInput.value = 'Entra lentamente nel getto relativistico di una stella di neutroni puntando verso l\'esterno rispetto al nucleo. Quando ricevi il messaggio "Frame Shift Drive Supercharged", esci dal cono: il tuo prossimo salto avrà una portata quadruplicata (400%).';
+            protipInput.value = 'Ogni supercharge danneggia l\'FSD dell\'1% circa: porta sempre un AFMU per ripararlo sotto l\'80%.';
+            publishStatus.classList.add('hidden');
+            deleteStatus.classList.add('hidden');
+            updatePreviewAndCode();
+        });
+
+        updatePreviewAndCode();
+    </script>
+</body>
+</html>
