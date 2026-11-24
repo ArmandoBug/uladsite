@@ -94,7 +94,27 @@
 </head>
 <body class="antialiased selection:bg-uladOrange selection:text-white min-h-screen grid-overlay">
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div id="admin-only-gate" class="min-h-[70vh] flex items-center justify-center px-4 py-12">
+    <div class="tactical-card tactical-corner rounded p-8 max-w-lg w-full text-center space-y-4">
+        <div class="w-12 h-12 mx-auto rounded-full bg-uladOrangeDim border border-uladOrange/50 flex items-center justify-center text-uladOrange text-xl">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h2 class="font-hud text-xl font-bold text-white uppercase">Accesso Riservato Admin</h2>
+        <p id="admin-gate-msg" class="text-sm font-mono text-inaraMuted">
+            Verifica credenziali amministratore [ULAD] su Firebase in corso...
+        </p>
+        <div id="admin-gate-actions" class="hidden pt-2 flex flex-wrap items-center justify-center gap-3">
+            <a href="deck.html" class="px-4 py-2 rounded bg-uladOrange text-inaraBg font-hud text-xs font-bold hover:bg-uladAmber transition">
+                VAI AL COMMAND DECK
+            </a>
+            <a href="homepage.html" class="px-4 py-2 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-inaraBorder font-hud text-xs text-inaraText transition">
+                TORNA ALLA HOME
+            </a>
+        </div>
+    </div>
+</div>
+
+    <div id="admin-protected-content" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
 
         <!-- Header -->
         <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-inaraBorder pb-6">
@@ -750,5 +770,59 @@
 
         updatePreviewAndCode();
     </script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const FIREBASE_CONFIG = {
+        apiKey: "AIzaSyAeS6i7vUA13FHnQxJCsNnL2NL4RzbXZeQ",
+        authDomain: "ulad-de921.firebaseapp.com",
+        projectId: "ulad-de921",
+        storageBucket: "ulad-de921.firebasestorage.app",
+        messagingSenderId: "780852375378",
+        appId: "1:780852375378:web:e2580b8a61b97a260b548b"
+    };
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const gateEl = document.getElementById('admin-only-gate');
+    const gateMsgEl = document.getElementById('admin-gate-msg');
+    const gateActionsEl = document.getElementById('admin-gate-actions');
+    const contentEl = document.getElementById('admin-protected-content');
+
+    function denyAccess(message) {
+        if (contentEl) contentEl.classList.add('hidden');
+        if (gateEl) gateEl.classList.remove('hidden');
+        if (gateMsgEl) gateMsgEl.textContent = message;
+        if (gateActionsEl) gateActionsEl.classList.remove('hidden');
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            denyAccess('Accesso negato. Devi effettuare il login con un account amministratore [ULAD].');
+            return;
+        }
+
+        try {
+            const snap = await getDoc(doc(db, 'ulad_members', user.uid));
+            const role = snap.exists() ? snap.data()?.role : null;
+
+            if (role === 'admin') {
+                if (gateEl) gateEl.classList.add('hidden');
+                if (gateActionsEl) gateActionsEl.classList.add('hidden');
+                if (contentEl) contentEl.classList.remove('hidden');
+            } else {
+                denyAccess('Accesso negato: questa sezione e riservata esclusivamente agli utenti con ruolo ADMIN.');
+            }
+        } catch (err) {
+            denyAccess('Errore durante la verifica dei permessi su Firestore: ' + err.message);
+        }
+    });
+</script>
+
 </body>
 </html>
