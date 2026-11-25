@@ -358,7 +358,7 @@
         // ARCHIVIO TIPS & TRICKS [ULAD] (Aggiornabile tramite tips-generator.html)
         // =====================================================================
         const squadronTips = [
-                                                                        {
+            {
                 id: 'tip-001',
                 title: 'Guida al Loot di Odyssey: Quali Goods vendere subito (e quali tenere!)',
                 category: 'INGEGNERIA',
@@ -412,7 +412,7 @@
                 const catMatch = activeCategory === 'ALL' || (tip.category || '').toUpperCase() === activeCategory;
                 if (!catMatch) return false;
                 if (!q) return true;
-                return [tip.title, tip.category, tip.difficulty, tip.content, tip.proTip, tip.author]
+                return [tip.id, tip.title, tip.category, tip.difficulty, tip.content, tip.proTip, tip.author]
                     .join(' ')
                     .toLowerCase()
                     .includes(q);
@@ -443,9 +443,16 @@
                             ` : ''}
                             <div class="p-6 space-y-4">
                                 <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
-                                        ${escapeHtml(tip.category || 'GENERALE')}
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">
+                                            ${escapeHtml(tip.category || 'GENERALE')}
+                                        </span>
+                                        ${tip.id ? `
+                                        <span class="px-2.5 py-0.5 rounded bg-inaraBg border border-inaraBorder text-inaraMuted uppercase">
+                                            ${escapeHtml(tip.id)}
+                                        </span>
+                                        ` : ''}
+                                    </div>
                                     <span class="px-2.5 py-0.5 rounded border uppercase ${getDifficultyBadge(tip.difficulty)}">
                                         ${escapeHtml(tip.difficulty || 'BASE')}
                                     </span>
