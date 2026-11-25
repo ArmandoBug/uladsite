@@ -427,8 +427,11 @@
                             <img id="preview-img" src="" alt="Anteprima immagine" class="w-full h-full object-cover">
                         </div>
                         <div class="p-6 space-y-4">
-                            <div class="flex items-center justify-between gap-2 text-xs font-mono">
-                                <span id="preview-category" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">PILOTAGGIO</span>
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                                <div class="flex items-center gap-2">
+                                    <span id="preview-category" class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase">PILOTAGGIO</span>
+                                    <span id="preview-id" class="px-2.5 py-0.5 rounded bg-inaraBg border border-inaraBorder text-inaraMuted uppercase">TIP-005</span>
+                                </div>
                                 <span id="preview-difficulty" class="px-2.5 py-0.5 rounded border uppercase bg-emerald-950/50 border-emerald-500/40 text-emerald-300">BASE</span>
                             </div>
                             <h3 id="preview-title" class="font-hud text-lg font-bold text-white">Supercharge FSD su Stelle di Neutroni</h3>
@@ -493,6 +496,7 @@
         const previewImgWrapper = document.getElementById('preview-img-wrapper');
         const previewImg = document.getElementById('preview-img');
         const previewCategory = document.getElementById('preview-category');
+        const previewId = document.getElementById('preview-id');
         const previewDifficulty = document.getElementById('preview-difficulty');
         const previewTitle = document.getElementById('preview-title');
         const previewContent = document.getElementById('preview-content');
@@ -545,6 +549,7 @@
 
         function updatePreviewAndCode() {
             const catVal = (categorySelect.value || 'PILOTAGGIO').toUpperCase();
+            const idVal = (idInput.value.trim() || 'tip-005').toUpperCase();
             const diffVal = (difficultySelect.value || 'BASE').toUpperCase();
             const dateVal = dateInput.value.trim() || '2026-11-24';
             const titleVal = titleInput.value.trim() || 'Nuova Guida';
@@ -555,6 +560,7 @@
 
             generatedCodeEl.textContent = `${buildTipObjectCode()},`;
             previewCategory.textContent = catVal;
+            if (previewId) previewId.textContent = idVal;
             previewDifficulty.textContent = diffVal;
             previewTitle.textContent = titleVal;
             previewContent.textContent = contentVal;
