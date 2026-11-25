@@ -666,18 +666,49 @@
             return htmlText.slice(0, span.start) + newBody + htmlText.slice(span.end);
         }
 
-        function findArraySpan(htmlText, varName) {
-            const re = new RegExp(`const\\s+${varName}\\s*=\\s*\\[`);
-            const m = htmlText.match(re);
+        function isClosingSingleQuote(str, idx) {
+            let j = idx + 1;
+            while (j < str.length && (str[j] === ' ' || str[j] === '\t')) j++;
+            const nextCh = str[j] || '';
+            if (nextCh === ',' || nextCh === '}' || nextCh === '\r' || nextCh === '\n') {
+                let k = j;
+                while (k < str.length && /[\s,]/.test(str[k])) k++;
+                const rest = str.slice(k, k + 40);
+                if (/^([a-zA-Z_$][a-zA-Z0-9_$]*\s*:|\}|\];)/.test(rest)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+                function findArraySpan(htmlText, varName) {
+            const declRe = new RegExp(`const\\s+${varName}\\s*=\\s*\\[`);
+            const m = declRe.exec(htmlText);
             if (!m) throw new Error(`Array "${varName}" non trovato in tips-tricks.html.`);
             const openIdx = m.index + m[0].length - 1;
+
+            // In tips-tricks.html, squadronTips is a top-level array ending with `];` before `let activeCategory` or `</script>`
+            const afterOpen = htmlText.slice(openIdx + 1);
+            const endMatch = /\n\s*\];(?=\s*(?:\n|\r|$|let\s+|const\s+|var\s+|function\s+|<\/script>))/.exec(afterOpen);
+            if (endMatch) {
+                return { start: openIdx + 1, end: openIdx + 1 + endMatch.index + endMatch[0].indexOf(']') };
+            }
+
+            // Fallback: scan for balanced brackets outside strings
             let depth = 0;
             let inS = false, inD = false, inT = false, esc = false;
             for (let i = openIdx; i < htmlText.length; i++) {
                 const ch = htmlText[i];
                 if (esc) { esc = false; continue; }
                 if (ch === '\\') { esc = true; continue; }
-                if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                if (!inD && !inT && ch === "'") {
+                    if (!inS) {
+                        inS = true;
+                    } else if (isClosingSingleQuote(htmlText, i)) {
+                        inS = false;
+                    }
+                    continue;
+                }
                 if (!inS && !inT && ch === '"') { inD = !inD; continue; }
                 if (!inS && !inD && ch === '`') { inT = !inT; continue; }
                 if (inS || inD || inT) continue;
@@ -701,7 +732,14 @@
                         const ch = body[i];
                         if (esc) { esc = false; continue; }
                         if (ch === '\\') { esc = true; continue; }
-                        if (!inD && !inT && ch === "'") { inS = !inS; continue; }
+                        if (!inD && !inT && ch === "'") {
+                            if (!inS) {
+                                inS = true;
+                            } else if (isClosingSingleQuote(body, i)) {
+                                inS = false;
+                            }
+                            continue;
+                        }
                         if (!inS && !inT && ch === '"') { inD = !inD; continue; }
                         if (!inS && !inD && ch === '`') { inT = !inT; continue; }
                         if (inS || inD || inT) continue;
@@ -710,13 +748,13 @@
                             depth--;
                             if (depth === 0) {
                                 const raw = body.slice(start, i + 1);
-                                const titleM = raw.match(/title\s*:\s*(['"`])(.*?)\1/);
-                                const idM = raw.match(/id\s*:\s*(['"`])(.*?)\1/);
+                                const titleM = raw.match(/title\s*:\s*'([\s\S]*?)',\s*\n\s*category\s*:/);
+                                const idM = raw.match(/id\s*:\s*'([\s\S]*?)',\s*\n\s*title\s*:/);
                                 out.push({
                                     start,
                                     end: i + 1,
-                                    title: titleM ? titleM[2] : `Voce #${out.length + 1}`,
-                                    id: idM ? idM[2] : ''
+                                    title: titleM ? titleM[1].replace(/\s+/g, ' ').trim() : `Voce #${out.length + 1}`,
+                                    id: idM ? idM[1].trim() : ''
                                 });
                                 i++;
                                 break;
