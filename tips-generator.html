@@ -681,20 +681,18 @@
             return false;
         }
 
-                function findArraySpan(htmlText, varName) {
+        function findArraySpan(htmlText, varName) {
             const declRe = new RegExp(`const\\s+${varName}\\s*=\\s*\\[`);
             const m = declRe.exec(htmlText);
             if (!m) throw new Error(`Array "${varName}" non trovato in tips-tricks.html.`);
             const openIdx = m.index + m[0].length - 1;
 
-            // In tips-tricks.html, squadronTips is a top-level array ending with `];` before `let activeCategory` or `</script>`
             const afterOpen = htmlText.slice(openIdx + 1);
             const endMatch = /\n\s*\];(?=\s*(?:\n|\r|$|let\s+|const\s+|var\s+|function\s+|<\/script>))/.exec(afterOpen);
             if (endMatch) {
                 return { start: openIdx + 1, end: openIdx + 1 + endMatch.index + endMatch[0].indexOf(']') };
             }
 
-            // Fallback: scan for balanced brackets outside strings
             let depth = 0;
             let inS = false, inD = false, inT = false, esc = false;
             for (let i = openIdx; i < htmlText.length; i++) {
