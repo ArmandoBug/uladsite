@@ -143,6 +143,7 @@
                     <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home ULAD</a>
                     <a href="#sezione-task" class="text-inaraMuted hover:text-uladOrange transition py-7">Task & Checklist</a>
                     <a href="#sezione-note" class="text-inaraMuted hover:text-uladOrange transition py-7">Note & Promemoria</a>
+                    <a href="#sezione-spedizioni" class="text-inaraMuted hover:text-uladOrange transition py-7">Spedizioni &amp; Exo</a>
                     <a href="#sezione-tool" class="text-inaraMuted hover:text-uladOrange transition py-7">Suite Strumenti ED</a>
                 </nav>
 
@@ -177,6 +178,7 @@
             <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Torna a Home ULAD</a>
             <a href="#sezione-task" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Task & Checklist</a>
             <a href="#sezione-note" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Note & Promemoria</a>
+            <a href="#sezione-spedizioni" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Spedizioni &amp; Exo</a>
             <a href="#sezione-tool" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Suite Strumenti ED</a>
             <a id="generator-hub-link-mobile" href="generator-hub.html" class="hidden block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">
                 <i class="fa-solid fa-sliders mr-1.5"></i> Generator Hub
@@ -229,6 +231,13 @@
                     <div class="tactical-card tactical-corner px-4 py-3 rounded col-span-2 sm:col-span-1">
                         <span class="text-[11px] font-mono text-inaraMuted uppercase block">Log & Note</span>
                         <span id="hero-note-count" class="font-hud text-base sm:text-lg font-bold text-emerald-400 mt-0.5 block">0 SALVATE</span>
+                    </div>
+                    <div class="tactical-card tactical-corner px-4 py-3 rounded col-span-2 sm:col-span-3 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[11px] font-mono text-inaraMuted uppercase block">Stima Crediti Spedizioni (Da Vendere)</span>
+                            <span id="hero-exo-credits" class="font-mono text-sm sm:text-base font-bold text-uladAmber mt-0.5 block">0 CR</span>
+                        </div>
+                        <span id="hero-exo-count" class="font-mono text-xs px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">0 LOG</span>
                     </div>
                 </div>
             </div>
@@ -413,13 +422,163 @@
             </div>
         </section>
 
-        <!-- SEZIONE 02: SUITE STRUMENTI ELITE DANGEROUS -->
+        <!-- SEZIONE 02: REGISTRO SPEDIZIONI / EXOBIOLOGIA & CARTOGRAFIA -->
+        <section id="sezione-spedizioni" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Diario di Bordo Esplorazione</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">REGISTRO SPEDIZIONI / EXOBIOLOGIA &amp; CARTOGRAFIA</h2>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+                    <span id="exo-unsold-badge" class="px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">
+                        Da vendere: 0 CR
+                    </span>
+                    <span id="exo-sold-badge" class="px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">
+                        Incassati: 0 CR
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- FORM REGISTRAZIONE LOG (5 col) -->
+                <div class="lg:col-span-5 tactical-card tactical-corner rounded p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-inaraBorder pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-dna text-uladOrange"></i>
+                            <h3 class="font-hud text-base font-bold text-white uppercase tracking-wider">Nuovo Log Spedizione</h3>
+                        </div>
+                        <span class="font-mono text-[11px] text-inaraMuted">STIMA CREDITI</span>
+                    </div>
+
+                    <form id="expedition-form" class="space-y-3.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Sistema</label>
+                                <input
+                                    id="exo-system"
+                                    type="text"
+                                    required
+                                    placeholder="Es. Synuefe XR-H d11-42"
+                                    class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Corpo Celestiale</label>
+                                <input
+                                    id="exo-body"
+                                    type="text"
+                                    placeholder="Es. AB 2 a"
+                                    class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Campione Biologico (Exo)</label>
+                                <select id="exo-species" class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                    <option value="none|0">Nessun campione biologico</option>
+                                    <option value="Stratum Tectonicas|19010800">Stratum Tectonicas (~19.0M base)</option>
+                                    <option value="Fonticulua Campestris|1000000">Fonticulua Campestris (~1.0M base)</option>
+                                    <option value="Cactoida Vermis|16202800">Cactoida Vermis (~16.2M base)</option>
+                                    <option value="Aleoida Graptus|12955200">Aleoida Graptus (~13.0M base)</option>
+                                    <option value="Frutexa Flammasis|10326000">Frutexa Flammasis (~10.3M base)</option>
+                                    <option value="Bacterium Informem|8418900">Bacterium Informem (~8.4M base)</option>
+                                    <option value="Tussock Propagito|1000000">Tussock Propagito (~1.0M base)</option>
+                                    <option value="Osseus Discus|12904900">Osseus Discus (~12.9M base)</option>
+                                    <option value="Tubus Rosarium|2637500">Tubus Rosarium (~2.6M base)</option>
+                                    <option value="Custom|0">Altro campione / Valore manuale</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Cartografia / Scan</label>
+                                <select id="exo-carto" class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                    <option value="0">Nessuna mappatura extra</option>
+                                    <option value="250000">Honk / FSS Sistema (~250k CR)</option>
+                                    <option value="1200000">DSS Mondo Roccioso / Ghiaccio (~1.2M CR)</option>
+                                    <option value="2800000">DSS HMC / Terraforming Candidate (~2.8M CR)</option>
+                                    <option value="4500000">DSS Earth-like / Ammonia World (~4.5M CR)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="exo-custom-credits-wrap" class="hidden">
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Valore Base Manuale (CR)</label>
+                            <input
+                                id="exo-custom-credits"
+                                type="number"
+                                min="0"
+                                step="1000"
+                                placeholder="Es. 5000000"
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white"
+                            >
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs font-mono">
+                            <label class="flex items-center gap-2 p-2.5 rounded bg-inaraBg border border-inaraBorder cursor-pointer select-none">
+                                <input id="exo-first-footfall" type="checkbox" class="accent-[#ff6600]">
+                                <span class="text-inaraText">First Footfall (Exo x5 bonus)</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded bg-inaraBg border border-inaraBorder cursor-pointer select-none">
+                                <input id="exo-first-mapped" type="checkbox" class="accent-[#ff6600]">
+                                <span class="text-inaraText">First Mapped / Discovered (x2.6)</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <textarea
+                                id="exo-notes"
+                                rows="2"
+                                placeholder="Note sul pianeta, gravità, segnali bio, rotta..."
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs text-white placeholder-inaraMuted"
+                            ></textarea>
+                        </div>
+
+                        <div class="p-3.5 rounded bg-inaraBg/90 border border-uladOrange/40 flex items-center justify-between">
+                            <span class="text-xs font-mono text-inaraMuted uppercase">Stima Totale Log</span>
+                            <span id="exo-preview-payout" class="font-mono text-base font-bold text-uladOrange">0 CR</span>
+                        </div>
+
+                        <button type="submit" class="w-full py-2.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i> REGISTRA NEL DIARIO
+                        </button>
+                    </form>
+                </div>
+
+                <!-- LISTA LOG SPEDIZIONI (7 col) -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" data-exo-filter="ALL" class="exo-filter-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider">TUTTI</button>
+                            <button type="button" data-exo-filter="UNSOLD" class="exo-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">DA VENDERE</button>
+                            <button type="button" data-exo-filter="SOLD" class="exo-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">VENDUTI</button>
+                        </div>
+                        <div class="relative w-full sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-inaraMuted text-xs"></i>
+                            <input
+                                id="exo-search"
+                                type="text"
+                                placeholder="Cerca sistema, specie, note..."
+                                class="w-full pl-8 pr-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                            >
+                        </div>
+                    </div>
+
+                    <div id="expeditions-list" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE 03: SUITE STRUMENTI ELITE DANGEROUS -->
         <section id="sezione-tool" class="space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Database & Utilities Galattiche</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Database &amp; Utilities Galattiche</span>
                     </div>
                     <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">SUITE STRUMENTI ELITE DANGEROUS</h2>
                 </div>
@@ -568,6 +727,9 @@ function usernameToAuthEmail(username) {
         let currentUser = null;
         let tasksState = [];
         let notesState = [];
+        let expeditionsState = [];
+        let exoFilter = 'ALL';
+        let exoSearchQuery = '';
         let taskFilter = 'all';
         let noteFilter = 'ALL';
         let noteSearchQuery = '';
@@ -768,6 +930,147 @@ function usernameToAuthEmail(username) {
             }).join('');
         }
 
+        function formatCredits(amount) {
+            const num = Math.max(0, Math.round(Number(amount) || 0));
+            return `${num.toLocaleString('it-IT')} CR`;
+        }
+
+        function computeExpeditionPayout(entry) {
+            const speciesBase = Number(entry.speciesBaseCredits) || 0;
+            const cartoBase = Number(entry.cartoBaseCredits) || 0;
+            const exoMult = entry.firstFootfall ? 5 : 1;
+            const cartoMult = entry.firstMapped ? 2.6 : 1;
+            return Math.round((speciesBase * exoMult) + (cartoBase * cartoMult));
+        }
+
+        function getDraftExpeditionData() {
+            const rawSelect = document.getElementById('exo-species').value || 'none|0';
+            const [speciesCode, presetVal] = rawSelect.split('|');
+            const customVal = Number(document.getElementById('exo-custom-credits').value) || 0;
+            const speciesBaseCredits = speciesCode === 'Custom' ? customVal : (Number(presetVal) || 0);
+            const cartoBaseCredits = Number(document.getElementById('exo-carto').value) || 0;
+            const firstFootfall = !!document.getElementById('exo-first-footfall').checked;
+            const firstMapped = !!document.getElementById('exo-first-mapped').checked;
+
+            const selectEl = document.getElementById('exo-species');
+            const selectedLabel = speciesCode === 'none'
+                ? 'Nessun campione biologico'
+                : (speciesCode === 'Custom'
+                    ? 'Campione / Scan personalizzato'
+                    : selectEl.options[selectEl.selectedIndex].text.split(' (')[0]);
+
+            const cartoEl = document.getElementById('exo-carto');
+            const cartoLabel = cartoBaseCredits > 0 ? cartoEl.options[cartoEl.selectedIndex].text.split(' (')[0] : 'Nessuna mappatura extra';
+
+            return {
+                speciesCode,
+                speciesLabel: selectedLabel,
+                speciesBaseCredits,
+                cartoLabel,
+                cartoBaseCredits,
+                firstFootfall,
+                firstMapped
+            };
+        }
+
+        function updateExpeditionPreview() {
+            const draft = getDraftExpeditionData();
+            const total = computeExpeditionPayout(draft);
+            const previewEl = document.getElementById('exo-preview-payout');
+            if (previewEl) previewEl.textContent = formatCredits(total);
+        }
+
+        function updateExpeditionTotals() {
+            let unsoldTotal = 0;
+            let soldTotal = 0;
+            expeditionsState.forEach(item => {
+                const payout = Number(item.estimatedCredits) || computeExpeditionPayout(item);
+                if (item.sold) soldTotal += payout;
+                else unsoldTotal += payout;
+            });
+
+            const unsoldBadge = document.getElementById('exo-unsold-badge');
+            const soldBadge = document.getElementById('exo-sold-badge');
+            const heroCredits = document.getElementById('hero-exo-credits');
+            const heroCount = document.getElementById('hero-exo-count');
+
+            if (unsoldBadge) unsoldBadge.textContent = `Da vendere: ${formatCredits(unsoldTotal)}`;
+            if (soldBadge) soldBadge.textContent = `Incassati: ${formatCredits(soldTotal)}`;
+            if (heroCredits) heroCredits.textContent = formatCredits(unsoldTotal);
+            if (heroCount) heroCount.textContent = `${expeditionsState.length} LOG`;
+        }
+
+        function renderExpeditions() {
+            updateExpeditionTotals();
+            const listEl = document.getElementById('expeditions-list');
+            if (!listEl) return;
+
+            const q = exoSearchQuery.trim().toLowerCase();
+            const filtered = [...expeditionsState]
+                .sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0))
+                .filter(item => {
+                    if (exoFilter === 'UNSOLD' && item.sold) return false;
+                    if (exoFilter === 'SOLD' && !item.sold) return false;
+                    if (!q) return true;
+                    return [item.system, item.body, item.speciesLabel, item.cartoLabel, item.notes]
+                        .join(' ')
+                        .toLowerCase()
+                        .includes(q);
+                });
+
+            if (!filtered.length) {
+                listEl.innerHTML = `<div class="tactical-card rounded p-8 text-center text-xs font-mono text-inaraMuted">Nessun log di spedizione in questa vista. Registra un sistema o campione biologico a sinistra.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(item => {
+                const payout = Number(item.estimatedCredits) || computeExpeditionPayout(item);
+                const isSold = !!item.sold;
+                return `
+                    <article class="tactical-card rounded p-4 sm:p-5 space-y-3 ${isSold ? 'opacity-75 border-inaraBorder/70' : ''}">
+                        <div class="flex flex-wrap items-start justify-between gap-2">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+                                    <span class="px-2 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange font-semibold">
+                                        ${escapeHtml(item.system || 'SISTEMA')}
+                                    </span>
+                                    ${item.body ? `<span class="px-2 py-0.5 rounded bg-inaraBg border border-inaraBorder text-inaraText">${escapeHtml(item.body)}</span>` : ''}
+                                    ${item.firstFootfall ? `<span class="px-2 py-0.5 rounded bg-emerald-950/50 border border-emerald-500/40 text-emerald-300">FIRST FOOTFALL</span>` : ''}
+                                    ${item.firstMapped ? `<span class="px-2 py-0.5 rounded bg-amber-950/40 border border-amber-400/40 text-amber-300">FIRST MAPPED</span>` : ''}
+                                </div>
+                                <div class="text-sm font-semibold text-white">
+                                    ${escapeHtml(item.speciesLabel || 'Campione')}${item.cartoBaseCredits > 0 ? ` · <span class="text-inaraMuted font-mono text-xs">${escapeHtml(item.cartoLabel)}</span>` : ''}
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <div class="font-mono text-sm sm:text-base font-bold ${isSold ? 'text-emerald-400' : 'text-uladAmber'}">
+                                    ${formatCredits(payout)}
+                                </div>
+                                <span class="text-[10px] font-mono uppercase ${isSold ? 'text-emerald-400' : 'text-inaraMuted'}">
+                                    ${isSold ? 'DATI VENDUTI' : 'IN STIVA / DA VENDERE'}
+                                </span>
+                            </div>
+                        </div>
+
+                        ${item.notes ? `<p class="text-xs text-inaraMuted leading-relaxed whitespace-pre-line">${escapeHtml(item.notes)}</p>` : ''}
+
+                        <div class="pt-2.5 border-t border-inaraBorder/70 flex items-center justify-between gap-2 text-[11px] font-mono">
+                            <span class="text-inaraMuted">${escapeHtml(item.dateLabel || '')}</span>
+                            <div class="flex items-center gap-2">
+                                <button type="button" data-toggle-exo="${escapeHtml(item.id)}" class="px-2.5 py-1 rounded border ${isSold ? 'bg-inaraBg border-inaraBorder text-inaraText hover:border-uladOrange' : 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/50'} transition">
+                                    ${isSold ? 'Segna Da Vendere' : 'Segna Venduto'}
+                                </button>
+                                <button type="button" data-delete-exo="${escapeHtml(item.id)}" title="Elimina log" class="p-1 text-inaraMuted hover:text-red-400 transition">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
         function renderTools() {
             const container = document.getElementById('tools-container');
             const q = toolSearchQuery.trim().toLowerCase();
@@ -864,6 +1167,12 @@ function usernameToAuthEmail(username) {
                     notesState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     renderNotes();
                 }, (err) => console.error('Errore notes:', err));
+
+                const exoCol = collection(db, 'ulad_members', user.uid, 'expeditions');
+                onSnapshot(query(exoCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                    expeditionsState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    renderExpeditions();
+                }, (err) => console.error('Errore expeditions:', err));
 
                 gate.classList.add('hidden');
             } catch (err) {
@@ -988,7 +1297,97 @@ function usernameToAuthEmail(username) {
 
         document.getElementById('tools-search').addEventListener('input', (e) => {
             toolSearchQuery = e.target.value;
-            renderTools();
+            ['exo-species', 'exo-carto', 'exo-custom-credits', 'exo-first-footfall', 'exo-first-mapped'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('change', () => {
+                const isCustom = document.getElementById('exo-species').value === 'Custom';
+                document.getElementById('exo-custom-credits-wrap').classList.toggle('hidden', !isCustom);
+                updateExpeditionPreview();
+            });
+            el.addEventListener('input', updateExpeditionPreview);
+        });
+
+        document.getElementById('expedition-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const sysInput = document.getElementById('exo-system');
+            const bodyInput = document.getElementById('exo-body');
+            const notesInput = document.getElementById('exo-notes');
+            const systemVal = sysInput.value.trim();
+            if (!systemVal) return;
+
+            const draft = getDraftExpeditionData();
+            const estimatedCredits = computeExpeditionPayout(draft);
+
+            await addDoc(collection(db, 'ulad_members', currentUser.uid, 'expeditions'), {
+                system: systemVal,
+                body: bodyInput.value.trim(),
+                speciesCode: draft.speciesCode,
+                speciesLabel: draft.speciesLabel,
+                speciesBaseCredits: draft.speciesBaseCredits,
+                cartoLabel: draft.cartoLabel,
+                cartoBaseCredits: draft.cartoBaseCredits,
+                firstFootfall: draft.firstFootfall,
+                firstMapped: draft.firstMapped,
+                estimatedCredits,
+                sold: false,
+                notes: notesInput.value.trim(),
+                dateLabel: new Date().toISOString().slice(0, 10),
+                createdAtMs: Date.now(),
+                createdAt: serverTimestamp()
+            });
+
+            sysInput.value = '';
+            bodyInput.value = '';
+            notesInput.value = '';
+            document.getElementById('exo-custom-credits').value = '';
+            document.getElementById('exo-species').value = 'none|0';
+            document.getElementById('exo-carto').value = '0';
+            document.getElementById('exo-first-footfall').checked = false;
+            document.getElementById('exo-first-mapped').checked = false;
+            document.getElementById('exo-custom-credits-wrap').classList.add('hidden');
+            updateExpeditionPreview();
+        });
+
+        document.getElementById('expeditions-list').addEventListener('click', async (e) => {
+            if (!currentUser) return;
+            const toggleBtn = e.target.closest('[data-toggle-exo]');
+            if (toggleBtn) {
+                const id = toggleBtn.getAttribute('data-toggle-exo');
+                const item = expeditionsState.find(x => x.id === id);
+                if (item) {
+                    await updateDoc(doc(db, 'ulad_members', currentUser.uid, 'expeditions', id), { sold: !item.sold });
+                }
+                return;
+            }
+            const delBtn = e.target.closest('[data-delete-exo]');
+            if (delBtn) {
+                const id = delBtn.getAttribute('data-delete-exo');
+                await deleteDoc(doc(db, 'ulad_members', currentUser.uid, 'expeditions', id));
+            }
+        });
+
+        document.querySelectorAll('.exo-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                exoFilter = btn.getAttribute('data-exo-filter');
+                document.querySelectorAll('.exo-filter-btn').forEach(b => {
+                    b.className = 'exo-filter-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider';
+                });
+                btn.className = 'exo-filter-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider';
+                renderExpeditions();
+            });
+        });
+
+        document.getElementById('exo-search').addEventListener('input', (e) => {
+            exoSearchQuery = e.target.value;
+            renderExpeditions();
+        });
+
+        updateExpeditionPreview();
+        renderExpeditions();
+        renderTools();
         });
 
         const securityDisclaimer = document.getElementById('security-disclaimer');
