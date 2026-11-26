@@ -143,6 +143,7 @@
                     <a href="homepage.html" class="text-inaraMuted hover:text-white transition py-7">Home ULAD</a>
                     <a href="#sezione-task" class="text-inaraMuted hover:text-uladOrange transition py-7">Task & Checklist</a>
                     <a href="#sezione-note" class="text-inaraMuted hover:text-uladOrange transition py-7">Note & Promemoria</a>
+                    <a href="#sezione-missioni" class="text-inaraMuted hover:text-uladOrange transition py-7">Missioni [ULAD]</a>
                     <a href="#sezione-spedizioni" class="text-inaraMuted hover:text-uladOrange transition py-7">Spedizioni &amp; Exo</a>
                     <a href="#sezione-tool" class="text-inaraMuted hover:text-uladOrange transition py-7">Suite Strumenti ED</a>
                 </nav>
@@ -178,6 +179,7 @@
             <a href="homepage.html" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Torna a Home ULAD</a>
             <a href="#sezione-task" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Task & Checklist</a>
             <a href="#sezione-note" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Note & Promemoria</a>
+            <a href="#sezione-missioni" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Missioni [ULAD]</a>
             <a href="#sezione-spedizioni" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Spedizioni &amp; Exo</a>
             <a href="#sezione-tool" class="block px-3 py-2 rounded text-inaraText hover:bg-inaraPanelHover">Suite Strumenti ED</a>
             <a id="generator-hub-link-mobile" href="generator-hub.html" class="hidden block px-3 py-2 rounded bg-uladOrangeDim text-uladOrange font-semibold">
@@ -422,13 +424,178 @@
             </div>
         </section>
 
-        <!-- SEZIONE 02: REGISTRO SPEDIZIONI / EXOBIOLOGIA & CARTOGRAFIA -->
+        <!-- SEZIONE 02: BACHECA OPERATIVA & ASSEGNAZIONI DI SQUADRON [ULAD] -->
+        <section id="sezione-missioni" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="h-px w-8 bg-uladOrange"></span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Comando Operazioni Condivise</span>
+                    </div>
+                    <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">BACHECA MISSIONI &amp; ASSEGNAZIONI [ULAD]</h2>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+                    <span id="missions-active-badge" class="px-2.5 py-1 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange">
+                        0 OPERAZIONI ATTIVE
+                    </span>
+                    <span id="missions-completed-badge" class="px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">
+                        0 COMPLETATE
+                    </span>
+                </div>
+            </div>
+
+            <!-- PANNELLO CREAZIONE MISSIONE (VISIBILE SOLO AGLI ADMIN) -->
+            <div id="admin-mission-creator" class="hidden tactical-card tactical-corner rounded p-6 space-y-4 border-uladOrange/50">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-inaraBorder pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-user-shield text-uladOrange"></i>
+                        <h3 class="font-hud text-base font-bold text-white uppercase tracking-wider">Nuova Operazione di Squadrone</h3>
+                    </div>
+                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/50 font-mono text-[11px] text-uladOrange uppercase">
+                        AREA RISERVATA ADMIN
+                    </span>
+                </div>
+
+                <form id="mission-create-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                        <div class="md:col-span-6">
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Titolo Operazione</label>
+                            <input
+                                id="mission-title"
+                                type="text"
+                                required
+                                placeholder="Es. Supporto Guerra BGS a Bokip / Rifornimento Carrier"
+                                class="w-full px-3.5 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted"
+                            >
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Tipo Missione</label>
+                            <select id="mission-type" class="w-full px-3 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                <option value="BGS">BGS / INFLUENZA</option>
+                                <option value="TRASPORTO">TRASPORTO / LOGISTICA</option>
+                                <option value="ESPLORAZIONE">ESPLORAZIONE / EXO</option>
+                                <option value="COMBATTIMENTO">COMBATTIMENTO / CZ / AX</option>
+                                <option value="MINING">MINING / RISORSE</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Priorità</label>
+                            <select id="mission-priority" class="w-full px-3 py-2.5 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                                <option value="ALTA">ALTA (URGENTE)</option>
+                                <option value="MEDIA" selected>MEDIA (STANDARD)</option>
+                                <option value="BASSA">BASSA (SUPPORTO)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Sistema / Stazione Target</label>
+                            <input
+                                id="mission-system"
+                                type="text"
+                                required
+                                placeholder="Es. Bokip — Jameson Terminal"
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Obiettivo Numerico</label>
+                            <input
+                                id="mission-target-qty"
+                                type="number"
+                                min="1"
+                                step="1"
+                                value="100"
+                                required
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Unità di Misura</label>
+                            <input
+                                id="mission-target-unit"
+                                type="text"
+                                value="%"
+                                required
+                                placeholder="Es. %, ton, salti, CZ, inf+"
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Posti CMDR Max (0 = illimitati)</label>
+                            <input
+                                id="mission-max-slots"
+                                type="number"
+                                min="0"
+                                step="1"
+                                value="0"
+                                class="w-full px-3 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-mono text-inaraMuted uppercase mb-1">Briefing Operativo &amp; Istruzioni</label>
+                        <textarea
+                            id="mission-desc"
+                            rows="2"
+                            required
+                            placeholder="Dettagli su fazione da supportare, merci richieste, navi consigliate o coordinate..."
+                            class="w-full px-3.5 py-2 rounded bg-inaraBg border border-inaraBorder focus:border-uladOrange focus:outline-none text-sm text-white placeholder-inaraMuted"
+                        ></textarea>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                        <span id="mission-admin-feedback" class="text-xs font-mono text-emerald-400 hidden"></span>
+                        <button type="submit" class="ml-auto px-5 py-2.5 rounded bg-uladOrange hover:bg-uladAmber text-inaraBg font-hud font-bold text-xs tracking-wider transition flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn"></i> PUBBLICA MISSIONE IN BACHECA
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FILTRI E RICERCA BACHECA MISSIONI -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div class="flex flex-wrap gap-1.5">
+                    <button type="button" data-mission-status="ACTIVE" class="mission-status-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider">OPERAZIONI ATTIVE</button>
+                    <button type="button" data-mission-status="MINE" class="mission-status-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">LE MIE PRENOTAZIONI</button>
+                    <button type="button" data-mission-status="COMPLETED" class="mission-status-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">STORICO COMPLETATE</button>
+                    <button type="button" data-mission-status="ALL" class="mission-status-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider">TUTTE</button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <select id="mission-type-filter" class="px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-inaraText">
+                        <option value="ALL">TUTTE LE CATEGORIE</option>
+                        <option value="BGS">BGS</option>
+                        <option value="TRASPORTO">TRASPORTO</option>
+                        <option value="ESPLORAZIONE">ESPLORAZIONE</option>
+                        <option value="COMBATTIMENTO">COMBATTIMENTO</option>
+                        <option value="MINING">MINING</option>
+                    </select>
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-inaraMuted text-xs"></i>
+                        <input
+                            id="mission-search"
+                            type="text"
+                            placeholder="Cerca sistema, titolo, CMDR..."
+                            class="w-full pl-8 pr-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white placeholder-inaraMuted"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRIGLIA MISSIONI CONDIVISE -->
+            <div id="missions-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- SEZIONE 03: REGISTRO SPEDIZIONI / EXOBIOLOGIA & CARTOGRAFIA -->
         <section id="sezione-spedizioni" class="space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">02 // Diario di Bordo Esplorazione</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Diario di Bordo Esplorazione</span>
                     </div>
                     <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">REGISTRO SPEDIZIONI / EXOBIOLOGIA &amp; CARTOGRAFIA</h2>
                 </div>
@@ -572,13 +739,13 @@
             </div>
         </section>
 
-        <!-- SEZIONE 03: SUITE STRUMENTI ELITE DANGEROUS -->
+        <!-- SEZIONE 04: SUITE STRUMENTI ELITE DANGEROUS -->
         <section id="sezione-tool" class="space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-inaraBorder pb-4 gap-3">
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="h-px w-8 bg-uladOrange"></span>
-                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">03 // Database &amp; Utilities Galattiche</span>
+                        <span class="font-mono text-xs text-uladOrange uppercase tracking-widest">04 // Database &amp; Utilities Galattiche</span>
                     </div>
                     <h2 class="font-hud text-2xl sm:text-3xl font-bold text-white">SUITE STRUMENTI ELITE DANGEROUS</h2>
                 </div>
@@ -725,7 +892,13 @@ function usernameToAuthEmail(username) {
         const db = getFirestore(app);
 
         let currentUser = null;
+        let currentCmdrDisplayName = 'CMDR';
+        let isAdminUser = false;
         let tasksState = [];
+        let missionsState = [];
+        let missionStatusFilter = 'ACTIVE';
+        let missionTypeFilter = 'ALL';
+        let missionSearchQuery = '';
         let notesState = [];
         let expeditionsState = [];
         let exoFilter = 'ALL';
@@ -820,6 +993,7 @@ function usernameToAuthEmail(username) {
 
         function updateDisplayedCmdrName(name) {
             const safeName = String(name || 'CMDR').trim();
+            currentCmdrDisplayName = safeName;
             document.getElementById('navbar-cmdr-name').textContent = `CMDR ${safeName.toUpperCase()}`;
             document.getElementById('hero-cmdr-name').textContent = safeName.toUpperCase();
             document.getElementById('new-username-input').value = safeName;
@@ -1071,6 +1245,174 @@ function usernameToAuthEmail(username) {
             }).join('');
         }
 
+        function getMissionPriorityBadge(priority) {
+            const p = String(priority || 'MEDIA').toUpperCase();
+            if (p === 'ALTA') return 'bg-red-950/50 border-red-500/40 text-red-300';
+            if (p === 'BASSA') return 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300';
+            return 'bg-amber-950/50 border-amber-500/40 text-amber-300';
+        }
+
+        function renderMissions() {
+            const gridEl = document.getElementById('missions-grid');
+            const activeBadge = document.getElementById('missions-active-badge');
+            const completedBadge = document.getElementById('missions-completed-badge');
+            if (!gridEl) return;
+
+            const activeCount = missionsState.filter(m => m.status !== 'COMPLETED').length;
+            const completedCount = missionsState.filter(m => m.status === 'COMPLETED').length;
+            if (activeBadge) activeBadge.textContent = `${activeCount} OPERAZIONI ATTIVE`;
+            if (completedBadge) completedBadge.textContent = `${completedCount} COMPLETATE`;
+
+            const q = missionSearchQuery.trim().toLowerCase();
+            const uid = currentUser ? currentUser.uid : '';
+
+            const filtered = [...missionsState]
+                .sort((a, b) => {
+                    const rank = { ALTA: 0, MEDIA: 1, BASSA: 2 };
+                    const rA = rank[String(a.priority || 'MEDIA').toUpperCase()] ?? 1;
+                    const rB = rank[String(b.priority || 'MEDIA').toUpperCase()] ?? 1;
+                    if (rA !== rB) return rA - rB;
+                    return (b.createdAtMs || 0) - (a.createdAtMs || 0);
+                })
+                .filter(m => {
+                    const isCompleted = m.status === 'COMPLETED';
+                    const participants = Array.isArray(m.participants) ? m.participants : [];
+                    const isJoined = participants.some(p => p.uid === uid);
+
+                    if (missionStatusFilter === 'ACTIVE' && isCompleted) return false;
+                    if (missionStatusFilter === 'COMPLETED' && !isCompleted) return false;
+                    if (missionStatusFilter === 'MINE' && !isJoined) return false;
+                    if (missionTypeFilter !== 'ALL' && String(m.type || '').toUpperCase() !== missionTypeFilter) return false;
+
+                    if (!q) return true;
+                    const cmdrNames = participants.map(p => p.name || '').join(' ');
+                    return [m.title, m.type, m.system, m.description, m.createdByName, cmdrNames]
+                        .join(' ')
+                        .toLowerCase()
+                        .includes(q);
+                });
+
+            if (!filtered.length) {
+                gridEl.innerHTML = `<div class="col-span-full tactical-card rounded p-8 text-center text-xs font-mono text-inaraMuted">Nessuna operazione di squadrone in questa vista.</div>`;
+                return;
+            }
+
+            gridEl.innerHTML = filtered.map(m => {
+                const isCompleted = m.status === 'COMPLETED';
+                const participants = Array.isArray(m.participants) ? m.participants : [];
+                const isJoined = participants.some(p => p.uid === uid);
+                const maxSlots = Math.max(0, Number(m.maxSlots) || 0);
+                const isFull = maxSlots > 0 && participants.length >= maxSlots && !isJoined;
+
+                const targetQty = Math.max(1, Number(m.targetQty) || 100);
+                const currentQty = Math.max(0, Number(m.currentQty) || 0);
+                const unit = m.targetUnit || '%';
+                const pct = Math.min(100, Math.round((currentQty / targetQty) * 100));
+
+                const participantsHtml = participants.length
+                    ? participants.map(p => `
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono ${p.uid === uid ? 'bg-uladOrangeDim border border-uladOrange/50 text-uladOrange font-semibold' : 'bg-inaraBg border border-inaraBorder text-inaraText'}">
+                            <i class="fa-solid fa-user-astronaut text-[10px]"></i>${escapeHtml(p.name || 'CMDR')}
+                        </span>
+                    `).join('')
+                    : `<span class="text-xs font-mono text-inaraMuted italic">Nessun comandante ancora prenotato</span>`;
+
+                return `
+                    <article class="tactical-card ${!isCompleted ? 'tactical-corner' : 'opacity-80'} rounded p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3.5">
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2.5 py-0.5 rounded bg-uladOrangeDim border border-uladOrange/40 text-uladOrange uppercase font-semibold">
+                                        ${escapeHtml(m.type || 'BGS')}
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded border uppercase ${getMissionPriorityBadge(m.priority)}">
+                                        PRIORITÀ ${escapeHtml(m.priority || 'MEDIA')}
+                                    </span>
+                                    ${isCompleted ? `<span class="px-2.5 py-0.5 rounded bg-emerald-950/50 border border-emerald-500/40 text-emerald-300 uppercase">COMPLETATA</span>` : ''}
+                                </div>
+                                <span class="text-inaraMuted">
+                                    <i class="fa-solid fa-location-dot text-uladOrange mr-1"></i>${escapeHtml(m.system || 'N/D')}
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 class="font-hud text-lg font-bold text-white leading-snug">
+                                    ${escapeHtml(m.title)}
+                                </h3>
+                                <p class="text-sm text-inaraText leading-relaxed mt-1.5 whitespace-pre-line">
+                                    ${escapeHtml(m.description)}
+                                </p>
+                            </div>
+
+                            <!-- Barra Avanzamento Condivisa -->
+                            <div class="p-3.5 rounded bg-inaraBg/90 border border-inaraBorder space-y-2">
+                                <div class="flex items-center justify-between text-xs font-mono">
+                                    <span class="text-inaraMuted uppercase">Avanzamento Condiviso</span>
+                                    <span class="text-white font-bold">${currentQty.toLocaleString('it-IT')} / ${targetQty.toLocaleString('it-IT')} ${escapeHtml(unit)} (${pct}%)</span>
+                                </div>
+                                <div class="w-full h-2 bg-inaraPanel rounded overflow-hidden border border-inaraBorder">
+                                    <div class="h-full ${isCompleted ? 'bg-emerald-500' : 'bg-gradient-to-r from-uladOrange to-uladAmber'} transition-all duration-300" style="width: ${pct}%;"></div>
+                                </div>
+
+                                ${!isCompleted ? `
+                                <div class="flex flex-wrap items-center gap-2 pt-1">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="any"
+                                        value="${currentQty}"
+                                        data-mission-progress-input="${escapeHtml(m.id)}"
+                                        class="w-28 px-2.5 py-1 rounded bg-inaraPanel border border-inaraBorder focus:border-uladOrange focus:outline-none text-xs font-mono text-white"
+                                    >
+                                    <button type="button" data-save-mission-progress="${escapeHtml(m.id)}" class="px-3 py-1 rounded bg-inaraPanel hover:bg-inaraPanelHover border border-uladOrange/50 text-uladOrange font-hud text-[10px] tracking-wider uppercase transition">
+                                        Aggiorna Stato
+                                    </button>
+                                </div>
+                                ` : ''}
+                            </div>
+
+                            <!-- Squadra CMDR Prenotati -->
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between text-[11px] font-mono text-inaraMuted">
+                                    <span>COMANDANTI ASSEGNATI (${participants.length}${maxSlots > 0 ? ` / ${maxSlots}` : ''})</span>
+                                    <span>Ordine di: ${escapeHtml(m.createdByName || 'Comando ULAD')}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${participantsHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Azioni Prenotazione & Controlli Admin -->
+                        <div class="pt-3 border-t border-inaraBorder/80 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                ${!isCompleted ? (
+                                    isJoined
+                                        ? `<button type="button" data-leave-mission="${escapeHtml(m.id)}" class="px-3.5 py-1.5 rounded bg-red-950/40 hover:bg-red-900/60 border border-red-500/40 text-red-300 font-hud text-[11px] tracking-wider uppercase transition">
+                                            <i class="fa-solid fa-user-minus mr-1"></i>Ritira Prenotazione
+                                           </button>`
+                                        : `<button type="button" data-join-mission="${escapeHtml(m.id)}" ${isFull ? 'disabled' : ''} class="px-3.5 py-1.5 rounded ${isFull ? 'bg-inaraBg border border-inaraBorder text-inaraMuted cursor-not-allowed' : 'bg-uladOrange hover:bg-uladAmber text-inaraBg font-bold'} font-hud text-[11px] tracking-wider uppercase transition">
+                                            <i class="fa-solid fa-user-plus mr-1"></i>${isFull ? 'Squadra Completa' : 'Prenotati alla Missione'}
+                                           </button>`
+                                ) : `<span class="text-xs font-mono text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i>Archiviata nello storico</span>`}
+                            </div>
+
+                            ${isAdminUser ? `
+                            <div class="flex items-center gap-1.5">
+                                <button type="button" data-toggle-mission-status="${escapeHtml(m.id)}" class="px-2.5 py-1.5 rounded bg-inaraBg hover:bg-inaraPanelHover border border-inaraBorder hover:border-emerald-500/50 text-[11px] font-mono text-inaraText hover:text-emerald-300 transition">
+                                    ${isCompleted ? 'Riapri' : 'Segna Completata'}
+                                </button>
+                                <button type="button" data-delete-mission="${escapeHtml(m.id)}" title="Elimina missione" class="p-1.5 text-inaraMuted hover:text-red-400 transition">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
         function renderTools() {
             const container = document.getElementById('tools-container');
             const q = toolSearchQuery.trim().toLowerCase();
@@ -1129,6 +1471,7 @@ function usernameToAuthEmail(username) {
                 document.getElementById('admin-panel-link')?.classList.add('hidden');
                 document.getElementById('generator-hub-link')?.classList.add('hidden');
                 document.getElementById('generator-hub-link-mobile')?.classList.add('hidden');
+                document.getElementById('admin-mission-creator')?.classList.add('hidden');
                 gateMsg.textContent = 'Accesso negato. Devi effettuare il login dalla Homepage ULAD.';
                 gateActions.classList.remove('hidden');
                 return;
@@ -1144,16 +1487,20 @@ function usernameToAuthEmail(username) {
 
                 updateDisplayedCmdrName(profileData.username || fallbackName);
 
+                isAdminUser = profileData.role === 'admin';
                 const hubLinkEl = document.getElementById('generator-hub-link');
                 const hubLinkMobileEl = document.getElementById('generator-hub-link-mobile');
-                if (profileData.role === 'admin') {
+                const adminMissionCreatorEl = document.getElementById('admin-mission-creator');
+                if (isAdminUser) {
                     document.getElementById('admin-panel-link').classList.remove('hidden');
                     if (hubLinkEl) hubLinkEl.classList.remove('hidden');
                     if (hubLinkMobileEl) hubLinkMobileEl.classList.remove('hidden');
+                    if (adminMissionCreatorEl) adminMissionCreatorEl.classList.remove('hidden');
                 } else {
                     document.getElementById('admin-panel-link').classList.add('hidden');
                     if (hubLinkEl) hubLinkEl.classList.add('hidden');
                     if (hubLinkMobileEl) hubLinkMobileEl.classList.add('hidden');
+                    if (adminMissionCreatorEl) adminMissionCreatorEl.classList.add('hidden');
                 }
 
                 const tasksCol = collection(db, 'ulad_members', user.uid, 'tasks');
@@ -1173,6 +1520,12 @@ function usernameToAuthEmail(username) {
                     expeditionsState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     renderExpeditions();
                 }, (err) => console.error('Errore expeditions:', err));
+
+                const missionsCol = collection(db, 'ulad_squadron_missions');
+                onSnapshot(query(missionsCol, orderBy('createdAtMs', 'desc')), (snap) => {
+                    missionsState = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    renderMissions();
+                }, (err) => console.error('Errore squadron missions:', err));
 
                 gate.classList.add('hidden');
             } catch (err) {
@@ -1297,7 +1650,149 @@ function usernameToAuthEmail(username) {
 
         document.getElementById('tools-search').addEventListener('input', (e) => {
             toolSearchQuery = e.target.value;
-            ['exo-species', 'exo-carto', 'exo-custom-credits', 'exo-first-footfall', 'exo-first-mapped'].forEach(id => {
+            document.getElementById('mission-create-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser || !isAdminUser) return;
+
+            const title = document.getElementById('mission-title').value.trim();
+            const type = document.getElementById('mission-type').value;
+            const priority = document.getElementById('mission-priority').value;
+            const system = document.getElementById('mission-system').value.trim();
+            const targetQty = Math.max(1, Number(document.getElementById('mission-target-qty').value) || 100);
+            const targetUnit = document.getElementById('mission-target-unit').value.trim() || '%';
+            const maxSlots = Math.max(0, Number(document.getElementById('mission-max-slots').value) || 0);
+            const description = document.getElementById('mission-desc').value.trim();
+
+            if (!title || !system || !description) return;
+
+            await addDoc(collection(db, 'ulad_squadron_missions'), {
+                title,
+                type,
+                priority,
+                system,
+                targetQty,
+                currentQty: 0,
+                targetUnit,
+                maxSlots,
+                description,
+                status: 'ACTIVE',
+                participants: [],
+                createdByUid: currentUser.uid,
+                createdByName: `CMDR ${currentCmdrDisplayName}`,
+                createdAtMs: Date.now(),
+                createdAt: serverTimestamp()
+            });
+
+            document.getElementById('mission-title').value = '';
+            document.getElementById('mission-system').value = '';
+            document.getElementById('mission-desc').value = '';
+            document.getElementById('mission-target-qty').value = '100';
+            document.getElementById('mission-target-unit').value = '%';
+            document.getElementById('mission-max-slots').value = '0';
+
+            const fb = document.getElementById('mission-admin-feedback');
+            fb.textContent = 'Operazione pubblicata in bacheca per tutti i comandanti ULAD.';
+            fb.classList.remove('hidden');
+            setTimeout(() => fb.classList.add('hidden'), 4000);
+        });
+
+        document.getElementById('missions-grid').addEventListener('click', async (e) => {
+            if (!currentUser) return;
+
+            const joinBtn = e.target.closest('[data-join-mission]');
+            if (joinBtn) {
+                const id = joinBtn.getAttribute('data-join-mission');
+                const mission = missionsState.find(x => x.id === id);
+                if (!mission) return;
+                const participants = Array.isArray(mission.participants) ? mission.participants : [];
+                if (participants.some(p => p.uid === currentUser.uid)) return;
+                const maxSlots = Math.max(0, Number(mission.maxSlots) || 0);
+                if (maxSlots > 0 && participants.length >= maxSlots) return;
+
+                const updated = [...participants, {
+                    uid: currentUser.uid,
+                    name: `CMDR ${currentCmdrDisplayName}`,
+                    joinedAtMs: Date.now()
+                }];
+                await updateDoc(doc(db, 'ulad_squadron_missions', id), { participants: updated });
+                return;
+            }
+
+            const leaveBtn = e.target.closest('[data-leave-mission]');
+            if (leaveBtn) {
+                const id = leaveBtn.getAttribute('data-leave-mission');
+                const mission = missionsState.find(x => x.id === id);
+                if (!mission) return;
+                const participants = Array.isArray(mission.participants) ? mission.participants : [];
+                const updated = participants.filter(p => p.uid !== currentUser.uid);
+                await updateDoc(doc(db, 'ulad_squadron_missions', id), { participants: updated });
+                return;
+            }
+
+            const saveProgBtn = e.target.closest('[data-save-mission-progress]');
+            if (saveProgBtn) {
+                const id = saveProgBtn.getAttribute('data-save-mission-progress');
+                const mission = missionsState.find(x => x.id === id);
+                const inputEl = document.querySelector(`[data-mission-progress-input="${CSS.escape(id)}"]`);
+                if (!mission || !inputEl) return;
+
+                const newVal = Math.max(0, Number(inputEl.value) || 0);
+                const targetQty = Math.max(1, Number(mission.targetQty) || 100);
+                const updates = { currentQty: newVal };
+                if (newVal >= targetQty) {
+                    updates.status = 'COMPLETED';
+                    updates.completedAtMs = Date.now();
+                }
+                await updateDoc(doc(db, 'ulad_squadron_missions', id), updates);
+                return;
+            }
+
+            const toggleStatusBtn = e.target.closest('[data-toggle-mission-status]');
+            if (toggleStatusBtn && isAdminUser) {
+                const id = toggleStatusBtn.getAttribute('data-toggle-mission-status');
+                const mission = missionsState.find(x => x.id === id);
+                if (!mission) return;
+                const nextStatus = mission.status === 'COMPLETED' ? 'ACTIVE' : 'COMPLETED';
+                await updateDoc(doc(db, 'ulad_squadron_missions', id), {
+                    status: nextStatus,
+                    completedAtMs: nextStatus === 'COMPLETED' ? Date.now() : null
+                });
+                return;
+            }
+
+            const delBtn = e.target.closest('[data-delete-mission]');
+            if (delBtn && isAdminUser) {
+                const id = delBtn.getAttribute('data-delete-mission');
+                await deleteDoc(doc(db, 'ulad_squadron_missions', id));
+            }
+        });
+
+        document.querySelectorAll('.mission-status-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                missionStatusFilter = btn.getAttribute('data-mission-status');
+                document.querySelectorAll('.mission-status-btn').forEach(b => {
+                    b.className = 'mission-status-btn px-3 py-1.5 rounded bg-inaraPanel border border-inaraBorder text-inaraText hover:text-white font-hud text-[11px] tracking-wider';
+                });
+                btn.className = 'mission-status-btn px-3 py-1.5 rounded bg-uladOrange text-inaraBg font-hud font-bold text-[11px] tracking-wider';
+                renderMissions();
+            });
+        });
+
+        document.getElementById('mission-type-filter').addEventListener('change', (e) => {
+            missionTypeFilter = e.target.value;
+            renderMissions();
+        });
+
+        document.getElementById('mission-search').addEventListener('input', (e) => {
+            missionSearchQuery = e.target.value;
+            renderMissions();
+        });
+
+        renderMissions();
+        renderTools();
+        });
+
+        ['exo-species', 'exo-carto', 'exo-custom-credits', 'exo-first-footfall', 'exo-first-mapped'].forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
             el.addEventListener('change', () => {
@@ -1388,7 +1883,6 @@ function usernameToAuthEmail(username) {
         updateExpeditionPreview();
         renderExpeditions();
         renderTools();
-        });
 
         const securityDisclaimer = document.getElementById('security-disclaimer');
         const closeSecurityDisclaimerBtn = document.getElementById('close-security-disclaimer');
