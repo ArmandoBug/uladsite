@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-11-26T10:54:12Z",
+  "updatedAt": "2026-11-26T11:51:42Z",
   "items": [
+    {
+      "id": "dc-1575478878439350337",
+      "title": "Fonte anteprima: Elite Dangerous (@EliteDangerous)",
+      "date": "2026-11-26",
+      "author": "Elite Dangerous Italia #notizie-annunci",
+      "tag": "X / FRONTIER",
+      "image": "https://pbs.twimg.com/media/HYC_Z8RWIAAFfkQ?format=webp&name=large",
+      "summary": "Fonte anteprima: Elite Dangerous (@EliteDangerous)\n\nIn this month's Elite Dangerous Dev Log:\n\n✅ Your first visuals of Law & Disorder, the next major update coming to Elite Dangerous\n✅ Discover the Copperhead, a ship with cargo discretion in mind\n\nStep behind the scenes in this month's Elite Developer Log \\- Online Now\\!\n\nhttps://t.co/cED0xn6eGy",
+      "links": [
+        {
+          "url": "https://x.com/EliteDangerous/status/2125909479933829534?a=hjPxE7QeZZUOfDj9FNM&s=33",
+          "label": "Apri post su X"
+        },
+        {
+          "url": "https://twitter.com/EliteDangerous/status/2125909479933829534?a=hjPxE7QeZZUOfDj9FNM&s=33",
+          "label": "Apri post su X"
+        }
+      ]
+    },
     {
       "id": "dc-1573406470136135750",
       "title": "Fonte anteprima: Elite Dangerous (@EliteDangerous)",
@@ -432,25 +451,6 @@
         },
         {
           "url": "https://twitter.com/i/status/2075165749950222621",
-          "label": "Apri post su X"
-        }
-      ]
-    },
-    {
-      "id": "dc-1524504689113174037",
-      "title": "Fonte anteprima: Elite Dangerous (@EliteDangerous)",
-      "date": "2026-07-08",
-      "author": "Elite Dangerous Italia #notizie-annunci",
-      "tag": "X / FRONTIER",
-      "image": "https://pbs.twimg.com/media/HMureKeXgAAuA-I.jpg:large",
-      "summary": "Fonte anteprima: Elite Dangerous (@EliteDangerous)\n\nGreetings Commanders,\n\nDuring our weekly maintenance we will be updating the game in order to address a number of issues including Operations rewards not being correctly received\\.\n\nWe expect maintenance to complete at around 10am UTC\n\nUpdate notes will be available at this time\\.",
-      "links": [
-        {
-          "url": "https://x.com/i/status/2074940608477618318",
-          "label": "Apri post su X"
-        },
-        {
-          "url": "https://twitter.com/i/status/2074940608477618318",
           "label": "Apri post su X"
         }
       ]
