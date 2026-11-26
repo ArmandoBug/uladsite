@@ -1650,7 +1650,10 @@ function usernameToAuthEmail(username) {
 
         document.getElementById('tools-search').addEventListener('input', (e) => {
             toolSearchQuery = e.target.value;
-            document.getElementById('mission-create-form').addEventListener('submit', async (e) => {
+            renderTools();
+        });
+
+        document.getElementById('mission-create-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser || !isAdminUser) return;
 
@@ -1790,7 +1793,6 @@ function usernameToAuthEmail(username) {
 
         renderMissions();
         renderTools();
-        });
 
         ['exo-species', 'exo-carto', 'exo-custom-credits', 'exo-first-footfall', 'exo-first-mapped'].forEach(id => {
             const el = document.getElementById(id);
